@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "gymApp-api",
-    "dateExported": "2023-11-15T18:25:54.840Z",
+    "dateExported": "2023-11-16T13:27:53.363Z",
     "version": "1.1",
     "folders": [
         {
@@ -9,7 +9,30 @@
             "name": "Usuario",
             "containerId": "",
             "created": "2023-11-15T18:10:21.025Z",
-            "sortNum": 10000
+            "sortNum": 10000,
+            "settings": {
+                "runOptions": {
+                    "delay": 0,
+                    "iterations": 1,
+                    "stopOnFail": true,
+                    "dataFilePath": ""
+                }
+            }
+        },
+        {
+            "_id": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
+            "name": "Rutina",
+            "containerId": "",
+            "created": "2023-11-15T20:56:30.615Z",
+            "sortNum": 20000,
+            "settings": {
+                "runOptions": {
+                    "delay": 0,
+                    "iterations": 1,
+                    "stopOnFail": true,
+                    "dataFilePath": ""
+                }
+            }
         }
     ],
     "requests": [
@@ -48,7 +71,7 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-11-15T12:45:07.543Z",
-            "modified": "2023-11-15T14:46:17.670Z",
+            "modified": "2023-11-15T21:21:13.997Z",
             "headers": [],
             "params": [],
             "body": {
@@ -63,7 +86,57 @@
                     "action": "equal",
                     "value": "200"
                 }
-            ]
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var json = await tc.response.json;",
+                            "tc.setVar(\"access_token\", json.access_token)"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "b090b51d-7ce8-4ee5-8279-141f55a16070",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
+            "name": "Crear Rutina",
+            "url": "rutina",
+            "method": "POST",
+            "sortNum": 25000,
+            "created": "2023-11-15T20:56:50.579Z",
+            "modified": "2023-11-16T13:08:07.488Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"local_id\": \"7897591774236983\",\n  \"titulo\": \"Rutina test 1\",\n  \"ejercicios\": \"[{nombre_ejercicio: 'press plano c/mancuerna', repeticiones: 6-8, series: 4}, {nombre_ejercicio: 'press inclinado c/mancuerna', repeticiones: 6-8, series: 4}]\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{access_token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var json = await tc.response.json;",
+                            "tc.setVar(\"rutina_id\", json.local_id)"
+                        ]
+                    }
+                ]
+            }
         },
         {
             "_id": "82376ab2-e4c2-4edd-a9d1-a6aa9f501932",
@@ -74,12 +147,12 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-11-15T12:46:05.376Z",
-            "modified": "2023-11-15T18:22:40.836Z",
+            "modified": "2023-11-15T21:21:44.648Z",
             "headers": [],
             "params": [],
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhbElkIjoiZjI4ZTdkNTctOWViYS00MTcyLTljOTktNzgzNzRiMjJjODUwIiwidXNlcm5hbWUiOiJFbGVsaSIsImlhdCI6MTcwMDA3MjU1MX0.sX2H0IIxdTxszAzs45yCB2gJAEGgr_DZITWLTFMtonM"
+                "bearer": "{{access_token}}"
             },
             "tests": [
                 {
@@ -99,7 +172,7 @@
             "method": "PUT",
             "sortNum": 40000,
             "created": "2023-11-15T12:48:35.221Z",
-            "modified": "2023-11-15T18:23:35.499Z",
+            "modified": "2023-11-15T21:21:56.355Z",
             "headers": [],
             "params": [],
             "body": {
@@ -109,7 +182,87 @@
             },
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhbElkIjoiZjI4ZTdkNTctOWViYS00MTcyLTljOTktNzgzNzRiMjJjODUwIiwidXNlcm5hbWUiOiJFbGVsaSIsImlhdCI6MTcwMDA3MjU1MX0.sX2H0IIxdTxszAzs45yCB2gJAEGgr_DZITWLTFMtonM"
+                "bearer": "{{access_token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "2953a8c6-77ea-4df8-9a3d-9f3e7e7a05fe",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
+            "name": "Listar Rutinas",
+            "url": "rutina",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-11-15T20:56:41.681Z",
+            "modified": "2023-11-15T21:23:03.534Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{access_token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "83ab69b5-c3ab-46fd-af4e-c3d88712232f",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
+            "name": "Actualizar Rutina",
+            "url": "rutina/{{rutina_id}}",
+            "method": "PATCH",
+            "sortNum": 65000,
+            "created": "2023-11-15T20:57:19.673Z",
+            "modified": "2023-11-15T22:37:57.874Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"titulo\": \"Rutina 1\",\n  \"ejercicios\": \"[]\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{access_token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "1bbb1051-9e8e-4c1e-8330-1304c199d2d4",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
+            "name": "Borrar Rutina",
+            "url": "rutina/{{rutina_id}}",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2023-11-15T20:57:03.219Z",
+            "modified": "2023-11-15T22:30:11.271Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{access_token}}"
             },
             "tests": [
                 {
@@ -124,6 +277,12 @@
     "settings": {
         "options": {
             "baseUrl": "localhost:3000/api/"
+        },
+        "runOptions": {
+            "delay": 0,
+            "iterations": 1,
+            "stopOnFail": true,
+            "dataFilePath": ""
         }
     }
 }
