@@ -1,0 +1,129 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "gymApp-api",
+    "dateExported": "2023-11-15T18:25:54.840Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "babbc277-7ab1-4f62-9a36-d3af2615ca7e",
+            "name": "Usuario",
+            "containerId": "",
+            "created": "2023-11-15T18:10:21.025Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "ddb7ea96-8f18-478c-8771-12f27f096b3b",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "babbc277-7ab1-4f62-9a36-d3af2615ca7e",
+            "name": "Crear Usuario",
+            "url": "usuario",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-15T12:43:07.567Z",
+            "modified": "2023-11-15T17:33:08.903Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"user_name\": \"Eleli\",\n  \"password\": \"$2a$12$kDPhc4kywlsWWDQasCDpFuBok16jJXQMOS2LXVNhz6.bRY0Wi6pKG\",\n  \"local_id\": \"f28e7d57-9eba-4172-9c99-78374b22c850\",\n  \"nombre\": \"Elias Bianchi\",\n  \"altura\": 1.67,\n  \"peso\": 71.55,\n  \"genero\": \"hombre\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ]
+        },
+        {
+            "_id": "7b6e9b7a-ff19-4f4c-b294-b9f110bc2e5b",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "babbc277-7ab1-4f62-9a36-d3af2615ca7e",
+            "name": "Login",
+            "url": "auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-15T12:45:07.543Z",
+            "modified": "2023-11-15T14:46:17.670Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"user_name\": \"Eleli\",\n  \"password\": \"pass123\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "82376ab2-e4c2-4edd-a9d1-a6aa9f501932",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "babbc277-7ab1-4f62-9a36-d3af2615ca7e",
+            "name": "Información de Usuario",
+            "url": "usuario",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-11-15T12:46:05.376Z",
+            "modified": "2023-11-15T18:22:40.836Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhbElkIjoiZjI4ZTdkNTctOWViYS00MTcyLTljOTktNzgzNzRiMjJjODUwIiwidXNlcm5hbWUiOiJFbGVsaSIsImlhdCI6MTcwMDA3MjU1MX0.sX2H0IIxdTxszAzs45yCB2gJAEGgr_DZITWLTFMtonM"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "18e6d0e3-a118-43df-b429-1b39660cbd05",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "babbc277-7ab1-4f62-9a36-d3af2615ca7e",
+            "name": "Actualizar Usuario",
+            "url": "usuario",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-11-15T12:48:35.221Z",
+            "modified": "2023-11-15T18:23:35.499Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"user_name\": \"Eleli_B\",\n  \"nombre\": \"Elias\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhbElkIjoiZjI4ZTdkNTctOWViYS00MTcyLTljOTktNzgzNzRiMjJjODUwIiwidXNlcm5hbWUiOiJFbGVsaSIsImlhdCI6MTcwMDA3MjU1MX0.sX2H0IIxdTxszAzs45yCB2gJAEGgr_DZITWLTFMtonM"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "localhost:3000/api/"
+        }
+    }
+}
