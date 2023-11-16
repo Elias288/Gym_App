@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "gymApp-api",
-    "dateExported": "2023-11-16T13:27:53.363Z",
+    "dateExported": "2023-11-16T18:24:27.425Z",
     "version": "1.1",
     "folders": [
         {
@@ -227,12 +227,12 @@
             "method": "PATCH",
             "sortNum": 65000,
             "created": "2023-11-15T20:57:19.673Z",
-            "modified": "2023-11-15T22:37:57.874Z",
+            "modified": "2023-11-16T18:24:08.180Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"titulo\": \"Rutina 1\",\n  \"ejercicios\": \"[]\"\n}",
+                "raw": "{\n  \"titulo\": \"Rutina 1\",\n  \"ejercicios\": \"[[{nombre_ejercicio: 'press plano c/mancuerna', repeticiones: 6-8, series: 4}, {nombre_ejercicio: 'press inclinado c/mancuerna', repeticiones: 6-8, series: 4}, {nombre_ejercicio: 'press militar c/mancuerna', repeticiones: 6-8, series: 4}]]\"\n}",
                 "form": []
             },
             "auth": {

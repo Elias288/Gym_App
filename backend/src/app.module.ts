@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 import { RutinaModule } from './rutina/rutina.module';
+import { JwtProviders } from './jwt.providers';
 
 @Module({
   imports: [
@@ -11,14 +11,7 @@ import { RutinaModule } from './rutina/rutina.module';
       envFilePath: '.development.env',
       isGlobal: true,
     }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('TOKEN_SECRET'),
-        global: true,
-      }),
-      inject: [ConfigService],
-    }),
+    ...JwtProviders,
     UsuarioModule,
     AuthModule,
     RutinaModule,
