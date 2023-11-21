@@ -16,7 +16,7 @@ en los días de la semana una lista de ejercicios, cada ejercicio contendrá:
 
 Un usuario puede tener más de una rutina cargada pero solamente una activa, esto implica que al iniciar la aplicación se muestre el contenido de la rutina activa. Esto implica que un usuario debe poder crear una rutina, modificarla, eliminarla y activarla. Se deben almacenar tanto en local como en remoto utilizando una api.
 
-![Diagrama BD](../gym-app/assets/gymDiagram.drawio.png)
+![Diagrama BD](https://github.com/Elias288/Gym_App/blob/master/assets/gymDiagram.drawio.png)
 
 ## Requerimientos
 
