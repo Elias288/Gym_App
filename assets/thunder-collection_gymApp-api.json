@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "gymApp-api",
-    "dateExported": "2023-11-16T18:24:27.425Z",
+    "dateExported": "2023-11-21T12:42:24.588Z",
     "version": "1.1",
     "folders": [
         {
@@ -107,12 +107,12 @@
             "method": "POST",
             "sortNum": 25000,
             "created": "2023-11-15T20:56:50.579Z",
-            "modified": "2023-11-16T13:08:07.488Z",
+            "modified": "2023-11-21T11:43:24.849Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"local_id\": \"7897591774236983\",\n  \"titulo\": \"Rutina test 1\",\n  \"ejercicios\": \"[{nombre_ejercicio: 'press plano c/mancuerna', repeticiones: 6-8, series: 4}, {nombre_ejercicio: 'press inclinado c/mancuerna', repeticiones: 6-8, series: 4}]\"\n}",
+                "raw": "{\n  \"local_id\": \"7897591774236985\",\n  \"titulo\": \"Rutina test 2\",\n  \"ejercicios\": [\n    {\n      \"nombre_ejercicio\": \"press plano c/mancuerna\",\n      \"repeticiones\": \"6-8\",\n      \"series\": \"4\"\n    },\n    {\n      \"nombre_ejercicio\": \"press inclinado c/mancuerna\",\n      \"repeticiones\": \"6-8\",\n      \"series\": \"4\"\n    }\n  ]\n}",
                 "form": []
             },
             "auth": {
@@ -172,12 +172,12 @@
             "method": "PUT",
             "sortNum": 40000,
             "created": "2023-11-15T12:48:35.221Z",
-            "modified": "2023-11-15T21:21:56.355Z",
+            "modified": "2023-11-20T16:33:48.002Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"user_name\": \"Eleli_B\",\n  \"nombre\": \"Elias\"\n}",
+                "raw": "{\n  \"user_name\": \"Eleli_Bian\",\n  \"nombre\": \"Elias\",\n  \"rutinas\": [\n    {\n      \"local_id\": \"7897591774236984\",\n      \"titulo\": \"Rutina test 1\",\n      \"ejercicios\": [\n        {\n          \"nombre_ejercicio\": \"press plano c/mancuerna\",\n          \"repeticiones\": \"6-8\",\n          \"series\": \"4\"\n        },\n        {\n          \"nombre_ejercicio\": \"press inclinado c/mancuerna\",\n          \"repeticiones\": \"6-8\",\n          \"series\": \"4\"\n        }\n      ]\n    }\n  ]\n}",
                 "form": []
             },
             "auth": {
@@ -219,6 +219,24 @@
             ]
         },
         {
+            "_id": "c919aae5-1b9a-481b-9a04-0662604f7254",
+            "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
+            "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
+            "name": "getRutina",
+            "url": "rutina/7897591774236985",
+            "method": "GET",
+            "sortNum": 62500,
+            "created": "2023-11-20T17:08:22.376Z",
+            "modified": "2023-11-21T11:58:19.529Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{access_token}}"
+            },
+            "tests": []
+        },
+        {
             "_id": "83ab69b5-c3ab-46fd-af4e-c3d88712232f",
             "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
             "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
@@ -227,12 +245,12 @@
             "method": "PATCH",
             "sortNum": 65000,
             "created": "2023-11-15T20:57:19.673Z",
-            "modified": "2023-11-16T18:24:08.180Z",
+            "modified": "2023-11-21T12:03:36.514Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"titulo\": \"Rutina 1\",\n  \"ejercicios\": \"[[{nombre_ejercicio: 'press plano c/mancuerna', repeticiones: 6-8, series: 4}, {nombre_ejercicio: 'press inclinado c/mancuerna', repeticiones: 6-8, series: 4}, {nombre_ejercicio: 'press militar c/mancuerna', repeticiones: 6-8, series: 4}]]\"\n}",
+                "raw": "{\n  \"titulo\": \"Rutina test 1\"\n}",
                 "form": []
             },
             "auth": {
@@ -253,11 +271,11 @@
             "colId": "006c5a93-07f0-4750-af58-a95445b2c7e4",
             "containerId": "fcebf6c3-13fb-4bcb-97ad-eb06a8b4dfed",
             "name": "Borrar Rutina",
-            "url": "rutina/{{rutina_id}}",
+            "url": "rutina/7897591774236985",
             "method": "DELETE",
             "sortNum": 70000,
             "created": "2023-11-15T20:57:03.219Z",
-            "modified": "2023-11-15T22:30:11.271Z",
+            "modified": "2023-11-21T12:04:19.431Z",
             "headers": [],
             "params": [],
             "auth": {
