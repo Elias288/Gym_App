@@ -12,7 +12,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { RutinaService } from './rutina.service';
-import { CreateRutinaDto } from './dto/create-rutina.dto';
+import { RutinaDto } from './dto/create-rutina.dto';
 import { UpdateRutinaDto } from './dto/update-rutina.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -23,45 +23,47 @@ export class RutinaController {
   @UseGuards(AuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Res() res: any, @Body() createRutinaDto: CreateRutinaDto) {
-    const { localId: user_id } = res.req.user;
-    return res.send(this.rutinaService.create(user_id, createRutinaDto));
-  }
-
-  @UseGuards(AuthGuard)
-  @Get()
-  @HttpCode(HttpStatus.OK)
-  findAll(@Res() res: any) {
-    const { localId: user_id } = res.req.user;
-    return res.send(this.rutinaService.findAll(user_id));
+  async create(@Res() res: any, @Body() createRutinaDto: RutinaDto) {
+    const { _id: user_id } = res.req.user;
+    return res.send(await this.rutinaService.create(user_id, createRutinaDto));
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') rutina_id: string, @Res() res: any) {
-    const { localId: user_id } = res.req.user;
-    return res.send(this.rutinaService.findOne(rutina_id, user_id));
+  async findOne(@Param('id') rutina_local_id: string, @Res() res: any) {
+    const { _id: user_id } = res.req.user;
+    return res.send(await this.rutinaService.findOne(rutina_local_id, user_id));
+  }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findAll(@Res() res: any) {
+    const { _id: user_id } = res.req.user;
+    return res.send(await this.rutinaService.findAllByUser(user_id));
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  update(
+  async update(
     @Param('id') rutina_id: string,
     @Res() res: any,
     @Body() updateRutinaDto: UpdateRutinaDto,
   ) {
-    const { localId: user_id } = res.req.user;
+    const { _id: user_id } = res.req.user;
     return res.send(
-      this.rutinaService.update(rutina_id, user_id, updateRutinaDto),
+      await this.rutinaService.update(rutina_id, user_id, updateRutinaDto),
     );
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  remove(@Param('id') rutina_id: string, @Res() res: any) {
-    const { localId: user_id } = res.req.user;
-    return res.send(this.rutinaService.remove(rutina_id, user_id));
+  async remove(@Res() res: any, @Param('id') rutina_id: string) {
+    const { _id: user_id } = res.req.user;
+
+    return res.send(await this.rutinaService.remove(rutina_id, user_id));
   }
 }

@@ -1,0 +1,35 @@
+# Created with podman-4.4.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-11-16T17:32:58Z"
+  labels:
+    app: gymapp-pod
+  name: gymapp-pod
+spec:
+  containers:
+    - args:
+        - mongod
+      env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: root
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: toor123
+      image: docker.io/library/mongo:latest
+      name: mongoDB
+      ports:
+        - containerPort: 27017
+          hostPort: 27017
+      volumeMounts:
+        - mountPath: /data/configdb
+          name: 05262574d4b2964d09231fa0602bf6f5b009b36e5172c4bcaea805c7ef7ec3e7-pvc
+        - mountPath: /data/db
+          name: gymapp-mongo-volume-pvc
+  volumes:
+    - name: 05262574d4b2964d09231fa0602bf6f5b009b36e5172c4bcaea805c7ef7ec3e7-pvc
+      persistentVolumeClaim:
+        claimName: 05262574d4b2964d09231fa0602bf6f5b009b36e5172c4bcaea805c7ef7ec3e7
+    - name: gymapp-mongo-volume-pvc
+      persistentVolumeClaim:
+        claimName: gymapp-mongo-volume

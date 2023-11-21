@@ -3,72 +3,81 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateRutinaDto } from './dto/create-rutina.dto';
+import { RutinaDto } from './dto/create-rutina.dto';
 import { UpdateRutinaDto } from './dto/update-rutina.dto';
-import { Rutina } from './entities/rutina.entity';
+import { Rutina } from 'src/schemas/rutinas.schema';
 import { UsuarioService } from 'src/usuario/usuario.service';
+import { InjectModel } from '@nestjs/mongoose';
+import mongoose, { Model } from 'mongoose';
 
 @Injectable()
 export class RutinaService {
-  private rutinas: Rutina[] = [];
-  constructor(private readonly usuarioService: UsuarioService) {}
+  constructor(
+    private readonly usuarioService: UsuarioService,
+    @InjectModel(Rutina.name) private rutinaModel: Model<Rutina>,
+  ) {}
 
-  create(userLocalId: string, createRutinaDto: CreateRutinaDto) {
-    if (!this.usuarioService.getUsuarioById(userLocalId))
-      throw new NotFoundException('Usuario no encontrado');
+  async create(user_id: string, createRutinaDto: RutinaDto) {
+    const usuario = await this.usuarioService.getUsuarioById(user_id);
+    if (!usuario) throw new NotFoundException('Usuario no encontrado');
 
-    if (this.rutinas.find((rut) => rut.local_id === createRutinaDto.local_id))
-      throw new ConflictException('rutina ya existe');
+    const rutina = await this.rutinaModel.findOne({
+      local_id: createRutinaDto.local_id,
+    });
+    if (rutina) throw new ConflictException('Rutina ya registrada');
 
-    this.rutinas.push({ ...createRutinaDto, usuario_id: userLocalId });
-    return createRutinaDto;
+    const mongoRutina = new this.rutinaModel({
+      ...createRutinaDto,
+      usuario_id: new mongoose.Types.ObjectId(user_id),
+      ejercicios: createRutinaDto.ejercicios,
+    });
+
+    await mongoRutina.save();
+
+    this.usuarioService.pushRutina(usuario, mongoRutina);
+    return mongoRutina;
   }
 
-  findAll(userLocalId: string) {
-    if (!this.usuarioService.getUsuarioById(userLocalId))
-      throw new NotFoundException('Usuario no encontrado');
+  async findOne(rutina_local_id: string, user_id: string) {
+    const usuario = await this.usuarioService.getUsuarioById(user_id);
+    if (!usuario) throw new NotFoundException('Usuario no encontrado');
 
-    return this.rutinas;
+    return this.rutinaModel
+      .findOne({ usuario_id: user_id, local_id: rutina_local_id })
+      .exec();
   }
 
-  findOne(rutina_id: string, userLocalId: string) {
-    if (!this.usuarioService.getUsuarioById(userLocalId))
-      throw new NotFoundException('Usuario no encontrado');
-
-    return this.rutinas.find((rutina) => rutina.local_id === rutina_id);
+  findAllByUser(user_id: string) {
+    return this.rutinaModel.find({ usuario_id: user_id }).exec();
   }
 
-  update(
-    rutina_id: string,
-    userLocalId: string,
+  async update(
+    rutina_local_id: string,
+    user_id: string,
     updateRutinaDto: UpdateRutinaDto,
   ) {
-    if (!this.usuarioService.getUsuarioById(userLocalId))
+    if (!this.usuarioService.getUsuarioById(user_id))
       throw new NotFoundException('Usuario no encontrado');
 
-    const indexRutina = this.rutinas.findIndex(
-      (rutina) => rutina.local_id === rutina_id,
+    const rutina = await this.rutinaModel.findOneAndUpdate(
+      { local_id: rutina_local_id },
+      updateRutinaDto,
+      { new: true },
     );
 
-    if (indexRutina === -1) throw new NotFoundException('Rutina no encontrada');
-
-    const rutina = { ...this.rutinas[indexRutina], ...updateRutinaDto };
-    this.rutinas[indexRutina] = rutina;
     return rutina;
   }
 
-  remove(rutina_id: string, userLocalId: string) {
-    if (!this.usuarioService.getUsuarioById(userLocalId))
-      throw new NotFoundException('Usuario no encontrado');
+  async remove(rutina_local_id: string, user_id: string) {
+    const usuario = await this.usuarioService.getUsuarioById(user_id);
+    if (!usuario) throw new NotFoundException('Usuario no encontrado');
 
-    if (!this.rutinas.find((rutina) => rutina.local_id === rutina_id))
-      throw new NotFoundException('Rutina no encontrada');
+    const rutina = await this.rutinaModel.findOneAndDelete({
+      local_id: rutina_local_id,
+    });
+    if (!rutina) throw new NotFoundException('Rutina no encontrada');
 
-    const newRutinas = this.rutinas.filter(
-      (rutina) => rutina.local_id !== rutina_id,
-    );
-
-    this.rutinas = newRutinas;
-    return `Rutina #${rutina_id} eliminada`;
+    this.usuarioService.popRutina(rutina, usuario);
+    return `Rutina #${rutina_local_id} eliminada`;
   }
 }

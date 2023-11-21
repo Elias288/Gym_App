@@ -1,6 +1,9 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class CreateRutinaDto {
+export class RutinaDto {
+  _id?: string;
+
   @IsNotEmpty()
   @IsString()
   local_id: string;
@@ -9,7 +12,16 @@ export class CreateRutinaDto {
   @IsNotEmpty()
   titulo: string;
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  ejercicios: string;
+  @Type(() => ejercicio)
+  ejercicios: ejercicio[];
+
+  usuario_id: string;
+}
+
+class ejercicio {
+  nombre_ejercicio: string;
+  repeticiones: string;
+  series: string;
 }

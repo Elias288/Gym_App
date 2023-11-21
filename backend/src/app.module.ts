@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { RutinaModule } from './rutina/rutina.module';
 import { JwtProviders } from './jwt.providers';
+import { databaseProviders } from './database.providers';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { JwtProviders } from './jwt.providers';
       isGlobal: true,
     }),
     ...JwtProviders,
+    ...databaseProviders,
     UsuarioModule,
     AuthModule,
     RutinaModule,

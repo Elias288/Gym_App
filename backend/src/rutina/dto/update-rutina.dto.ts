@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateRutinaDto } from './create-rutina.dto';
+import { RutinaDto } from './create-rutina.dto';
 
-export class UpdateRutinaDto extends PartialType(CreateRutinaDto) {}
+export class UpdateRutinaDto extends PartialType(RutinaDto) {}

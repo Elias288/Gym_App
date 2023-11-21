@@ -18,7 +18,7 @@ export class AuthService {
     if (!(user_name && encriptedPassword)) return -1;
 
     // busca el usuario en la lista de usuarios
-    const usuario = this.usuarioService.getUsuarioByUserName(user_name);
+    const usuario = await this.usuarioService.getUsuarioByUserName(user_name);
 
     // si el usuario no existe
     if (!usuario) throw new NotFoundException('Usuario no encontrado');
@@ -29,6 +29,7 @@ export class AuthService {
     if (!password) throw new UnauthorizedException('Contraseña erronea');
 
     const payload = {
+      _id: usuario._id,
       localId: usuario.local_id,
       username: usuario.user_name,
     };

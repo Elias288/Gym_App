@@ -10,7 +10,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUsuarioDto } from 'src/usuario/dto/create-usuario.dto';
+import { UsuarioDto } from './dto/create-usuario.dto';
 import { UsuarioService } from './usuario.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateUsuarioDto } from 'src/usuario/dto/update-usuario.dto';
@@ -22,26 +22,22 @@ export class UsuarioController {
   @UseGuards(AuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
-  getUsuario(@Res() res: any) {
-    const { localId } = res.req.user;
-    return res.send(this.usuarioService.getUsuarioInfo(localId));
+  async getUsuario(@Res() res: any) {
+    const { _id: user_id } = res.req.user;
+    return res.send(await this.usuarioService.getUsuarioById(user_id));
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() body: CreateUsuarioDto) {
-    try {
-      return this.usuarioService.create(body);
-    } catch (error) {
-      throw new ConflictException('Usuario ya existe');
-    }
+  create(@Body() body: UsuarioDto) {
+    return this.usuarioService.create(body);
   }
 
   @UseGuards(AuthGuard)
   @Put()
   @HttpCode(HttpStatus.OK)
-  updateUsuario(@Res() res: any, @Body() body: UpdateUsuarioDto) {
+  async updateUsuario(@Res() res: any, @Body() body: UpdateUsuarioDto) {
     const { localId } = res.req.user;
-    return res.send(this.usuarioService.updateUsuario(localId, body));
+    return res.send(await this.usuarioService.updateUsuario(localId, body));
   }
 }

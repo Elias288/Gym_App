@@ -1,6 +1,15 @@
 import { IsOptional, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Rutina } from 'src/schemas/rutinas.schema';
 
-export class CreateUsuarioDto {
+// Usuario utilizado para crear y almacenar
+
+export class UsuarioDto {
+  _id?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  local_id: string;
+
   @IsString()
   @IsNotEmpty()
   user_name: string;
@@ -9,9 +18,7 @@ export class CreateUsuarioDto {
   @IsNotEmpty()
   password: string;
 
-  @IsString()
-  @IsNotEmpty()
-  local_id: string;
+  rutinas?: Rutina[];
 
   @IsString()
   @IsOptional()
