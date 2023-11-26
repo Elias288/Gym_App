@@ -1,0 +1,16 @@
+export const GenerosList = [
+  { genero: "Hombre", value: "Hombre" },
+  { genero: "Mujer", value: "Mujer" },
+  { genero: "No binario", value: "Hombre" },
+  { genero: "No binaria", value: "Mujer" },
+  { genero: "Queer", value: "Mujer" },
+  { genero: "Transgénero", value: "Hombre" },
+  { genero: "Transgénera", value: "Mujer" },
+  { genero: "Transexual", value: "Hombre" },
+  { genero: "Genero fluido", value: "Mujer" },
+  { genero: "Cisgénero", value: "Hombre" },
+  { genero: "Intergénero", value: "Hombre" },
+  { genero: "Intersexual", value: "Mujer" },
+  { genero: "Otro", value: "Hombre" },
+  { genero: "Otra", value: "Mujer" },
+];
