@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Usuario, UsuarioDocument } from 'src/schemas/usuario.schema';
 import { RutinaDocument } from 'src/schemas/rutinas.schema';
 import { UsuarioDto } from './dto/create-usuario.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuarioService {
@@ -21,10 +22,21 @@ export class UsuarioService {
   }
 
   async create(createUserDto: UsuarioDto) {
-    if (await this.usuarioModel.findOne({ local_id: createUserDto.local_id }))
-      throw new ConflictException('Usuario ya existe');
+    if (
+      await this.usuarioModel.findOne({
+        $or: [
+          { local_id: createUserDto.local_id },
+          { user_name: createUserDto.user_name },
+        ],
+      })
+    )
+      throw new ConflictException('Usuario ya registrado');
 
-    const mongoUser = new this.usuarioModel({ ...createUserDto, rutinas: [] });
+    const mongoUser = new this.usuarioModel({
+      ...createUserDto,
+      password: await bcrypt.hash(createUserDto.password, 8),
+      rutinas: [],
+    });
 
     return mongoUser.save();
   }

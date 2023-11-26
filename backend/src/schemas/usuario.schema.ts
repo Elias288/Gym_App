@@ -39,10 +39,10 @@ export class Usuario {
   nombre?: string;
 
   @Prop()
-  altura?: number;
+  altura?: string;
 
   @Prop()
-  peso?: number;
+  peso?: string;
 
   @Prop()
   genero?: string;

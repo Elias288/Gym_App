@@ -1,12 +1,11 @@
 import {
   Body,
-  ConflictException,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
-  Put,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -34,7 +33,7 @@ export class UsuarioController {
   }
 
   @UseGuards(AuthGuard)
-  @Put()
+  @Patch()
   @HttpCode(HttpStatus.OK)
   async updateUsuario(@Res() res: any, @Body() body: UpdateUsuarioDto) {
     const { localId } = res.req.user;

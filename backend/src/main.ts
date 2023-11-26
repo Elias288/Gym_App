@@ -11,6 +11,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
-  console.log(`api escuchando en http:localhost:${port}/api`);
+  console.log(`api escuchando en http://localhost:${port}/api`);
 }
 bootstrap();

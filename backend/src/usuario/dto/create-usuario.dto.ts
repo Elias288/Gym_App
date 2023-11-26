@@ -1,4 +1,4 @@
-import { IsOptional, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsOptional, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { Rutina } from 'src/schemas/rutinas.schema';
 
 // Usuario utilizado para crear y almacenar
@@ -10,12 +10,14 @@ export class UsuarioDto {
   @IsNotEmpty()
   local_id: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'Nombre de usuario invalido' })
+  @IsNotEmpty({ message: 'Nombre de usuario invalido' })
+  @MinLength(4, { message: 'El nombre de usuario debe ser más largo' })
   user_name: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'Contraseña invalida' })
+  @IsNotEmpty({ message: 'Contraseña invalida' })
+  @MinLength(6, { message: 'La contraseña debe ser más larga' })
   password: string;
 
   rutinas?: Rutina[];
@@ -25,12 +27,12 @@ export class UsuarioDto {
   nombre?: string;
 
   @IsOptional()
-  @IsNumber()
-  altura?: number;
+  @IsString()
+  altura?: string;
 
   @IsOptional()
-  @IsNumber()
-  peso?: number;
+  @IsString()
+  peso?: string;
 
   @IsOptional()
   @IsString()

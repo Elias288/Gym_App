@@ -1,4 +1,4 @@
-# GYM App
+# GYM App v0.1.1
 
 ## Descripción
 
@@ -18,15 +18,6 @@ Un usuario puede tener más de una rutina cargada pero solamente una activa, est
 
 ![Diagrama BD](https://github.com/Elias288/Gym_App/blob/master/assets/gymDiagram.drawio.png)
 
-## Requerimientos
+## Referencias
 
-- Usuario:
-  - [ ] Creación de Usuario
-  - [ ] Login
-  - [ ] Ver información
-- Rutina:
-  - [ ] Creación de Rutina
-  - [ ] Visualizar Rutina
-  - [ ] Modificación de Rutina
-  - [ ] Eliminación de Rutina
-  - [ ] Activación de Rutina
+[Idea de login](https://i.pinimg.com/originals/bf/d5/70/bfd57007adc74d24e9a20212cc074295.png)
