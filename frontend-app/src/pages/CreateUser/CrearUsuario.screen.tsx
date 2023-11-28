@@ -12,12 +12,8 @@ type CreateUserProps = NativeStackScreenProps<
 >;
 
 const CrearUsuarioScreen = ({ navigation }: CreateUserProps) => {
-  const goToLogin = () => {
-    navigation.navigate("Login");
-  };
-
   const onSubmit = () => {
-    // console.log("submit");
+    navigation.navigate("Login");
   };
 
   return (
@@ -25,13 +21,8 @@ const CrearUsuarioScreen = ({ navigation }: CreateUserProps) => {
       <ScrollView contentContainerStyle={{ paddingVertical: 40 }}>
         <View style={{ flex: 1, marginHorizontal: 40 }}>
           {/* Crear usuario form */}
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-            }}
-          >
-            <CrearUsuarioForm crear={onSubmit} cancelar={goToLogin} />
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <CrearUsuarioForm onSubmit={onSubmit} />
           </View>
         </View>
       </ScrollView>

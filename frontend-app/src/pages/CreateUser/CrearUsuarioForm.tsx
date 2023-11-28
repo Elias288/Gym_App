@@ -1,35 +1,33 @@
 import { Text, View, StyleSheet, FlatList } from "react-native";
-import { GlobalStyles } from "../../Utils/GlobalStyles";
-import InputTextCustom from "../../components/InputTextCustom.component";
 import { useEffect, useState } from "react";
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
+import uuid from "react-native-uuid";
+
+import InputTextCustom from "../../components/InputTextCustom.component";
+import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { SelectList } from "react-native-dropdown-select-list";
 import { GenerosList } from "../../Utils/Generos";
 import { crearUsuario, crearUsuarioDto } from "../../services/usuariosServices";
-import uuid from "react-native-uuid";
+import { CustomMessage } from "./CustomMessage";
 
 type selectType = {
   key: string;
   value: string;
 };
 
-const CrearUsuarioForm = ({
-  crear,
-  cancelar,
-}: {
-  crear: () => void;
-  cancelar: () => void;
-}) => {
+const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
   const [generos, setGeneros] = useState<Array<selectType>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [password2, setPassword2] = useState<string>("");
   const [createUser, setCreateUser] = useState<crearUsuarioDto>({
     local_id: uuid.v4().toString().replace(/-/g, ""),
-    user_name: "Eleli",
-    password: "contra123",
+    user_name: "",
+    password: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<boolean>(true);
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     chargeGeneros();
@@ -42,26 +40,26 @@ const CrearUsuarioForm = ({
     });
   };
 
-  const onSubmit = async () => {
-    setErrorMessage("");
+  const submit = async () => {
+    setMessageType(true);
+    setMessage("");
 
-    if (createUser.password !== password2) {
-      setErrorMessage("-Las contraseñas no coinciden");
+    setLoading(true);
+    const result = await crearUsuario(createUser, password2);
+    // console.log("crearUserRes:", JSON.stringify(result, null, 4));
+
+    setLoading(false);
+    if (result.status === "Error") {
+      setMessageType(false);
+      setMessage(result.message.map((err: string) => "- " + err).join("\n"));
       return;
     }
 
-    const result = await crearUsuario(createUser);
-
-    if (result && result.status !== 201) {
-      if (Array.isArray(result.data.message)) {
-        setErrorMessage(
-          result.data.message.map((err: string) => "-" + err).join("\n")
-        );
-        return;
-      }
-    }
-
-    crear();
+    setMessageType(true);
+    setMessage("Usuario registrado");
+    setTimeout(() => {
+      onSubmit();
+    }, 2000);
   };
 
   return (
@@ -150,26 +148,23 @@ const CrearUsuarioForm = ({
         </View>
       </View>
 
-      {errorMessage !== "" && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{errorMessage}</Text>
+      {loading && (
+        <View style={{ marginVertical: 10 }}>
+          <ActivityIndicator animating={true} size={"large"} />
         </View>
       )}
+      <CustomMessage message={message} type={messageType} />
 
       {/* Actions */}
       <View style={styles.actionContainer}>
         <Button
           mode="contained"
           style={{ borderRadius: 15, marginRight: 5 }}
-          onPress={cancelar}
+          onPress={onSubmit}
         >
           Cancelar
         </Button>
-        <Button
-          mode="contained"
-          style={{ borderRadius: 15 }}
-          onPress={onSubmit}
-        >
+        <Button mode="contained" style={{ borderRadius: 15 }} onPress={submit}>
           Crear
         </Button>
       </View>
@@ -198,16 +193,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginVertical: 20,
     borderColor: "#c2c2c2",
-  },
-  errorContainer: {
-    backgroundColor: "rgba(207, 57, 57, 0.8)",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginBottom: 5,
-  },
-  errorText: {
-    color: GlobalStyles.colorWhite,
   },
 });
 

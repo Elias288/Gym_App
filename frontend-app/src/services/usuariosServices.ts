@@ -14,26 +14,44 @@ export type crearUsuarioDto = {
   genero?: string;
 };
 
-export const crearUsuario = (usuarioBody: crearUsuarioDto) => {
-  console.log(usuarioBody);
+type ResultType = {
+  status: string;
+  message: Array<string>;
+};
+
+export const crearUsuario = (
+  usuarioBody: crearUsuarioDto,
+  password2: string
+): Promise<ResultType> | ResultType => {
+  if (usuarioBody.password !== password2) {
+    return {
+      status: "Error",
+      message: ["Las contraseñas no coinciden"],
+    };
+  }
 
   return axios
-    .post(url, usuarioBody, {
+    .request({
+      timeout: 2000,
+      method: "POST",
+      url,
+      data: usuarioBody,
       headers: { "Content-Type": "application/json" },
     })
     .then((res) => res)
+    .then(() => {
+      const result: ResultType = { status: "Ok", message: ["Usuario Creado"] };
+      return result;
+    })
     .catch((error) => {
       if (error.response) {
-        // console.log(error.response.data);
-        // console.log(error.response.status);
-        // console.log(error.response.headers);
-        return error.response;
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error", error.message);
+        let err: string | Array<string> = error.response.data.message;
+        if (!Array.isArray(err)) err = [err];
+
+        return { status: "Error", message: err };
       }
-      console.log(error.config);
+
+      return { status: "Error", message: ["Error de conexión"] };
     });
 };
 

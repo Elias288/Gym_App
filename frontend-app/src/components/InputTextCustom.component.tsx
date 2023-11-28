@@ -38,6 +38,7 @@ const InputTextCustom = (props: InputTextProps) => {
           value={props.stateValue}
           onChangeText={props.state}
           secureTextEntry={props.secure || false}
+          autoCapitalize='none'
         />
       )}
     </View>
