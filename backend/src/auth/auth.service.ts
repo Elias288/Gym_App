@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsuarioService } from 'src/usuario/usuario.service';
@@ -15,7 +16,8 @@ export class AuthService {
   ) {}
 
   async login(user_name: string, encriptedPassword: string) {
-    if (!(user_name && encriptedPassword)) return -1;
+    if (!(user_name && encriptedPassword))
+      throw new BadRequestException('Datos invalidos');
 
     // busca el usuario en la lista de usuarios
     const usuario = await this.usuarioService.getUsuarioByUserName(user_name);
@@ -36,7 +38,10 @@ export class AuthService {
 
     // retorna el token
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.signAsync(payload, {
+        secret: process.env.SECRET_TOKEN,
+        expiresIn: '336h',
+      }),
     };
   }
 }

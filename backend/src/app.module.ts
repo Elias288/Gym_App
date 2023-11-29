@@ -9,7 +9,7 @@ import { databaseProviders } from './database.providers';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.development.env',
+      envFilePath: '.env.development',
       isGlobal: true,
     }),
     ...JwtProviders,
