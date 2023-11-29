@@ -1,17 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { RootStackParamList } from "../../Main";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+
+import { RootStackParamList } from "../../Main";
 import LoginForm from "./LoginForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
-import { Button } from "react-native-paper";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const LoginScreen = ({ navigation }: Props) => {
-  const goToCreateUser = () => {
-    navigation.navigate("CrearUsuario");
-  };
+  const goToCreateUser = () => navigation.navigate("CrearUsuario");
 
   return (
     <View style={styles.container}>

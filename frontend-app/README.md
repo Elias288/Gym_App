@@ -40,38 +40,6 @@ cd android
 ./gradlew clean
 ```
 
-### Variables de entorno
-
-Instalar react-native-dotenv
-
-```sh
-npm install -D react-native-dotenv
-```
-
-editar: babel.config.js
-agregar:
-
-```ts
-...
-plugins: [
-    ["module:react-native-dotenv", { moduleName: "@env", path: "." }],
-],
-```
-
-crear archivo `env.d.ts`
-
-```ts
-declare module '@env' {
-    export const <nameVar>: <type>;
-}
-```
-
-importar
-
-```ts
-import {<nameVar>} from "@env"
-```
-
 ---
 
 ## Construir y ejecutar proyecto

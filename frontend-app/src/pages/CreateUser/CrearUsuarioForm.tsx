@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Button } from "react-native-paper";
 import uuid from "react-native-uuid";
@@ -7,8 +7,11 @@ import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { SelectList } from "react-native-dropdown-select-list";
 import { GenerosList } from "../../Utils/Generos";
-import { crearUsuario, crearUsuarioDto } from "../../services/usuariosServices";
+import UsuarioServices, {
+  crearUsuarioDto,
+} from "../../services/usuariosServices";
 import { CustomMessage } from "./CustomMessage";
+import ShowLog from "../../Utils/ShowLog";
 
 type selectType = {
   key: string;
@@ -45,13 +48,14 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
     setMessage("");
 
     setLoading(true);
-    const result = await crearUsuario(createUser, password2);
-    // console.log("crearUserRes:", JSON.stringify(result, null, 4));
+    const result = await UsuarioServices.crearUsuario(createUser, password2);
+    ShowLog('crearUsuarioForm/submit', result)
 
     setLoading(false);
     if (result.status === "Error") {
       setMessageType(false);
-      setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+      if (Array.isArray(result.message))
+        setMessage(result.message.map((err: string) => "- " + err).join("\n"));
       return;
     }
 

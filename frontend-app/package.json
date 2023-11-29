@@ -7,7 +7,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "local": "expo start --localhost"
+    "local": "expo start --localhost",
+    "secretList": "eas secret:list",
+    "secretAdd": "eas secret:push --scope project --env-file ./.env"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
@@ -27,7 +29,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.14",
-    "react-native-dotenv": "^3.4.9",
     "sharp-cli": "^4.1.1",
     "typescript": "^5.1.3"
   },

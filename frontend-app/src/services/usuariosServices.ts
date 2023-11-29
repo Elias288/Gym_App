@@ -1,8 +1,9 @@
 import axios from "axios";
 
-import { API_URL } from "@env";
+import { ResultType } from "./ResultType";
+import authHeader from "../Utils/auth-header";
 
-const url = `${API_URL}/api/usuario`;
+const url = `${process.env.EXPO_PUBLIC_API_URL}/api/usuario`;
 
 export type crearUsuarioDto = {
   local_id: string;
@@ -14,12 +15,7 @@ export type crearUsuarioDto = {
   genero?: string;
 };
 
-type ResultType = {
-  status: string;
-  message: Array<string>;
-};
-
-export const crearUsuario = (
+const crearUsuario = (
   usuarioBody: crearUsuarioDto,
   password2: string
 ): Promise<ResultType> | ResultType => {
@@ -55,42 +51,17 @@ export const crearUsuario = (
     });
 };
 
-export const login = (user_name: string, password: string) => {
-  /* return FetchData(
-    "auth/login",
-    {
-      method: "POST",
-      body: JSON.stringify({ user_name, password }),
-    },
-    (res) => {
-      if (DEVELOP) console.log(res);
-    },
-    (err) => {
-      if (DEVELOP) console.log(err);
-    }
-  ); */
-};
-
-export const getUsuarioInfo = (token: string) => {
-  /* return FetchData(
+const getUsuarioInfo = async () => {
+  const authH = await authHeader();
+  return axios.request({
+    timeout: 5000,
+    method: "GET",
     url,
-    {
-      method: "GET",
-      headers: { Authorization: token },
-    },
-    (res) => {
-      if (DEVELOP) console.log(res);
-    },
-    (err) => {
-      if (DEVELOP) console.log(err);
-    }
-  ); */
+    headers: authH,
+  });
 };
 
-export const updateUsuario = (
-  token: string,
-  props: Partial<crearUsuarioDto>
-) => {
+const updateUsuario = (token: string, props: Partial<crearUsuarioDto>) => {
   /* return FetchData(
     url,
     {
@@ -99,10 +70,16 @@ export const updateUsuario = (
       body: JSON.stringify(props),
     },
     (res) => {
-      if (DEVELOP) console.log(res);
+      if (process.env.DEVELOP) console.log(res);
     },
     (err) => {
-      if (DEVELOP) console.log(err);
+      if (process.env.DEVELOP) console.log(err);
     }
   ); */
+};
+
+export default {
+  crearUsuario,
+  getUsuarioInfo,
+  updateUsuario,
 };
