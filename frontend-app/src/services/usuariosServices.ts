@@ -1,6 +1,5 @@
 import axios from "axios";
 
-import { ResultType } from "./ResultType";
 import authHeader from "../Utils/auth-header";
 
 const url = `${process.env.EXPO_PUBLIC_API_URL}/api/usuario`;
@@ -15,40 +14,14 @@ export type crearUsuarioDto = {
   genero?: string;
 };
 
-const crearUsuario = (
-  usuarioBody: crearUsuarioDto,
-  password2: string
-): Promise<ResultType> | ResultType => {
-  if (usuarioBody.password !== password2) {
-    return {
-      status: "Error",
-      message: ["Las contraseñas no coinciden"],
-    };
-  }
-
-  return axios
-    .request({
-      timeout: 2000,
-      method: "POST",
-      url,
-      data: usuarioBody,
-      headers: { "Content-Type": "application/json" },
-    })
-    .then((res) => res)
-    .then(() => {
-      const result: ResultType = { status: "Ok", message: ["Usuario Creado"] };
-      return result;
-    })
-    .catch((error) => {
-      if (error.response) {
-        let err: string | Array<string> = error.response.data.message;
-        if (!Array.isArray(err)) err = [err];
-
-        return { status: "Error", message: err };
-      }
-
-      return { status: "Error", message: ["Error de conexión"] };
-    });
+const crearUsuario = (usuarioBody: crearUsuarioDto) => {
+  return axios.request({
+    timeout: 2000,
+    method: "POST",
+    url,
+    data: usuarioBody,
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 const getUsuarioInfo = async () => {

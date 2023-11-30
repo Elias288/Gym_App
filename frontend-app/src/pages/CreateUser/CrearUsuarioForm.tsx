@@ -1,17 +1,15 @@
 import { Text, View, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Button } from "react-native-paper";
+import { SelectList } from "react-native-dropdown-select-list";
 import uuid from "react-native-uuid";
 
 import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
-import { SelectList } from "react-native-dropdown-select-list";
 import { GenerosList } from "../../Utils/Generos";
-import UsuarioServices, {
-  crearUsuarioDto,
-} from "../../services/usuariosServices";
+import { crearUsuarioDto } from "../../services/usuariosServices";
 import { CustomMessage } from "./CustomMessage";
-import ShowLog from "../../Utils/ShowLog";
+import { authContext } from "../../provider/AuthProvider";
 
 type selectType = {
   key: string;
@@ -19,15 +17,15 @@ type selectType = {
 };
 
 const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
+  const { createUser, isLoading } = authContext();
   const [generos, setGeneros] = useState<Array<selectType>>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const [password2, setPassword2] = useState<string>("");
-  const [createUser, setCreateUser] = useState<crearUsuarioDto>({
+  const [newUsuario, setNewUsuario] = useState<crearUsuarioDto>({
     local_id: uuid.v4().toString().replace(/-/g, ""),
     user_name: "",
     password: "",
   });
+  const [password2, setPassword2] = useState<string>("");
 
   const [messageType, setMessageType] = useState<boolean>(true);
   const [message, setMessage] = useState<string>("");
@@ -47,11 +45,8 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
     setMessageType(true);
     setMessage("");
 
-    setLoading(true);
-    const result = await UsuarioServices.crearUsuario(createUser, password2);
-    ShowLog('crearUsuarioForm/submit', result)
+    const result = await createUser(newUsuario, password2);
 
-    setLoading(false);
     if (result.status === "Error") {
       setMessageType(false);
       if (Array.isArray(result.message))
@@ -70,13 +65,13 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
     <>
       <InputTextCustom
         supLabel="Nombre de usuario*"
-        stateValue={createUser.user_name}
-        state={(e) => setCreateUser({ ...createUser, user_name: e })}
+        stateValue={newUsuario.user_name}
+        state={(e) => setNewUsuario({ ...newUsuario, user_name: e })}
       />
       <InputTextCustom
         supLabel="Contraseña*"
-        stateValue={createUser.password}
-        state={(e) => setCreateUser({ ...createUser, password: e })}
+        stateValue={newUsuario.password}
+        state={(e) => setNewUsuario({ ...newUsuario, password: e })}
         secure={true}
       />
       <InputTextCustom
@@ -107,8 +102,8 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
 
         <InputTextCustom
           supLabel="Nombre"
-          stateValue={createUser.nombre || ""}
-          state={(e) => setCreateUser({ ...createUser, nombre: e })}
+          stateValue={newUsuario.nombre || ""}
+          state={(e) => setNewUsuario({ ...newUsuario, nombre: e })}
         />
 
         <View style={{ marginTop: 10 }}>
@@ -116,7 +111,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
           <SelectList
             data={generos}
             setSelected={(e: any) =>
-              setCreateUser({ ...createUser, genero: e })
+              setNewUsuario({ ...newUsuario, genero: e })
             }
             search={false}
             boxStyles={{
@@ -130,8 +125,8 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
           {/* Peso */}
           <InputTextCustom
             supLabel="Altura (m)"
-            stateValue={createUser.altura || ""}
-            state={(e) => setCreateUser({ ...createUser, altura: e })}
+            stateValue={newUsuario.altura || ""}
+            state={(e) => setNewUsuario({ ...newUsuario, altura: e })}
             format={[/\d/, ",", /\d/, /\d/]}
             label="0,00 m"
             styleContainer={{
@@ -143,8 +138,8 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
           {/* Altura */}
           <InputTextCustom
             supLabel="Peso (Kg)"
-            stateValue={createUser.peso || ""}
-            state={(e) => setCreateUser({ ...createUser, peso: e })}
+            stateValue={newUsuario.peso || ""}
+            state={(e) => setNewUsuario({ ...newUsuario, peso: e })}
             format={[/\d/, /\d/, ".", /\d/, /\d/]}
             label="00.00 Kg"
             styleContainer={{ flex: 1 }}
@@ -152,7 +147,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
         </View>
       </View>
 
-      {loading && (
+      {isLoading && (
         <View style={{ marginVertical: 10 }}>
           <ActivityIndicator animating={true} size={"large"} />
         </View>

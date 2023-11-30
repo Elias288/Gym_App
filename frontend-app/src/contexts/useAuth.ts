@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { ResultType } from "../services/ResultType";
 import AuthServices from "../services/authServices";
-import UserServices from "../services/usuariosServices";
+import UserServices, { crearUsuarioDto } from "../services/usuariosServices";
 import ShowLog from "../Utils/ShowLog";
 
 const storedToken = "@user/token";
@@ -13,6 +13,10 @@ export interface authProps {
   isLogin: boolean;
   isLoading: boolean;
   isChargeLoading: boolean;
+  createUser: (
+    newUsuario: crearUsuarioDto,
+    pass2: string
+  ) => Promise<ResultType> | ResultType;
   login: (userName: string, password: string) => Promise<ResultType>;
   getUserInfo: () => Promise<ResultType>;
   logout: () => void;
@@ -68,7 +72,46 @@ function useAuth(): authProps {
     setIsLogin(false);
   };
 
+  const catchError = (error: any) => {
+    setIsLoading(false);
+    if (error.response) {
+      let err: string | Array<string> = error.response.data.message;
+      if (!Array.isArray(err)) err = [err];
+
+      return { status: "Error", message: err };
+    }
+
+    return { status: "Error", message: ["Error de conexión"] };
+  };
+
   // *********************************** FUNCTIONS ***********************************
+
+  const createUser = (
+    newUsuario: crearUsuarioDto,
+    pass2: string
+  ): Promise<ResultType> | ResultType => {
+    setIsLoading(true);
+    if (newUsuario.password !== pass2) {
+      setIsLoading(false);
+      return {
+        status: "Error",
+        message: ["Las contraseñas no coinciden"],
+      };
+    }
+
+    return UserServices.crearUsuario(newUsuario)
+      .then(() => {
+        setIsLoading(false);
+
+        ShowLog("useAuth/createUser", "usuario creado");
+
+        return {
+          status: "Ok",
+          message: ["Usuario Creado"],
+        };
+      })
+      .catch(catchError);
+  };
 
   const login = (user_name: string, password: string) => {
     setIsLoading(true);
@@ -87,18 +130,7 @@ function useAuth(): authProps {
         setIsLoading(false);
         return { status: "Ok", message: ["Logged"] };
       })
-      .catch((error) => {
-        setIsLoading(false);
-
-        if (error.response) {
-          let err: string | Array<string> = error.response.data.message;
-          if (!Array.isArray(err)) err = [err];
-
-          return { status: "Error", message: err };
-        }
-
-        return { status: "Error", message: ["Error de conexión"] };
-      });
+      .catch(catchError);
   };
 
   const logout = () => {
@@ -111,16 +143,7 @@ function useAuth(): authProps {
       .then(({ data }) => {
         return { status: "Ok", message: data };
       })
-      .catch((error) => {
-        if (error.response) {
-          let err: string | Array<string> = error.response.data.message;
-          if (!Array.isArray(err)) err = [err];
-
-          return { status: "Error", message: err };
-        }
-
-        return { status: "Error", message: ["Error de conexión"] };
-      });
+      .catch(catchError);
   };
 
   return {
@@ -128,6 +151,7 @@ function useAuth(): authProps {
     userInfo,
     isLoading,
     isChargeLoading,
+    createUser,
     login,
     logout,
     getUserInfo,
