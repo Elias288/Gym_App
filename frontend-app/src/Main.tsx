@@ -7,7 +7,7 @@ import { View } from "react-native";
 import LoginScreen from "./pages/Login/Login.screen";
 import CrearUsuarioScreen from "./pages/CreateUser/CrearUsuario.screen";
 import HomeScreen from "./pages/Home/Home.screen";
-import { CustomHeader } from "./components/CustomHeader.component";
+import { CustomHeader } from "./components/CustomHeader/CustomHeader.component";
 import { authContext } from "./provider/AuthProvider";
 
 export type RootStackParamList = {
@@ -56,7 +56,7 @@ function Main() {
               name="Home"
               component={HomeScreen}
               options={{
-                header: () => <CustomHeader title="Inicio" />,
+                header: () => <CustomHeader title="Inicio" hasMenu={true} />,
                 headerTransparent: true,
               }}
             />

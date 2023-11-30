@@ -1,15 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
-import { ResultType } from "../services/ResultType";
+import { ResultType } from "../services/Result.type";
 import AuthServices from "../services/authServices";
-import UserServices, { crearUsuarioDto } from "../services/usuariosServices";
+import UserServices from "../services/usuariosServices";
+import { crearUsuarioDto } from "../services/crearUsuarioDto.type";
 import ShowLog from "../Utils/ShowLog";
+import { usuarioType } from "../services/usuario.type";
 
 const storedToken = "@user/token";
 
 export interface authProps {
-  userInfo: {};
+  userInfo: usuarioType | undefined;
   isLogin: boolean;
   isLoading: boolean;
   isChargeLoading: boolean;
@@ -18,13 +20,12 @@ export interface authProps {
     pass2: string
   ) => Promise<ResultType> | ResultType;
   login: (userName: string, password: string) => Promise<ResultType>;
-  getUserInfo: () => Promise<ResultType>;
   logout: () => void;
 }
 
 function useAuth(): authProps {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<usuarioType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isChargeLoading, setIsChargeLoading] = useState<boolean>(false);
 
@@ -43,24 +44,17 @@ function useAuth(): authProps {
 
   // se ejecuta para obtener el token guardado
   const chargeUserInfo = async () => {
+    ShowLog("useAuth/chargeUserInfo");
     setIsChargeLoading(true);
 
-    try {
-      const token = await AsyncStorage.getItem(storedToken);
+    const result = await getUserInfo();
 
-      if (token !== null) {
-        const result = await getUserInfo();
-
-        if (result.status === "Error") {
-          clearUserInfo();
-        }
-
-        setUserInfo(result.message);
-        setIsLogin(true);
-      }
-    } catch (error) {
-      console.log("chargeUserInfoError: ", error);
+    if (result.status === "Error") {
+      clearUserInfo();
     }
+
+    setUserInfo(result.message as usuarioType);
+    setIsLogin(true);
     setIsChargeLoading(false);
   };
 
@@ -68,7 +62,7 @@ function useAuth(): authProps {
   const clearUserInfo = async () => {
     ShowLog("useAuth/cleardata");
     await AsyncStorage.removeItem(storedToken);
-    setUserInfo({});
+    setUserInfo(undefined);
     setIsLogin(false);
   };
 
@@ -127,6 +121,7 @@ function useAuth(): authProps {
 
         ShowLog("useAuth/loginToken:", data.access_token);
 
+        chargeUserInfo();
         setIsLoading(false);
         return { status: "Ok", message: ["Logged"] };
       })
@@ -141,6 +136,7 @@ function useAuth(): authProps {
   const getUserInfo = (): Promise<ResultType> => {
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
+        ShowLog("useAuth/getUserInfo", JSON.stringify(data, null, 4));
         return { status: "Ok", message: data };
       })
       .catch(catchError);
@@ -154,7 +150,6 @@ function useAuth(): authProps {
     createUser,
     login,
     logout,
-    getUserInfo,
   };
 }
 

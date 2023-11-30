@@ -7,7 +7,7 @@ import uuid from "react-native-uuid";
 import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { GenerosList } from "../../Utils/Generos";
-import { crearUsuarioDto } from "../../services/usuariosServices";
+import { crearUsuarioDto } from "../../services/crearUsuarioDto.type";
 import { CustomMessage } from "./CustomMessage";
 import { authContext } from "../../provider/AuthProvider";
 

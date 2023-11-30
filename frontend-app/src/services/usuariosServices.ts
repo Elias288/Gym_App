@@ -1,18 +1,9 @@
 import axios from "axios";
 
 import authHeader from "../Utils/auth-header";
+import { crearUsuarioDto } from "./crearUsuarioDto.type";
 
 const url = `${process.env.EXPO_PUBLIC_API_URL}/api/usuario`;
-
-export type crearUsuarioDto = {
-  local_id: string;
-  user_name: string;
-  password: string;
-  nombre?: string;
-  altura?: string;
-  peso?: string;
-  genero?: string;
-};
 
 const crearUsuario = (usuarioBody: crearUsuarioDto) => {
   return axios.request({
