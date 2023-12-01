@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { ResultType } from "../services/Result.type";
 import AuthServices from "../services/authServices";
@@ -15,11 +15,13 @@ export interface authProps {
   isLogin: boolean;
   isLoading: boolean;
   isChargeLoading: boolean;
+  message: string;
   createUser: (
     newUsuario: crearUsuarioDto,
     pass2: string
   ) => Promise<ResultType> | ResultType;
   login: (userName: string, password: string) => Promise<ResultType>;
+  getUserInfo: () => Promise<ResultType>;
   logout: () => void;
 }
 
@@ -28,34 +30,15 @@ function useAuth(): authProps {
   const [userInfo, setUserInfo] = useState<usuarioType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isChargeLoading, setIsChargeLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   // ****************************** AUXILIAR FUNCTIONS ******************************
-
-  useEffect(() => {
-    chargeUserInfo();
-  }, []);
 
   // almacena el token y actualiza el estado
   const saveToken = async (data: string) => {
     ShowLog("useAuth/saveToken");
     await AsyncStorage.setItem(storedToken, data);
     setIsLogin(true);
-  };
-
-  // se ejecuta para obtener el token guardado
-  const chargeUserInfo = async () => {
-    ShowLog("useAuth/chargeUserInfo");
-    setIsChargeLoading(true);
-
-    const result = await getUserInfo();
-
-    if (result.status === "Error") {
-      clearUserInfo();
-    }
-
-    setUserInfo(result.message as usuarioType);
-    setIsLogin(true);
-    setIsChargeLoading(false);
   };
 
   // elimina el token almacenado y actualiza los estados
@@ -68,6 +51,7 @@ function useAuth(): authProps {
 
   const catchError = (error: any) => {
     setIsLoading(false);
+
     if (error.response) {
       let err: string | Array<string> = error.response.data.message;
       if (!Array.isArray(err)) err = [err];
@@ -75,7 +59,7 @@ function useAuth(): authProps {
       return { status: "Error", message: err };
     }
 
-    return { status: "Error", message: ["Error de conexión"] };
+    return { status: "Error", message: "Error de conexión" };
   };
 
   // *********************************** FUNCTIONS ***********************************
@@ -89,7 +73,7 @@ function useAuth(): authProps {
       setIsLoading(false);
       return {
         status: "Error",
-        message: ["Las contraseñas no coinciden"],
+        message: "Las contraseñas no coinciden",
       };
     }
 
@@ -101,13 +85,13 @@ function useAuth(): authProps {
 
         return {
           status: "Ok",
-          message: ["Usuario Creado"],
+          message: "Usuario Creado",
         };
       })
       .catch(catchError);
   };
 
-  const login = (user_name: string, password: string) => {
+  const login = (user_name: string, password: string): Promise<ResultType> => {
     setIsLoading(true);
 
     return AuthServices.loginService(user_name, password)
@@ -121,9 +105,14 @@ function useAuth(): authProps {
 
         ShowLog("useAuth/loginToken:", data.access_token);
 
-        chargeUserInfo();
-        setIsLoading(false);
-        return { status: "Ok", message: ["Logged"] };
+        UserServices.getUsuarioInfo().then(({ data }) => {
+          ShowLog("useAuth/loginUser: ", JSON.stringify(data, null, 4));
+          setUserInfo(data);
+          setIsLoading(false);
+          return { status: "Ok", message: "Logged" };
+        });
+
+        return { status: "Error", message: "Error obteniendo usuario" };
       })
       .catch(catchError);
   };
@@ -133,11 +122,21 @@ function useAuth(): authProps {
     clearUserInfo();
   };
 
-  const getUserInfo = (): Promise<ResultType> => {
+  const getUserInfo = async (): Promise<ResultType> => {
+    ShowLog("useAuth/getUserInfo");
+
+    const token = await AsyncStorage.getItem(storedToken);
+    if (token === null) {
+      return { status: "NotLogged", message: "" };
+    }
+
     return UserServices.getUsuarioInfo()
-      .then(({ data }) => {
+      .then(({ data }: { data: usuarioType }) => {
         ShowLog("useAuth/getUserInfo", JSON.stringify(data, null, 4));
-        return { status: "Ok", message: data };
+
+        setUserInfo(data);
+        setIsLogin(true);
+        return { status: "Ok", message: "" };
       })
       .catch(catchError);
   };
@@ -147,9 +146,11 @@ function useAuth(): authProps {
     userInfo,
     isLoading,
     isChargeLoading,
+    message,
     createUser,
     login,
     logout,
+    getUserInfo,
   };
 }
 

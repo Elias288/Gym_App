@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
@@ -8,12 +8,31 @@ import { CustomMessage } from "../CreateUser/CustomMessage";
 import { authContext } from "../../provider/AuthProvider";
 
 const LoginForm = () => {
-  const { login, isLoading } = authContext();
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const { login, getUserInfo, isLoading } = authContext();
+  const [username, setUsername] = useState<string>("Eleli");
+  const [password, setPassword] = useState<string>("contra123");
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<boolean>(false);
+
+  useEffect(() => {
+    chargeUserInfo();
+  }, []);
+
+  const chargeUserInfo = async () => {
+    setMessageType(true);
+    const result = await getUserInfo();
+
+    if (result.status === "Error") {
+      setMessageType(false);
+      if (Array.isArray(result.message)) {
+        setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+        return;
+      }
+
+      setMessage("- " + result.message);
+    }
+  };
 
   const handleLogin = async () => {
     setMessage("");

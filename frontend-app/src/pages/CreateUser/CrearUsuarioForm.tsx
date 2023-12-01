@@ -49,8 +49,12 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
 
     if (result.status === "Error") {
       setMessageType(false);
-      if (Array.isArray(result.message))
+      if (Array.isArray(result.message)) {
         setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+        return;
+      }
+
+      setMessage("- " + result.message);
       return;
     }
 
