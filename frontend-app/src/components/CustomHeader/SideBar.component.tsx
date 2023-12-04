@@ -38,7 +38,8 @@ const SideBarComponent = ({
           {/* Perfil */}
           <CustomPressableComponent
             action={notImplemented}
-            styles={{ backgroundColor: "none" }}
+            buttonColor={GlobalStyles.transparent}
+            pressedColor="#47b6db"
           >
             <View style={{ marginRight: 10 }}>
               <Icon source={"account-outline"} size={20} />
@@ -49,7 +50,8 @@ const SideBarComponent = ({
           {/* Rutinas */}
           <CustomPressableComponent
             action={notImplemented}
-            styles={{ backgroundColor: "none" }}
+            buttonColor={GlobalStyles.transparent}
+            pressedColor="#47b6db"
           >
             <View style={{ marginRight: 10 }}>
               <Icon source={"clipboard-list-outline"} size={20} />
@@ -60,7 +62,8 @@ const SideBarComponent = ({
           {/* Estadisticas */}
           <CustomPressableComponent
             action={notImplemented}
-            styles={{ backgroundColor: "none" }}
+            buttonColor={GlobalStyles.transparent}
+            pressedColor="#47b6db"
           >
             <View style={{ marginRight: 10 }}>
               <Icon source={"file-chart-outline"} size={20} />
@@ -71,14 +74,17 @@ const SideBarComponent = ({
           {/* Logout */}
           <CustomPressableComponent
             action={logout}
-            styles={{
-              backgroundColor: GlobalStyles.colorDanger,
-            }}
+            buttonColor={GlobalStyles.transparent}
+            pressedColor="#47b6db"
           >
             <View style={{ marginRight: 10 }}>
-              <Icon source={"logout"} size={20} />
+              <Icon
+                source={"logout"}
+                size={20}
+                color={GlobalStyles.colorDanger}
+              />
             </View>
-            <Text>Logout</Text>
+            <Text style={{ color: GlobalStyles.colorDanger }}>Logout</Text>
           </CustomPressableComponent>
         </View>
       </View>

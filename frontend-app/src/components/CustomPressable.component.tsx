@@ -6,11 +6,31 @@ type Props = {
   children: ReactNode;
   action?: (param?: any) => any;
   styles?: StyleProp<ViewStyle>;
+  buttonColor?: string;
+  pressedColor?: string;
 };
 
-const CustomPressableComponent = ({ children, action, styles }: Props) => {
+const CustomPressableComponent = ({
+  children,
+  action,
+  styles,
+  buttonColor,
+  pressedColor,
+}: Props) => {
+  const colorB = buttonColor || "#8071ee";
+  const presColorB = pressedColor || "#3c3479";
+
   return (
-    <Pressable onPress={action} style={[buttonStyles.button, styles]}>
+    <Pressable
+      onPress={action}
+      style={({ pressed }) => [
+        {
+          backgroundColor: pressed ? presColorB : colorB,
+        },
+        buttonStyles.button,
+        styles,
+      ]}
+    >
       {children}
     </Pressable>
   );
@@ -18,11 +38,9 @@ const CustomPressableComponent = ({ children, action, styles }: Props) => {
 
 const buttonStyles = StyleSheet.create({
   button: {
-    backgroundColor: "#8071ee",
     flexDirection: "row",
     paddingVertical: 20,
     paddingHorizontal: 70,
-    marginBottom: 10,
     borderBottomColor: GlobalStyles.colorLightGray,
     borderBottomWidth: 1,
   },
