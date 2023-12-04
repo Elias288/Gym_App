@@ -56,8 +56,7 @@ function Main() {
               name="Home"
               component={HomeScreen}
               options={{
-                header: () => <CustomHeader title="Inicio" hasMenu={true} />,
-                headerTransparent: true,
+                headerShown: false,
               }}
             />
           </>

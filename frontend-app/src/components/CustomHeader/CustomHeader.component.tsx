@@ -6,13 +6,32 @@ import { IconButton, Portal } from "react-native-paper";
 import SideBarComponent from "./SideBar.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { authContext } from "../../provider/AuthProvider";
+import {
+  CompositeNavigationProp,
+  useNavigation,
+} from "@react-navigation/native";
+import { RootStackParamList } from "../../Main";
+import { HomeStackParamList } from "../../pages/Home/Home.screen";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type HeaderProps = {
   title: string;
-  hasMenu?: boolean;
+  hasSideBar?: boolean;
+  sideBarSelected?: string;
 };
 
-export const CustomHeader = ({ title, hasMenu }: HeaderProps) => {
+export type navigationType = CompositeNavigationProp<
+  NativeStackNavigationProp<RootStackParamList>,
+  NativeStackNavigationProp<HomeStackParamList>
+>;
+
+export const CustomHeader = ({
+  title,
+  hasSideBar,
+  sideBarSelected,
+}: HeaderProps) => {
+  const navigator = useNavigation<navigationType>();
+
   const [visibleSideBar, setVisibleSideBar] = useState<boolean>(false);
   const { logout, userInfo } = authContext();
 
@@ -27,26 +46,30 @@ export const CustomHeader = ({ title, hasMenu }: HeaderProps) => {
           <Text style={styles.titleText}>{title}</Text>
         </View>
 
-        {hasMenu && (
-          <View style={styles.iconButtonContainer}>
-            <IconButton
-              icon={!visibleSideBar ? "menu" : "menu-open"}
-              size={30}
-              onPress={() => setVisibleSideBar(true)}
-            />
-          </View>
+        {hasSideBar && (
+          <>
+            <View style={styles.iconButtonContainer}>
+              <IconButton
+                icon={!visibleSideBar ? "menu" : "menu-open"}
+                size={30}
+                onPress={() => setVisibleSideBar(true)}
+              />
+            </View>
+
+            <Portal>
+              <SideBarComponent
+                isVisible={visibleSideBar}
+                hideModal={() => setVisibleSideBar(false)}
+                logout={logout}
+                userName={userInfo ? userInfo.user_name : "not charged"}
+                nombre={userInfo?.nombre ? userInfo.nombre : "not charged"}
+                navigation={navigator}
+                selectedPage={sideBarSelected || "Inicio"}
+              />
+            </Portal>
+          </>
         )}
       </View>
-
-      <Portal>
-        <SideBarComponent
-          isVisible={visibleSideBar}
-          hideModal={() => setVisibleSideBar(false)}
-          logout={logout}
-          userName={userInfo ? userInfo.user_name : "not charged"}
-          nombre={userInfo?.nombre ? userInfo.nombre : "not charged"}
-        />
-      </Portal>
     </View>
   );
 };

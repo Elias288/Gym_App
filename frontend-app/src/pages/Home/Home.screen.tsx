@@ -1,33 +1,89 @@
 import React from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "../../Main";
-import { Text, View, StyleSheet } from "react-native";
-import { GlobalStyles } from "../../Utils/GlobalStyles";
+import InicioScreen from "./Inicio.screen";
+import EstadisticasScreen from "./Estadisticas.screen";
+import PerfilScreen from "./Perfil.screen";
+import RutinasScreen from "./Rutinas.screen";
+import { CustomHeader } from "../../components/CustomHeader/CustomHeader.component";
 
-type HomeScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  "Home",
-  "MyStack"
->;
-
-const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  return (
-    <>
-      <View style={styles.container}>
-        <Text>Inicio</Text>
-      </View>
-    </>
-  );
+export type HomeStackParamList = {
+  Inicio: undefined;
+  Perfil: undefined;
+  Rutinas: undefined;
+  Estadisticas: undefined;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: GlobalStyles.headerHeight,
-    backgroundColor: GlobalStyles.colorLightGray,
-    alignItems: "center",
-  },
-});
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+
+type RootStack = NativeStackScreenProps<RootStackParamList, "Home", "MyStack">;
+
+const HomeScreen = ({ navigation }: RootStack) => {
+  return (
+    <HomeStack.Navigator initialRouteName="Inicio">
+      <HomeStack.Screen
+        name="Inicio"
+        component={InicioScreen}
+        options={{
+          header: (props) => (
+            <CustomHeader
+              title="Inicio"
+              hasSideBar={true}
+              {...props}
+              sideBarSelected="Inicio"
+            />
+          ),
+          headerTransparent: true,
+        }}
+      />
+      <HomeStack.Screen
+        name="Perfil"
+        component={PerfilScreen}
+        options={{
+          header: () => (
+            <CustomHeader
+              title="Perfil"
+              hasSideBar={true}
+              sideBarSelected="Perfil"
+            />
+          ),
+          headerTransparent: true,
+        }}
+      />
+      <HomeStack.Screen
+        name="Rutinas"
+        component={RutinasScreen}
+        options={{
+          header: () => (
+            <CustomHeader
+              title="Rutinas"
+              hasSideBar={true}
+              sideBarSelected="Rutinas"
+            />
+          ),
+          headerTransparent: true,
+        }}
+      />
+      <HomeStack.Screen
+        name="Estadisticas"
+        component={EstadisticasScreen}
+        options={{
+          header: () => (
+            <CustomHeader
+              title="Estadisticas"
+              hasSideBar={true}
+              sideBarSelected="Estadisticas"
+            />
+          ),
+          headerTransparent: true,
+        }}
+      />
+    </HomeStack.Navigator>
+  );
+};
 
 export default HomeScreen;

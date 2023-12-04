@@ -9,8 +9,8 @@ import { authContext } from "../../provider/AuthProvider";
 
 const LoginForm = () => {
   const { login, getUserInfo, isLoading } = authContext();
-  const [username, setUsername] = useState<string>("Eleli");
-  const [password, setPassword] = useState<string>("contra123");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<boolean>(false);
