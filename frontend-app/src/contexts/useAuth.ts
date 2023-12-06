@@ -105,16 +105,18 @@ function useAuth(): authProps {
 
   const logout = () => {
     ShowLog("logout");
+    setIsChargeLoading(false);
     clearUserInfo();
   };
 
   const getUserInfo = async (): Promise<ResultType> => {
     ShowLog("useAuth/getUserInfo");
-    setIsChargeLoading(true);
+
     const token = await AsyncStorage.getItem(storedToken);
     if (token === null) {
       return { status: "NotLogged", message: "" };
     }
+    setIsChargeLoading(true);
 
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
@@ -125,7 +127,11 @@ function useAuth(): authProps {
         setIsLogin(true);
         return { status: "Ok", message: data };
       })
-      .catch(catchError);
+      .catch((e) => {
+        setIsLoading(false);
+        setIsChargeLoading(false);
+        return catchError(e);
+      });
   };
 
   return {

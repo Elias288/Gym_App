@@ -10,6 +10,7 @@ import { GenerosList } from "../../Utils/Generos";
 import { crearUsuarioDto } from "../../types/usuario.type";
 import { CustomMessage } from "./CustomMessage";
 import { authContext } from "../../provider/AuthProvider";
+import BorderContainerComponent from "../../components/borderContainer.component";
 
 type selectType = {
   key: string;
@@ -86,24 +87,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
       />
 
       {/* Información opcional */}
-      <View style={styles.optionalContainer}>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: -10,
-            paddingHorizontal: 10,
-          }}
-        >
-          <Text
-            style={{
-              backgroundColor: GlobalStyles.colorLightGray,
-              paddingHorizontal: 5,
-            }}
-          >
-            Información de Usuario
-          </Text>
-        </View>
-
+      <BorderContainerComponent titulo="Información de Usuario">
         <InputTextCustom
           supLabel="Nombre"
           stateValue={newUsuario.nombre || ""}
@@ -149,7 +133,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
             styleContainer={{ flex: 1 }}
           />
         </View>
-      </View>
+      </BorderContainerComponent>
 
       {isLoading && (
         <View style={{ marginVertical: 10 }}>
