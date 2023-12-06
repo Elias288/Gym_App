@@ -10,7 +10,7 @@ export interface rutinaProps {
   createRutina: ({
     newRutina,
   }: {
-    newRutina: crearRutinaDto;k
+    newRutina: crearRutinaDto;
   }) => Promise<ResultType>;
   getAllRutinas: () => Promise<ResultType>;
   getRutina: ({ local_id }: { local_id: string }) => Promise<ResultType>;
