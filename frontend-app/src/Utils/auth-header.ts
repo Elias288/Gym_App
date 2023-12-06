@@ -7,6 +7,7 @@ async function authHeader() {
     if (token) {
       return {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
       };
     }
   } catch (error) {
