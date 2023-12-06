@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
-import { GlobalStyles } from "../../Utils/GlobalStyles";
+import { GlobalStyles } from "../../../Utils/GlobalStyles";
 
-const InicioScreen = () => {
+const RutinasScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Incio</Text>
+      <Text>Rutinas</Text>
     </View>
   );
 };
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InicioScreen;
+export default RutinasScreen;

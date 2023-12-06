@@ -5,10 +5,10 @@ import {
 } from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "../../Main";
-import InicioScreen from "./Inicio.screen";
-import EstadisticasScreen from "./Estadisticas.screen";
-import PerfilScreen from "./Perfil.screen";
-import RutinasScreen from "./Rutinas.screen";
+import InicioScreen from "./Inicio/Inicio.screen";
+import EstadisticasScreen from "./Estadisticas/Estadisticas.screen";
+import PerfilScreen from "./Perfil/Perfil.screen";
+import RutinasScreen from "./Rutinas/Rutinas.screen";
 import { CustomHeader } from "../../components/CustomHeader/CustomHeader.component";
 
 export type HomeStackParamList = {

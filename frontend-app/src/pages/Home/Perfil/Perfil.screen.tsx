@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import { GlobalStyles } from "../../Utils/GlobalStyles";
-import { authContext } from "../../provider/AuthProvider";
+import { GlobalStyles } from "../../../Utils/GlobalStyles";
+import { authContext } from "../../../provider/AuthProvider";
 
 const PerfilScreen = () => {
   const { userInfo } = authContext();
