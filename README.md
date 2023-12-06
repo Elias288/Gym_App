@@ -18,6 +18,8 @@ Un usuario puede tener más de una rutina cargada pero solamente una activa, est
 
 ![Diagrama BD](https://github.com/Elias288/Gym_App/blob/master/assets/gymDiagram.drawio.png)
 
+![Proyect flow](https://github.com/Elias288/Gym_App/blob/master/assets/gymFlow.drawio.png)
+
 ## Referencias
 
 [Idea de login](https://i.pinimg.com/originals/bf/d5/70/bfd57007adc74d24e9a20212cc074295.png)
