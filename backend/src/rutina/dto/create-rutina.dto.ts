@@ -14,10 +14,15 @@ export class RutinaDto {
 
   @IsArray()
   @IsNotEmpty()
-  @Type(() => ejercicio)
-  ejercicios: ejercicio[];
+  @Type(() => Dia)
+  contenido: Dia[];
 
   usuario_id: string;
+}
+
+class Dia {
+  nombre: string;
+  ejercicios: ejercicio[];
 }
 
 class ejercicio {

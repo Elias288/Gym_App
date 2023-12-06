@@ -33,10 +33,15 @@ export class Rutina {
   @Prop({
     required: true,
   })
-  ejercicios: ejercicio[];
+  contenido: Dia[];
 }
 
-interface ejercicio {
+interface Dia {
+  nombre: string;
+  ejercicios: Ejercicio[];
+}
+
+interface Ejercicio {
   nombre_ejercicio: string;
   repeticiones: string;
   series: string;

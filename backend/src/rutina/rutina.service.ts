@@ -29,7 +29,6 @@ export class RutinaService {
     const mongoRutina = new this.rutinaModel({
       ...createRutinaDto,
       usuario_id: new mongoose.Types.ObjectId(user_id),
-      ejercicios: createRutinaDto.ejercicios,
     });
 
     await mongoRutina.save();
