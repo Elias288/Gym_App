@@ -8,4 +8,5 @@ export const GlobalStyles = {
   colorLightGray: "#e7e7e7",
   transparent: "rgba(255, 255, 255, 0)",
   headerHeight: 100,
+  horizontalPadding: 20,
 };

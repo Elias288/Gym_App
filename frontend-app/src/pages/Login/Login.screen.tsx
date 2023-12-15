@@ -6,10 +6,12 @@ import { Button } from "react-native-paper";
 import { RootStackParamList } from "../../Main";
 import LoginForm from "./LoginForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
+import { authContext } from "../../provider/AuthProvider";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const LoginScreen = ({ navigation }: Props) => {
+  const { isLoading } = authContext();
   const goToCreateUser = () => navigation.navigate("CrearUsuario");
 
   return (
@@ -21,7 +23,9 @@ const LoginScreen = ({ navigation }: Props) => {
         </View>
 
         <View style={{ padding: 20, alignItems: "center" }}>
-          <Button onPress={goToCreateUser}>Crear una cuenta nueva {">"}</Button>
+          <Button onPress={goToCreateUser} disabled={isLoading}>
+            Crear una cuenta nueva {">"}
+          </Button>
         </View>
       </View>
     </View>

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
-    paddingHorizontal: 20,
+    paddingHorizontal: GlobalStyles.horizontalPadding,
     justifyContent: "space-between",
   },
   titleText: {

@@ -74,7 +74,10 @@ function useAuth(): authProps {
           message: "Usuario Creado",
         };
       })
-      .catch(catchError);
+      .catch((e) => {
+        setIsLoading(false);
+        return catchError(e);
+      });
   };
 
   const login = (user_name: string, password: string): Promise<ResultType> => {
@@ -100,7 +103,10 @@ function useAuth(): authProps {
 
         return { status: "Error", message: "Error obteniendo usuario" };
       })
-      .catch(catchError);
+      .catch((e) => {
+        setIsLoading(false);
+        return catchError(e);
+      });
   };
 
   const logout = () => {
@@ -114,6 +120,7 @@ function useAuth(): authProps {
 
     const token = await AsyncStorage.getItem(storedToken);
     if (token === null) {
+      console.log("not Logged");
       return { status: "NotLogged", message: "" };
     }
     setIsLoading(true);

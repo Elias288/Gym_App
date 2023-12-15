@@ -44,8 +44,9 @@ const LoginForm = () => {
       setMessageType(false);
       if (Array.isArray(result.message)) {
         setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+        return;
       }
-      return;
+      setMessage("- " + result.message);
     }
   };
 
@@ -78,6 +79,7 @@ const LoginForm = () => {
           mode="contained"
           style={{ borderRadius: 15 }}
           onPress={handleLogin}
+          disabled={isLoading}
         >
           Entrar
         </Button>
@@ -88,7 +90,7 @@ const LoginForm = () => {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    paddingBottom: 20,
+    paddingBottom: GlobalStyles.horizontalPadding,
   },
   inputTextOutlineStyle: {
     borderColor: "transparent",
