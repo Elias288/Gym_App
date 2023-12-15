@@ -21,10 +21,11 @@ export class RutinaService {
     const usuario = await this.usuarioService.getUsuarioById(user_id);
     if (!usuario) throw new NotFoundException('Usuario no encontrado');
 
-    const rutina = await this.rutinaModel.findOne({
+    // Busca si existe la rutina por su local_id
+    const isRutina = await this.rutinaModel.findOne({
       local_id: createRutinaDto.local_id,
     });
-    if (rutina) throw new ConflictException('Rutina ya registrada');
+    if (isRutina) throw new ConflictException('Rutina ya registrada');
 
     const mongoRutina = new this.rutinaModel({
       ...createRutinaDto,

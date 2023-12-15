@@ -22,15 +22,14 @@ export class UsuarioService {
   }
 
   async create(createUserDto: UsuarioDto) {
-    if (
-      await this.usuarioModel.findOne({
-        $or: [
-          { local_id: createUserDto.local_id },
-          { user_name: createUserDto.user_name },
-        ],
-      })
-    )
-      throw new ConflictException('Usuario ya registrado');
+    // Busca el usuario por el local_id o en user_name
+    const isUser = await this.usuarioModel.findOne({
+      $or: [
+        { local_id: createUserDto.local_id },
+        { user_name: createUserDto.user_name },
+      ],
+    });
+    if (isUser) throw new ConflictException('Usuario ya registrado');
 
     const mongoUser = new this.usuarioModel({
       ...createUserDto,

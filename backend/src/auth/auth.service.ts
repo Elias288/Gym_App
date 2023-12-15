@@ -8,6 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UsuarioService } from 'src/usuario/usuario.service';
 import * as bcrypt from 'bcrypt';
 
+const dos_semanas = '336h';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -40,7 +42,7 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload, {
         secret: process.env.SECRET_TOKEN,
-        expiresIn: '336h',
+        expiresIn: dos_semanas,
       }),
     };
   }
