@@ -13,6 +13,7 @@ import {
 import { RootStackParamList } from "../../Main";
 import { HomeStackParamList } from "../../pages/Home/Home.screen";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RutinaStackParamList } from "../../pages/Home/Rutinas/Rutinas.screen";
 
 type HeaderProps = {
   title: string;
@@ -21,8 +22,11 @@ type HeaderProps = {
 };
 
 export type navigationType = CompositeNavigationProp<
-  NativeStackNavigationProp<RootStackParamList>,
-  NativeStackNavigationProp<HomeStackParamList>
+  CompositeNavigationProp<
+    NativeStackNavigationProp<RootStackParamList>,
+    NativeStackNavigationProp<HomeStackParamList>
+  >,
+  NativeStackNavigationProp<RutinaStackParamList>
 >;
 
 export const CustomHeader = ({

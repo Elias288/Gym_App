@@ -26,10 +26,6 @@ const SideBarComponent = ({
   selectedPage,
 }: SideBarProps) => {
   const Content = () => {
-    const notImplemented = () => {
-      alert("no implementado");
-    };
-
     const goToPage = (page: string) => {
       hideModal();
       switch (page) {
@@ -40,7 +36,7 @@ const SideBarComponent = ({
           navigation.navigate("Perfil");
           break;
         case "Rutinas":
-          navigation.navigate("Rutinas");
+          navigation.navigate("Rutinas", { screen: "Listar" });
           break;
         case "Estadisticas":
           navigation.navigate("Estadisticas");

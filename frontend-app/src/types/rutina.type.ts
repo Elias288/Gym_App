@@ -1,8 +1,12 @@
 export type crearRutinaDto = {
   local_id: string;
   titulo: string;
+  ejercicios: Array<dia>;
+};
+
+export type dia = {
+  nombre: string;
   ejercicios: Array<ejercicioType>;
-  usuario_id: string;
 };
 
 export type ejercicioType = {
@@ -13,6 +17,7 @@ export type ejercicioType = {
 
 export type rutinaType = crearRutinaDto & {
   _id: string;
+  usuario_id: string;
   createdAt: string;
   updatedAt: string;
 };

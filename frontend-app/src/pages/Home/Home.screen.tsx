@@ -8,13 +8,14 @@ import { RootStackParamList } from "../../Main";
 import InicioScreen from "./Inicio/Inicio.screen";
 import EstadisticasScreen from "./Estadisticas/Estadisticas.screen";
 import PerfilScreen from "./Perfil/Perfil.screen";
-import RutinasScreen from "./Rutinas/Rutinas.screen";
+import RutinasScreen, { RutinaStackParamList } from "./Rutinas/Rutinas.screen";
 import { CustomHeader } from "../../components/CustomHeader/CustomHeader.component";
+import { NavigatorScreenParams } from "@react-navigation/native";
 
 export type HomeStackParamList = {
   Inicio: undefined;
   Perfil: undefined;
-  Rutinas: undefined;
+  Rutinas: NavigatorScreenParams<RutinaStackParamList>;
   Estadisticas: undefined;
 };
 
@@ -22,7 +23,7 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 type RootStack = NativeStackScreenProps<RootStackParamList, "Home", "MyStack">;
 
-const HomeScreen = ({ navigation }: RootStack) => {
+const HomeScreen = ({}: RootStack) => {
   return (
     <HomeStack.Navigator initialRouteName="Inicio">
       <HomeStack.Screen
@@ -58,14 +59,7 @@ const HomeScreen = ({ navigation }: RootStack) => {
         name="Rutinas"
         component={RutinasScreen}
         options={{
-          header: () => (
-            <CustomHeader
-              title="Rutinas"
-              hasSideBar={true}
-              sideBarSelected="Rutinas"
-            />
-          ),
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
       <HomeStack.Screen

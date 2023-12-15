@@ -7,6 +7,7 @@ import catchError from "../Utils/catchError";
 
 export interface rutinaProps {
   isLoading: boolean;
+  rutinas: Array<rutinaType>;
   createRutina: ({
     newRutina,
   }: {
@@ -18,9 +19,11 @@ export interface rutinaProps {
 
 function useRutina(): rutinaProps {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [rutinas, setRutinas] = useState<Array<rutinaType>>([]);
   const [selectedRutina, setSelectedRutina] = useState<
     rutinaType | undefined
   >();
+
   // ****************************** AUXILIAR FUNCTIONS ******************************
 
   // *********************************** FUNCTIONS ***********************************
@@ -48,6 +51,7 @@ function useRutina(): rutinaProps {
     return rutinasServices
       .listarRutinas()
       .then(({ data }) => {
+        setRutinas(data);
         return { status: "Ok", message: data };
       })
       .catch((err) => {
@@ -76,6 +80,7 @@ function useRutina(): rutinaProps {
 
   return {
     isLoading,
+    rutinas,
     createRutina,
     getAllRutinas,
     getRutina,

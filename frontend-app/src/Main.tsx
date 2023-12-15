@@ -1,19 +1,22 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import { ActivityIndicator } from "react-native-paper";
 import { View } from "react-native";
 
 import LoginScreen from "./pages/Login/Login.screen";
 import CrearUsuarioScreen from "./pages/CreateUser/CrearUsuario.screen";
-import HomeScreen from "./pages/Home/Home.screen";
+import HomeScreen, { HomeStackParamList } from "./pages/Home/Home.screen";
 import { CustomHeader } from "./components/CustomHeader/CustomHeader.component";
 import { authContext } from "./provider/AuthProvider";
 
 export type RootStackParamList = {
   Login: undefined;
   CrearUsuario: undefined;
-  Home: undefined;
+  Home: NavigatorScreenParams<HomeStackParamList>;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
