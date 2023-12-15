@@ -116,20 +116,19 @@ function useAuth(): authProps {
     if (token === null) {
       return { status: "NotLogged", message: "" };
     }
-    setIsChargeLoading(true);
+    setIsLoading(true);
 
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
         ShowLog("useAuth/getUserInfo", JSON.stringify(data, null, 4));
 
-        setIsChargeLoading(false);
+        setIsLoading(false);
         setUserInfo(data);
         setIsLogin(true);
         return { status: "Ok", message: data };
       })
       .catch((e) => {
         setIsLoading(false);
-        setIsChargeLoading(false);
         return catchError(e);
       });
   };
