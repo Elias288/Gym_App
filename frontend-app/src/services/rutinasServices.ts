@@ -1,10 +1,10 @@
 import axios from "axios";
 import authHeader from "../Utils/auth-header";
-import { crearRutinaDto } from "../types/rutina.type";
+import { CrearRutinaDto } from "../types/rutina.type";
 
 const url = `${process.env.EXPO_PUBLIC_API_URL}/api/rutina`;
 
-const crearRutina = async ({ rutinaBody }: { rutinaBody: crearRutinaDto }) => {
+const crearRutina = async ({ rutinaBody }: { rutinaBody: CrearRutinaDto }) => {
   return axios.request({
     timeout: 2000,
     method: "POST",
@@ -37,7 +37,7 @@ const updateRutina = async ({
   updatedRutina,
 }: {
   rutina_Id: string;
-  updatedRutina: Partial<crearRutinaDto>;
+  updatedRutina: Partial<CrearRutinaDto>;
 }) => {
   return axios.request({
     timeout: 2000,

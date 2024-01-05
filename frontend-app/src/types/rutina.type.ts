@@ -1,21 +1,23 @@
-export type crearRutinaDto = {
+export type CrearRutinaDto = {
   local_id: string;
   titulo: string;
-  ejercicios: Array<dia>;
+  contenido: Array<DiaType>;
 };
 
-export type dia = {
+export type DiaType = {
+  local_id: string;
   nombre: string;
-  ejercicios: Array<ejercicioType>;
+  ejercicios: Array<EjercicioType>;
 };
 
-export type ejercicioType = {
+export type EjercicioType = {
+  local_id: string;
   nombre_ejercicio: string;
   repeticiones: string;
   series: string;
 };
 
-export type rutinaType = crearRutinaDto & {
+export type rutinaType = CrearRutinaDto & {
   _id: string;
   usuario_id: string;
   createdAt: string;

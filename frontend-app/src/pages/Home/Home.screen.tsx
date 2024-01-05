@@ -8,7 +8,9 @@ import { RootStackParamList } from "../../Main";
 import InicioScreen from "./Inicio/Inicio.screen";
 import EstadisticasScreen from "./Estadisticas/Estadisticas.screen";
 import PerfilScreen from "./Perfil/Perfil.screen";
-import RutinasScreen, { RutinaStackParamList } from "./Rutinas/Rutinas.screen";
+import RutinasNavigator, {
+  RutinaStackParamList,
+} from "./Rutinas/Rutinas.Navigator";
 import { CustomHeader } from "../../components/CustomHeader/CustomHeader.component";
 import { NavigatorScreenParams } from "@react-navigation/native";
 
@@ -57,7 +59,7 @@ const HomeScreen = ({}: RootStack) => {
       />
       <HomeStack.Screen
         name="Rutinas"
-        component={RutinasScreen}
+        component={RutinasNavigator}
         options={{
           headerShown: false,
         }}

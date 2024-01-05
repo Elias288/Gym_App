@@ -1,24 +1,38 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
-import { TextInput } from "react-native-paper";
-import { GlobalStyles } from "../Utils/GlobalStyles";
-import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import {
+  KeyboardTypeOptions,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
+import { TextInput, Checkbox } from "react-native-paper";
 import MaskInput from "react-native-mask-input";
 
+import { GlobalStyles } from "../Utils/GlobalStyles";
+
 type InputTextProps = {
-  supLabel: string;
+  supLabel?: string;
   label?: string;
   stateValue: string;
   secure?: boolean;
   styleContainer?: StyleProp<ViewStyle>;
   style?: StyleProp<ViewStyle>;
   format?: any[];
+  canDisabled?: boolean;
+  keyboardType?: KeyboardTypeOptions;
   state: (value: string) => void;
 };
 
 const InputTextCustom = (props: InputTextProps) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+
   return (
     <View style={[props.styleContainer, styles.inputContainer]}>
-      <Text style={{ marginBottom: 10 }}>{props.supLabel}</Text>
+      {props.supLabel && (
+        <Text style={{ marginBottom: 10 }}>{props.supLabel}</Text>
+      )}
 
       {props.format !== undefined ? (
         <MaskInput
@@ -30,26 +44,34 @@ const InputTextCustom = (props: InputTextProps) => {
           keyboardType="decimal-pad"
         />
       ) : (
-        <TextInput
-          mode="outlined"
-          label={props.label || ""}
-          style={props.style}
-          outlineStyle={styles.inputTextOutlineStyle}
-          value={props.stateValue}
-          onChangeText={props.state}
-          secureTextEntry={props.secure || false}
-          autoCapitalize='none'
-        />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TextInput
+            mode="outlined"
+            label={props.label || ""}
+            style={[props.style, { flex: 1 }]}
+            outlineStyle={styles.inputTextOutlineStyle}
+            value={props.stateValue}
+            onChangeText={props.state}
+            secureTextEntry={props.secure || false}
+            autoCapitalize="none"
+            disabled={props.canDisabled && !isDisabled}
+            keyboardType={props.keyboardType || "default"}
+          />
+
+          {props.canDisabled && (
+            <Checkbox
+              status={isDisabled ? "checked" : "unchecked"}
+              onPress={() => setIsDisabled(!isDisabled)}
+            />
+          )}
+        </View>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginTop: 20,
-    marginBottom: 5,
-  },
+  inputContainer: {},
   inputTextOutlineStyle: {
     borderColor: "transparent",
     borderRadius: 15,
@@ -60,7 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
   },
   maskInputStyle: {
-    flex: 1,
     backgroundColor: GlobalStyles.colorWhite,
     borderRadius: 15,
     paddingHorizontal: 10,

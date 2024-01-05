@@ -13,7 +13,7 @@ import {
 import { RootStackParamList } from "../../Main";
 import { HomeStackParamList } from "../../pages/Home/Home.screen";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RutinaStackParamList } from "../../pages/Home/Rutinas/Rutinas.screen";
+import { RutinaStackParamList } from "../../pages/Home/Rutinas/Rutinas.Navigator";
 
 type HeaderProps = {
   title: string;

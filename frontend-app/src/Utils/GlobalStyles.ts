@@ -4,6 +4,7 @@ export const GlobalStyles = {
   textColorDanger: "#b64747",
   colorWhite: "#fff",
   colorCian: "#47b6db",
+  colorLightCian: "#9cd9ed",
   colorTranparentWhite: "rgba(255, 255, 255, .95)",
   colorLightGray: "#e7e7e7",
   transparent: "rgba(255, 255, 255, 0)",

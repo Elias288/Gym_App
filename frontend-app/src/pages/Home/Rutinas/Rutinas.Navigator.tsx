@@ -6,10 +6,21 @@ import { HomeStackParamList } from "../Home.screen";
 import ListarRutinaScreen from "./ListarRutinas.screen";
 import { CustomHeader } from "../../../components/CustomHeader/CustomHeader.component";
 import CrearRutinaScreen from "./CrearRutina.screen";
+import CargarDiaScreen from "./CargarDia.screen";
+import {
+  CrearRutinaDto,
+  DiaType,
+  EjercicioType,
+} from "../../../types/rutina.type";
+import { Dispatch } from "react";
 
 export type RutinaStackParamList = {
   Listar: undefined;
-  Crear: undefined;
+  CrearRutina: undefined;
+  CargarDia: {
+    diaInfo: DiaType;
+    cantDias: number;
+  };
 };
 
 const RutinasStack = createNativeStackNavigator<RutinaStackParamList>();
@@ -20,7 +31,7 @@ type HomeStack = NativeStackScreenProps<
   "MyStack"
 >;
 
-const RutinasScreen = ({}: HomeStack) => {
+const RutinasNavigator = ({}: HomeStack) => {
   return (
     <RutinasStack.Navigator initialRouteName="Listar">
       <RutinasStack.Screen
@@ -38,7 +49,7 @@ const RutinasScreen = ({}: HomeStack) => {
         }}
       />
       <RutinasStack.Screen
-        name="Crear"
+        name="CrearRutina"
         component={CrearRutinaScreen}
         options={{
           header: () => (
@@ -51,8 +62,16 @@ const RutinasScreen = ({}: HomeStack) => {
           headerTransparent: true,
         }}
       />
+      <RutinasStack.Screen
+        name="CargarDia"
+        component={CargarDiaScreen}
+        options={{
+          header: () => <CustomHeader title="Cargar Día" />,
+          headerTransparent: true,
+        }}
+      />
     </RutinasStack.Navigator>
   );
 };
 
-export default RutinasScreen;
+export default RutinasNavigator;

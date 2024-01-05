@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
 import { IconButton } from "react-native-paper";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RutinaStackParamList } from "./Rutinas.screen";
+import { RutinaStackParamList } from "./Rutinas.Navigator";
 import { rutinaContext } from "../../../provider/RutinasProvider";
 import { useEffect, useState } from "react";
 
@@ -25,7 +25,7 @@ const ListarRutinaScreen = ({ navigation }: RutinaStack) => {
   };
 
   const goToCrear = () => {
-    navigation.navigate("Crear");
+    navigation.navigate("CrearRutina");
   };
 
   return (

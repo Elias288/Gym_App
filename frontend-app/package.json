@@ -15,6 +15,7 @@
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+    "@types/react-native-table-component": "^1.2.7",
     "axios": "^1.6.2",
     "expo": "~49.0.15",
     "expo-constants": "^14.4.2",
@@ -25,6 +26,7 @@
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-mask-input": "^1.2.3",
     "react-native-paper": "^5.11.1",
+    "react-native-table-component": "^1.2.2",
     "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
