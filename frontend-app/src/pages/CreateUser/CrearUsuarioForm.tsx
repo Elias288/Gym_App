@@ -72,18 +72,21 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
         supLabel="Nombre de usuario*"
         stateValue={newUsuario.user_name}
         state={(e) => setNewUsuario({ ...newUsuario, user_name: e })}
+        styleContainer={{ marginTop: 20, marginBottom: 5 }}
       />
       <InputTextCustom
         supLabel="Contraseña*"
         stateValue={newUsuario.password}
         state={(e) => setNewUsuario({ ...newUsuario, password: e })}
         secure={true}
+        styleContainer={{ marginTop: 20, marginBottom: 5 }}
       />
       <InputTextCustom
         supLabel="Repetir contraseña*"
         stateValue={password2}
         state={setPassword2}
         secure={true}
+        styleContainer={{ marginTop: 20, marginBottom: 5 }}
       />
 
       {/* Información opcional */}
@@ -92,9 +95,11 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
           supLabel="Nombre"
           stateValue={newUsuario.nombre || ""}
           state={(e) => setNewUsuario({ ...newUsuario, nombre: e })}
+          styleContainer={{ marginTop: 20, marginBottom: 5 }}
         />
 
         <View style={{ marginTop: 10 }}>
+          {/* Genero */}
           <Text style={{ marginBottom: 10 }}>Genero</Text>
           <SelectList
             data={generos}
@@ -120,6 +125,8 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
             styleContainer={{
               flex: 1,
               paddingRight: 20,
+              marginTop: 20,
+              marginBottom: 5,
             }}
           />
 
@@ -130,7 +137,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
             state={(e) => setNewUsuario({ ...newUsuario, peso: e })}
             format={[/\d/, /\d/, ".", /\d/, /\d/]}
             label="00.00 Kg"
-            styleContainer={{ flex: 1 }}
+            styleContainer={{ flex: 1, marginTop: 20, marginBottom: 5 }}
           />
         </View>
       </BorderContainerComponent>

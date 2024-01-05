@@ -57,6 +57,7 @@ const LoginForm = () => {
           supLabel="Nombre de usuario"
           stateValue={username}
           state={setUsername}
+          styleContainer={{ marginTop: 20, marginBottom: 5 }}
         />
 
         <InputTextCustom
@@ -64,6 +65,7 @@ const LoginForm = () => {
           stateValue={password}
           state={setPassword}
           secure={true}
+          styleContainer={{ marginTop: 20, marginBottom: 5 }}
         />
       </View>
 
