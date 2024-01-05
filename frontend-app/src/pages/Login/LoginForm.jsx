@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
 import { useEffect, useState } from "react";
@@ -9,11 +10,11 @@ import { authContext } from "../../provider/AuthProvider";
 
 const LoginForm = () => {
   const { login, getUserInfo, isLoading } = authContext();
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [message, setMessage] = useState<string>("");
-  const [messageType, setMessageType] = useState<boolean>(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(false);
 
   useEffect(() => {
     chargeUserInfo();
@@ -26,7 +27,7 @@ const LoginForm = () => {
     if (result.status === "Error") {
       setMessageType(false);
       if (Array.isArray(result.message)) {
-        setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+        setMessage(result.message.map((err) => "- " + err).join("\n"));
         return;
       }
 
@@ -43,7 +44,7 @@ const LoginForm = () => {
     if (result.status === "Error") {
       setMessageType(false);
       if (Array.isArray(result.message)) {
-        setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+        setMessage(result.message.map((err) => "- " + err).join("\n"));
         return;
       }
       setMessage("- " + result.message);

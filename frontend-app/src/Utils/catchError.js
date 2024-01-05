@@ -1,11 +1,15 @@
-import { ResultType } from "../types/Result.type";
 import ShowLog from "./ShowLog";
 
-const catchError = (error: any): ResultType => {
+/**
+ * @param {any} error
+ * @returns {ResultType}
+ */
+const catchError = (error) => {
   ShowLog("catchError", JSON.stringify(error, null, 4));
 
   if (error.response) {
-    let err: string | Array<string> = error.response.data.message;
+    /** @type {string | Array<string>} */
+    let err = error.response.data.message;
     if (!Array.isArray(err)) err = [err];
 
     return { status: "Error", message: err };

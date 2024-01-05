@@ -1,10 +1,13 @@
 import axios from "axios";
 import authHeader from "../Utils/auth-header";
-import { CrearRutinaDto } from "../types/rutina.type";
 
 const url = `${process.env.EXPO_PUBLIC_API_URL}/api/rutina`;
 
-const crearRutina = async ({ rutinaBody }: { rutinaBody: CrearRutinaDto }) => {
+/**
+ * Create routine service
+ * @param {crearRutinaDto} rutinaBody
+ */
+const crearRutina = async (rutinaBody) => {
   return axios.request({
     timeout: 2000,
     method: "POST",
@@ -14,7 +17,10 @@ const crearRutina = async ({ rutinaBody }: { rutinaBody: CrearRutinaDto }) => {
   });
 };
 
-const listarRutinas = async () => {
+/**
+ * List all routines service
+ */
+const listRoutine = async () => {
   return axios.request({
     timeout: 2000,
     method: "GET",
@@ -23,7 +29,11 @@ const listarRutinas = async () => {
   });
 };
 
-const getRutina = async ({ rutina_local_Id }: { rutina_local_Id: string }) => {
+/**
+ * Get routine by local_id service
+ * @param {string} rutina_local_Id
+ */
+const getRutina = async (rutina_local_Id) => {
   return axios.request({
     timeout: 2000,
     method: "GET",
@@ -32,13 +42,12 @@ const getRutina = async ({ rutina_local_Id }: { rutina_local_Id: string }) => {
   });
 };
 
-const updateRutina = async ({
-  rutina_Id,
-  updatedRutina,
-}: {
-  rutina_Id: string;
-  updatedRutina: Partial<CrearRutinaDto>;
-}) => {
+/**
+ * Update routine by id service
+ * @param {string} rutina_Id
+ * @param {Partial<crearRutinaDto>} updatedRutina
+ */
+const updateRutina = async (rutina_Id, updatedRutina) => {
   return axios.request({
     timeout: 2000,
     method: "PATCH",
@@ -48,7 +57,11 @@ const updateRutina = async ({
   });
 };
 
-const deleteRutina = async (rutina_Id: string) => {
+/**
+ * Delete routine service
+ * @param {string} rutina_Id
+ */
+const deleteRutina = async (rutina_Id) => {
   return axios.request({
     timeout: 2000,
     method: "DELETE",
@@ -59,7 +72,7 @@ const deleteRutina = async (rutina_Id: string) => {
 
 export default {
   crearRutina,
-  listarRutinas,
+  listarRutinas: listRoutine,
   getRutina,
   updateRutina,
   deleteRutina,

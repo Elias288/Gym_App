@@ -1,38 +1,43 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+
 import InputTextCustom from "../../../components/InputTextCustom.component";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Button, Modal } from "react-native-paper";
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import { EjercicioType } from "../../../types/rutina.type";
-import { PartialState } from "@react-navigation/native";
 
-type SelectType = {
-  key: string;
-  value: string;
-};
-type CargarEjercicioModalProps = {
-  isVisible: boolean;
-  onDismiss: () => void;
-  onSubmit: (ejercicio: EjercicioType) => void;
-};
 const MAX_NUMBER_OF_SERIES = 15;
 
-const CargarEjercicioModal = ({
-  isVisible,
-  onDismiss,
-  onSubmit,
-}: CargarEjercicioModalProps) => {
-  const [ejercicioInfo, setEjercicioInfo] = useState<EjercicioType>({
-    local_id: "",
-    nombre_ejercicio: "",
-    repeticiones: "",
-    series: "",
-  });
+/**
+ * @typedef {Object} SelectType
+ * @property {string} key
+ * @property {string} value
+ */
 
-  const [cantNumbersOfSeries, setCantNumbersOfSeries] = useState<
-    Array<SelectType>
-  >([]);
+const ejercicioTemplate = {
+  local_id: "",
+  nombre_ejercicio: "",
+  repeticiones: "",
+  series: "",
+};
+
+/**
+ *
+ * @param {Object} props
+ * @param {boolean} props.isVisible
+ * @param {() => void} props.onDismiss
+ * @param {(ejercicio: ejercicioType) => void} props.onSubmit
+ *
+ */
+const CargarEjercicioModal = ({ isVisible, onDismiss, onSubmit }) => {
+  const [ejercicioInfo, setEjercicioInfo] = useState(
+    /** @type {ejercicioType} */ (ejercicioTemplate)
+  );
+
+  const [cantNumbersOfSeries, setCantNumbersOfSeries] = useState(
+    /** @type {Array<SelectType>} */ ([])
+  );
 
   useEffect(() => {
     chargeSeries();
@@ -112,7 +117,7 @@ const CargarEjercicioModal = ({
                 data={cantNumbersOfSeries}
                 defaultOption={{ key: "1", value: "1" }}
                 search={false}
-                setSelected={(e: any) => {
+                setSelected={(/** @type {string} */ e) => {
                   setEjercicioInfo({ ...ejercicioInfo, series: e });
                 }}
                 dropdownStyles={{ backgroundColor: "#fff", borderWidth: 0 }}

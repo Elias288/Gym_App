@@ -1,16 +1,18 @@
 import React from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 
-import { RootStackParamList } from "../../Main";
 import LoginForm from "./LoginForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { authContext } from "../../provider/AuthProvider";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
-
-const LoginScreen = ({ navigation }: Props) => {
+/**
+ *
+ * @param {Object} props
+ * @param {any} props.navigation
+ * @param {any} props.route
+ */
+const LoginScreen = ({ navigation }) => {
   const { isLoading } = authContext();
   const goToCreateUser = () => navigation.navigate("CrearUsuario");
 

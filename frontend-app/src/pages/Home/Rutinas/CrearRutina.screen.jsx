@@ -1,25 +1,21 @@
-import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
-import { Dispatch, useEffect, useState } from "react";
+import React from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import { useEffect } from "react";
 import uuid from "react-native-uuid";
 
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
 import InputTextCustom from "../../../components/InputTextCustom.component";
-import {
-  CrearRutinaDto,
-  EjercicioType,
-  rutinaType,
-} from "../../../types/rutina.type";
-import { authContext } from "../../../provider/AuthProvider";
 import BorderContainerComponent from "../../../components/borderContainer.component";
 import { Button } from "react-native-paper";
-import { RutinaStackParamList } from "./Rutinas.Navigator";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { rutinaContext } from "../../../provider/RutinasProvider";
 
-type RutinaStack = NativeStackScreenProps<RutinaStackParamList, "CrearRutina">;
-
-const CrearRutinaScreen = ({ navigation }: RutinaStack) => {
-  const { userInfo } = authContext();
+/**
+ *
+ * @param {Object} props
+ * @param {any} props.navigation
+ * @param {any} props.route
+ */
+const CrearRutinaScreen = ({ navigation }) => {
   const {
     rutinas,
     rutinaTemplate,
@@ -39,10 +35,8 @@ const CrearRutinaScreen = ({ navigation }: RutinaStack) => {
     }
 
     const resutl = await createRutina({
-      newRutina: {
-        ...rutinaTemplate,
-        local_id: uuid.v4().toString().replace(/-/g, ""),
-      },
+      ...rutinaTemplate,
+      local_id: uuid.v4().toString().replace(/-/g, ""),
     });
 
     if (resutl.status === "Error") {
@@ -59,7 +53,11 @@ const CrearRutinaScreen = ({ navigation }: RutinaStack) => {
     navigation.goBack();
   };
 
-  const goToCargarDia = (local_id: string) => {
+  /**
+   *
+   * @param {string} local_id
+   */
+  const goToCargarDia = (local_id) => {
     const diaInfo = rutinaTemplate.contenido.find(
       (dia) => dia.local_id === local_id
     );
@@ -111,15 +109,12 @@ const CrearRutinaScreen = ({ navigation }: RutinaStack) => {
   );
 };
 
-type ViewContenidoItemProps = {
-  title: string;
-  goToCargarDia: () => void;
-};
-
-const ViewContenidoItem = ({
-  title,
-  goToCargarDia,
-}: ViewContenidoItemProps) => {
+/**
+ * @param {Object} props
+ * @param {string} props.title
+ * @param {() => void} props.goToCargarDia
+ */
+const ViewContenidoItem = ({ title, goToCargarDia }) => {
   return (
     <View style={styles.dia}>
       <Button onPress={() => goToCargarDia()} mode="elevated">

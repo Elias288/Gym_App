@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useContext } from "react";
-import useRutina, { rutinaProps } from "../contexts/useRutina";
+import React, { createContext, useContext } from "react";
 
-const RutinaContext = createContext<rutinaProps | undefined>(undefined);
+import useRutina from "../contexts/useRutina";
+
+const RutinaContext = createContext(useRutina());
 
 export function rutinaContext() {
   const context = useContext(RutinaContext);
@@ -11,7 +12,11 @@ export function rutinaContext() {
   return context;
 }
 
-const RutinaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+/**
+ * @param {Object} props
+ * @param {any} props.children
+ */
+const RutinaProvider = ({ children }) => {
   return (
     <RutinaContext.Provider value={useRutina()}>
       {children}

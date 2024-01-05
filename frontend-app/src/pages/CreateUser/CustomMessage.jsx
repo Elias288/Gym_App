@@ -1,14 +1,16 @@
+import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 
-export const CustomMessage = ({
-  message,
-  type,
-}: {
-  message: string;
-  type: boolean;
-}) => {
+/**
+ * @param {Object} props
+ * @param {string} props.message
+ * @param {boolean} props.type
+ */
+export const CustomMessage = (props) => {
+  const { message, type } = props;
+
   return (
     <>
       {message !== "" && (

@@ -1,17 +1,16 @@
 import React from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 import CrearUsuarioForm from "./CrearUsuarioForm";
-import { RootStackParamList } from "../../Main";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 
-type CreateUserProps = NativeStackScreenProps<
-  RootStackParamList,
-  "CrearUsuario"
->;
-
-const CrearUsuarioScreen = ({ navigation }: CreateUserProps) => {
+/**
+ *
+ * @param {Object} props
+ * @param {any} props.navigation
+ * @param {any} props.route
+ */
+const CrearUsuarioScreen = ({ navigation }) => {
   const onSubmit = () => {
     navigation.navigate("Login");
   };

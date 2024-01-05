@@ -1,15 +1,17 @@
+import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
 import { IconButton } from "react-native-paper";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RutinaStackParamList } from "./Rutinas.Navigator";
 import { rutinaContext } from "../../../provider/RutinasProvider";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-type RutinaStack = NativeStackScreenProps<RutinaStackParamList, "Listar">;
-
-const ListarRutinaScreen = ({ navigation }: RutinaStack) => {
+/**
+ * @param {Object} props
+ * @param {any} props.navigation
+ * @param {any} props.route
+ */
+const ListarRutinaScreen = ({ navigation }) => {
   const { getAllRutinas, rutinas } = rutinaContext();
 
   useEffect(() => {

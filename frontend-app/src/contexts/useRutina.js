@@ -1,56 +1,32 @@
 import { useState } from "react";
 import uuid from "react-native-uuid";
 
-import {
-  CrearRutinaDto,
-  EjercicioType,
-  rutinaType,
-} from "../types/rutina.type";
-import { ResultType } from "../types/Result.type";
 import rutinasServices from "../services/rutinasServices";
 import ShowLog from "../Utils/ShowLog";
 import catchError from "../Utils/catchError";
 
-export interface rutinaProps {
-  isLoading: boolean;
-  rutinas: Array<rutinaType>;
-  rutinaTemplate: CrearRutinaDto;
-  setRutinas: (rutinas: rutinaType[]) => void;
-  initTemplate: () => void;
-  addTituloToRutina: (titulo: string) => void;
-  addNewContenido: () => void;
-  createContenido: (
-    local_id: string,
-    nombre: string,
-    ejercicios: Array<EjercicioType>
-  ) => void;
-  dropContenido: (local_id: string) => void;
-  dropEjercicio: (local_id_dia: string, local_id_ejercicio: string) => void;
-  createRutina: ({
-    newRutina,
-  }: {
-    newRutina: CrearRutinaDto;
-  }) => Promise<ResultType>;
-  getAllRutinas: () => Promise<ResultType>;
-  getRutina: ({ local_id }: { local_id: string }) => Promise<ResultType>;
-}
+const createRutinaTemplate = {
+  local_id: "",
+  titulo: "",
+  contenido: [
+    {
+      local_id: uuid.v4().toString().replace(/-/g, ""),
+      nombre: "Día 1",
+      ejercicios: [],
+    },
+  ],
+};
 
-function useRutina(): rutinaProps {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [rutinas, setRutinas] = useState<Array<rutinaType>>([]);
-  const [selectedRutina, setSelectedRutina] = useState<rutinaType>();
+function useRutina() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [rutinas, setRutinas] = useState(/** @type {Array<rutinaType>} */ ([]));
+  const [selectedRutina, setSelectedRutina] = useState(
+    /** @type {rutinaType | undefined} */ (undefined)
+  );
 
-  const [rutinaTemplate, setRutinaTemplate] = useState<CrearRutinaDto>({
-    local_id: "",
-    titulo: "",
-    contenido: [
-      {
-        local_id: uuid.v4().toString().replace(/-/g, ""),
-        nombre: "Día 1",
-        ejercicios: [],
-      },
-    ],
-  });
+  const [rutinaTemplate, setRutinaTemplate] = useState(
+    /** @type {crearRutinaDto} */ (createRutinaTemplate)
+  );
 
   // ****************************** AUXILIAR FUNCTIONS ******************************
 
@@ -68,13 +44,20 @@ function useRutina(): rutinaProps {
     });
   };
 
-  const addTituloToRutina = (titulo: string) => {
+  /**
+   * Add title to routine
+   * @param {string} titulo
+   */
+  const addTituloToRutina = (titulo) => {
     setRutinaTemplate({
       ...rutinaTemplate,
       titulo,
     });
   };
 
+  /**
+   * Add new content
+   */
   const addNewContenido = () => {
     if (rutinaTemplate.contenido.length >= 7) return;
 
@@ -91,7 +74,11 @@ function useRutina(): rutinaProps {
     });
   };
 
-  const dropContenido = (local_id: string) => {
+  /**
+   * Delete content
+   * @param {string} local_id
+   */
+  const dropContenido = (local_id) => {
     setRutinaTemplate({
       ...rutinaTemplate,
       contenido: rutinaTemplate.contenido.filter(
@@ -100,11 +87,13 @@ function useRutina(): rutinaProps {
     });
   };
 
-  const createContenido = (
-    local_id: string,
-    nombre: string,
-    ejercicios: Array<EjercicioType>
-  ) => {
+  /**
+   * Create content
+   * @param {string} local_id
+   * @param {string} nombre
+   * @param {Array<ejercicioType>} ejercicios
+   */
+  const createContenido = (local_id, nombre, ejercicios) => {
     setRutinaTemplate({
       ...rutinaTemplate,
       contenido: rutinaTemplate.contenido.map((dia) =>
@@ -119,10 +108,12 @@ function useRutina(): rutinaProps {
     });
   };
 
-  const dropEjercicio = (
-    local_id_contenido: string,
-    local_id_ejercicio: string
-  ) => {
+  /**
+   * Delete exercise
+   * @param {string} local_id_contenido
+   * @param {string} local_id_ejercicio
+   */
+  const dropEjercicio = (local_id_contenido, local_id_ejercicio) => {
     setRutinaTemplate({
       ...rutinaTemplate,
       contenido: rutinaTemplate.contenido.map((dia) =>
@@ -139,16 +130,18 @@ function useRutina(): rutinaProps {
   };
 
   // *********************************** FUNCTIONS ***********************************
-  const createRutina = ({
-    newRutina,
-  }: {
-    newRutina: CrearRutinaDto;
-  }): Promise<ResultType> => {
+
+  /**
+   * Create routine
+   * @param {crearRutinaDto} newRutina
+   * @returns {Promise<ResultType>}
+   */
+  const createRutina = (newRutina) => {
     ShowLog("useRutina/createRutina", JSON.stringify(newRutina, null, 4));
     setIsLoading(true);
 
     return rutinasServices
-      .crearRutina({ rutinaBody: newRutina })
+      .crearRutina(newRutina)
       .then(({ data }) => {
         ShowLog("useRutina/rutinaCreada", JSON.stringify(data, null, 4));
         return { status: "Ok", message: JSON.stringify(data) };
@@ -158,7 +151,11 @@ function useRutina(): rutinaProps {
       });
   };
 
-  const getAllRutinas = (): Promise<ResultType> => {
+  /**
+   * Get all routines
+   * @returns {Promise<ResultType>}
+   */
+  const getAllRutinas = () => {
     ShowLog("useRutina/getAllRutinas");
 
     return rutinasServices
@@ -173,15 +170,16 @@ function useRutina(): rutinaProps {
       });
   };
 
-  const getRutina = ({
-    local_id,
-  }: {
-    local_id: string;
-  }): Promise<ResultType> => {
+  /**
+   * Get routine of user
+   * @param {string} local_id
+   * @returns {Promise<ResultType>}
+   */
+  const getRutina = (local_id) => {
     ShowLog("useRutina/getAllRutinas");
 
     return rutinasServices
-      .getRutina({ rutina_local_Id: local_id })
+      .getRutina(local_id)
       .then(({ data }) => {
         return { status: "Ok", message: data };
       })

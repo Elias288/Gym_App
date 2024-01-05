@@ -1,3 +1,4 @@
+import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Button } from "react-native-paper";
@@ -7,29 +8,36 @@ import uuid from "react-native-uuid";
 import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { GenerosList } from "../../Utils/Generos";
-import { crearUsuarioDto } from "../../types/usuario.type";
 import { CustomMessage } from "./CustomMessage";
 import { authContext } from "../../provider/AuthProvider";
 import BorderContainerComponent from "../../components/borderContainer.component";
 
-type selectType = {
-  key: string;
-  value: string;
+/**
+ * @typedef {Object} selectType
+ * @property {string} key
+ * @property {string} value
+ */
+
+const newUserTemplate = {
+  local_id: uuid.v4().toString().replace(/-/g, ""),
+  user_name: "",
+  password: "",
 };
 
-const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
+/**
+ * @param {Object} props
+ * @param {() => void} props.onSubmit
+ */
+const CrearUsuarioForm = ({ onSubmit }) => {
   const { createUser, isLoading } = authContext();
-  const [generos, setGeneros] = useState<Array<selectType>>([]);
 
-  const [newUsuario, setNewUsuario] = useState<crearUsuarioDto>({
-    local_id: uuid.v4().toString().replace(/-/g, ""),
-    user_name: "",
-    password: "",
-  });
-  const [password2, setPassword2] = useState<string>("");
-
-  const [messageType, setMessageType] = useState<boolean>(true);
-  const [message, setMessage] = useState<string>("");
+  const [generos, setGeneros] = useState(/** @type {Array<selectType>} */ ([]));
+  const [newUsuario, setNewUsuario] = useState(
+    /** @type {crearUsuarioDto} */ (newUserTemplate)
+  );
+  const [password2, setPassword2] = useState(/** @type {string} */ "");
+  const [messageType, setMessageType] = useState(/** @type {boolean} */ true);
+  const [message, setMessage] = useState(/** @type {string} */ "");
 
   useEffect(() => {
     chargeGeneros();
@@ -51,7 +59,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
     if (result.status === "Error") {
       setMessageType(false);
       if (Array.isArray(result.message)) {
-        setMessage(result.message.map((err: string) => "- " + err).join("\n"));
+        setMessage(result.message.map((err) => "- " + err).join("\n"));
         return;
       }
 
@@ -103,7 +111,7 @@ const CrearUsuarioForm = ({ onSubmit }: { onSubmit: () => void }) => {
           <Text style={{ marginBottom: 10 }}>Genero</Text>
           <SelectList
             data={generos}
-            setSelected={(e: any) =>
+            setSelected={(/** @type {string} */ e) =>
               setNewUsuario({ ...newUsuario, genero: e })
             }
             search={false}

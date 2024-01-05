@@ -1,37 +1,45 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Button, IconButton, Portal } from "react-native-paper";
 
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import { RutinaStackParamList } from "./Rutinas.Navigator";
 import InputTextCustom from "../../../components/InputTextCustom.component";
 import BorderContainerComponent from "../../../components/borderContainer.component";
 import CargarEjercicioModal from "./CargarEjercicio.modal";
-import { DiaType, EjercicioType } from "../../../types/rutina.type";
 import { ViewEjercicioItem } from "./ViewEjercicioItem";
 import { rutinaContext } from "../../../provider/RutinasProvider";
 
-type RutinaStack = NativeStackScreenProps<RutinaStackParamList, "CargarDia">;
-
-const CargarDiaScreen = ({ route, navigation }: RutinaStack) => {
+/**
+ *
+ * @param {Object} props
+ * @param {any} props.navigation
+ * @param {any} props.route
+ */
+const CargarDiaScreen = ({ route, navigation }) => {
   const { diaInfo, cantDias } = route.params;
   const { dropContenido, createContenido } = rutinaContext();
   const isOnlyOne = cantDias === 1;
 
-  const [diaName, setDiaName] = useState(diaInfo.nombre);
+  const [diaName, setDiaName] = useState(
+    /** @type {string} */ (diaInfo.nombre)
+  );
   const [visibleModal, setVisibleModal] = useState(false);
-  const [ejercicios, setEjercicios] = useState<Array<EjercicioType>>(
-    diaInfo.ejercicios
+  const [ejercicios, setEjercicios] = useState(
+    /** @type {Array<ejercicioType>} */ (diaInfo.ejercicios)
   );
 
-  const TABLE_HEADER: Partial<EjercicioType> = {
+  /** * @type {Partial<ejercicioType>} */
+  const TABLE_HEADER = {
     nombre_ejercicio: "Ejercicio",
     repeticiones: "Repeticiones",
     series: "Series",
   };
 
-  const chargeEjercicio = (ejercicio: EjercicioType) => {
+  /**
+   * @param {ejercicioType} ejercicio
+   */
+  const chargeEjercicio = (ejercicio) => {
     setEjercicios([...ejercicios, ejercicio]);
   };
 

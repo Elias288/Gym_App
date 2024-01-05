@@ -1,8 +1,8 @@
-import { ReactNode, createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 
-import useAuth, { authProps } from "../contexts/useAuth";
+import useAuth from "../contexts/useAuth";
 
-const AuthContext = createContext<authProps | undefined>(undefined);
+const AuthContext = createContext(useAuth());
 
 export function authContext() {
   const context = useContext(AuthContext);
@@ -11,7 +11,11 @@ export function authContext() {
   return context;
 }
 
-const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+/**
+ * @param {Object} props
+ * @param {any} props.children
+ */
+const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={useAuth()}>{children}</AuthContext.Provider>
   );

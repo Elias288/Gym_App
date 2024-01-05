@@ -1,17 +1,14 @@
-import { View, Text, StyleSheet, StyleProp, ViewStyle } from "react-native";
-import { EjercicioType } from "../../../types/rutina.type";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
-type ViewEjercicioItemProps = {
-  ejercicio: Partial<EjercicioType>;
-  style?: StyleProp<ViewStyle>;
-};
-
-export const ViewEjercicioItem = ({
-  ejercicio,
-  style: customStyle,
-}: ViewEjercicioItemProps) => {
+/**
+ * @param {Object} props
+ * @param {Partial<ejercicioType>} props.ejercicio
+ * @param {any} [props.style]
+ */
+export const ViewEjercicioItem = ({ ejercicio, style }) => {
   return (
-    <View style={[style.container, customStyle]}>
+    <View style={[style.container, style]}>
       <Text style={{ flex: 3 }}>{ejercicio.nombre_ejercicio}</Text>
       <Text style={{ flex: 2 }}>{ejercicio.repeticiones}</Text>
       <Text style={{ flex: 1 }}>{ejercicio.series}</Text>
