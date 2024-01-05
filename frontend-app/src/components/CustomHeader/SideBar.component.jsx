@@ -4,42 +4,39 @@ import { Icon, Modal } from "react-native-paper";
 
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import CustomPressableComponent from "../CustomPressable.component";
-import { navigationType } from "./CustomHeader.component";
+import React from "react";
 
-type SideBarProps = {
-  isVisible: boolean;
-  hideModal: () => void;
-  logout: () => void;
-  userName: string;
-  nombre: string;
-  navigation: navigationType;
-  selectedPage: string;
-};
+/**
+ * @param {Object} props
+ * @param {boolean} props.isVisible
+ * @param {string} props.userName
+ * @param {string} props.nombre
+ * @param {any} props.navigation
+ * @param {string} props.selectedPage
+ * @param {() => void} props.hideModal
+ * @param {() => void} props.logout
+ */
+const SideBarComponent = (props) => {
+  const { hideModal, logout } = props;
 
-const SideBarComponent = ({
-  isVisible,
-  hideModal,
-  logout,
-  userName,
-  nombre,
-  navigation,
-  selectedPage,
-}: SideBarProps) => {
   const Content = () => {
-    const goToPage = (page: string) => {
+    /**
+     * @param {string} page
+     */
+    const goToPage = (page) => {
       hideModal();
       switch (page) {
         case "Inicio":
-          navigation.navigate("Inicio");
+          props.navigation.navigate("Inicio");
           break;
         case "Perfil":
-          navigation.navigate("Perfil");
+          props.navigation.navigate("Perfil");
           break;
         case "Rutinas":
-          navigation.navigate("Rutinas", { screen: "Listar" });
+          props.navigation.navigate("Rutinas", { screen: "Listar" });
           break;
         case "Estadisticas":
-          navigation.navigate("Estadisticas");
+          props.navigation.navigate("Estadisticas");
           break;
       }
     };
@@ -48,8 +45,8 @@ const SideBarComponent = ({
       <View style={styles.content}>
         {/* user info */}
         <View style={styles.userInfo}>
-          <Text style={{ fontSize: 25 }}>{userName}</Text>
-          <Text>{nombre}</Text>
+          <Text style={{ fontSize: 25 }}>{props.userName}</Text>
+          <Text>{props.nombre}</Text>
         </View>
 
         {/* Actions */}
@@ -58,7 +55,7 @@ const SideBarComponent = ({
           <CustomPressableComponent
             action={() => goToPage("Inicio")}
             buttonColor={
-              selectedPage == "Inicio"
+              props.selectedPage == "Inicio"
                 ? GlobalStyles.colorCian
                 : GlobalStyles.transparent
             }
@@ -74,7 +71,7 @@ const SideBarComponent = ({
           <CustomPressableComponent
             action={() => goToPage("Perfil")}
             buttonColor={
-              selectedPage == "Perfil"
+              props.selectedPage == "Perfil"
                 ? GlobalStyles.colorCian
                 : GlobalStyles.transparent
             }
@@ -90,7 +87,7 @@ const SideBarComponent = ({
           <CustomPressableComponent
             action={() => goToPage("Rutinas")}
             buttonColor={
-              selectedPage == "Rutinas"
+              props.selectedPage == "Rutinas"
                 ? GlobalStyles.colorCian
                 : GlobalStyles.transparent
             }
@@ -106,7 +103,7 @@ const SideBarComponent = ({
           <CustomPressableComponent
             action={() => goToPage("Estadisticas")}
             buttonColor={
-              selectedPage == "Estadisticas"
+              props.selectedPage == "Estadisticas"
                 ? GlobalStyles.colorCian
                 : GlobalStyles.transparent
             }
@@ -138,11 +135,11 @@ const SideBarComponent = ({
     );
   };
 
-  if (!isVisible) return null;
+  if (!props.isVisible) return null;
 
   return (
     <Modal
-      visible={isVisible}
+      visible={props.isVisible}
       onDismiss={hideModal}
       contentContainerStyle={styles.container}
     >

@@ -1,3 +1,4 @@
+import React from "react";
 import { SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 

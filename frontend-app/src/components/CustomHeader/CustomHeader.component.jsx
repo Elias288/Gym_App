@@ -2,42 +2,25 @@ import React, { useState } from "react";
 import Constants from "expo-constants";
 import { StyleSheet, Text, View } from "react-native";
 import { IconButton, Portal } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 import SideBarComponent from "./SideBar.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { authContext } from "../../provider/AuthProvider";
-import {
-  CompositeNavigationProp,
-  useNavigation,
-} from "@react-navigation/native";
-import { RootStackParamList } from "../../Main";
-import { HomeStackParamList } from "../../pages/Home/Home.screen";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RutinaStackParamList } from "../../pages/Home/Rutinas/Rutinas.Navigator";
 
-type HeaderProps = {
-  title: string;
-  hasSideBar?: boolean;
-  sideBarSelected?: string;
-};
-
-export type navigationType = CompositeNavigationProp<
-  CompositeNavigationProp<
-    NativeStackNavigationProp<RootStackParamList>,
-    NativeStackNavigationProp<HomeStackParamList>
-  >,
-  NativeStackNavigationProp<RutinaStackParamList>
->;
-
-export const CustomHeader = ({
-  title,
-  hasSideBar,
-  sideBarSelected,
-}: HeaderProps) => {
-  const navigator = useNavigation<navigationType>();
-
-  const [visibleSideBar, setVisibleSideBar] = useState<boolean>(false);
+/**
+ * @param {Object} props
+ * @param {string} props.title
+ * @param {string} [props.sideBarSelected]
+ * @param {boolean} [props.hasSideBar]
+ */
+export const CustomHeader = ({ title, hasSideBar, sideBarSelected }) => {
   const { logout, userInfo } = authContext();
+  const navigator = useNavigation();
+
+  const [visibleSideBar, setVisibleSideBar] = useState(
+    /** @type {boolean} */ false
+  );
 
   return (
     <View style={styles.titleContainer}>

@@ -1,59 +1,50 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-import { ResultType } from "../types/Result.type";
 import AuthServices from "../services/authServices";
 import UserServices from "../services/usuariosServices";
-import { crearUsuarioDto } from "../types/usuario.type";
 import ShowLog from "../Utils/ShowLog";
-import { usuarioType } from "../types/usuario.type";
 import catchError from "../Utils/catchError";
 
-const storedToken = "@user/token";
+const storedTokenPath = "@user/token";
 
-export interface authProps {
-  userInfo: usuarioType | undefined;
-  isLogin: boolean;
-  isLoading: boolean;
-  isChargeLoading: boolean;
-  createUser: (
-    newUsuario: crearUsuarioDto,
-    pass2: string
-  ) => Promise<ResultType> | ResultType;
-  login: (userName: string, password: string) => Promise<ResultType>;
-  getUserInfo: () => Promise<ResultType>;
-  logout: () => void;
-}
-
-function useAuth(): authProps {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<usuarioType | undefined>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isChargeLoading, setIsChargeLoading] = useState<boolean>(false);
+function useAuth() {
+  const [userInfo, setUserInfo] = useState(/** @type {(usuarioType | undefined)} */(undefined));
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChargeLoading, setIsChargeLoading] = useState(false);
 
   // ****************************** AUXILIAR FUNCTIONS ******************************
 
-  // almacena el token y actualiza el estado
-  const saveToken = async (data: string) => {
+  /**
+   * Almacena el token y actualiza el estado
+   * @param {string} token
+   */
+  const saveToken = async (token) => {
     ShowLog("useAuth/saveToken");
-    await AsyncStorage.setItem(storedToken, data);
+    await AsyncStorage.setItem(storedTokenPath, token);
     setIsLogin(true);
   };
 
-  // elimina el token almacenado y actualiza los estados
+  /**
+   * Elimina el token almacenado y actualiza los estados
+   */
   const clearUserInfo = async () => {
     ShowLog("useAuth/cleardata");
-    await AsyncStorage.removeItem(storedToken);
+    await AsyncStorage.removeItem(storedTokenPath);
     setUserInfo(undefined);
     setIsLogin(false);
   };
 
   // *********************************** FUNCTIONS ***********************************
 
-  const createUser = (
-    newUsuario: crearUsuarioDto,
-    pass2: string
-  ): Promise<ResultType> | ResultType => {
+  /**
+   * Create user
+   * @param {crearUsuarioDto} newUsuario
+   * @param {string} pass2
+   * @returns {Promise<ResultType> | ResultType}
+   */
+  const createUser = (newUsuario, pass2) => {
     setIsLoading(true);
     if (newUsuario.password !== pass2) {
       setIsLoading(false);
@@ -80,7 +71,13 @@ function useAuth(): authProps {
       });
   };
 
-  const login = (user_name: string, password: string): Promise<ResultType> => {
+  /**
+   * Login
+   * @param {string} user_name
+   * @param {string} password
+   * @returns {Promise<ResultType>}
+   */
+  const login = (user_name, password) => {
     setIsLoading(true);
 
     return AuthServices.loginService(user_name, password)
@@ -109,16 +106,21 @@ function useAuth(): authProps {
       });
   };
 
+  /** Logout */
   const logout = () => {
     ShowLog("logout");
     setIsChargeLoading(false);
     clearUserInfo();
   };
 
-  const getUserInfo = async (): Promise<ResultType> => {
+  /**
+   * Get user info
+   * @returns {Promise<ResultType>}
+   */
+  const getUserInfo = async () => {
     ShowLog("useAuth/getUserInfo");
 
-    const token = await AsyncStorage.getItem(storedToken);
+    const token = await AsyncStorage.getItem(storedTokenPath);
     if (token === null) {
       console.log("not Logged");
       return { status: "NotLogged", message: "" };

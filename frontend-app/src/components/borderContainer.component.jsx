@@ -1,13 +1,14 @@
 import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+
 import { GlobalStyles } from "../Utils/GlobalStyles";
-import { ReactNode } from "react";
 
-type props = {
-  titulo?: string;
-  children: ReactNode;
-};
-
-const BorderContainerComponent = ({ titulo, children }: props) => {
+/**
+ * @param {Object} props
+ * @param {any} props.children
+ * @param {string} [props.titulo]
+ */
+const BorderContainerComponent = ({ titulo, children }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>

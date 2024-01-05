@@ -1,32 +1,26 @@
 import { useState } from "react";
-import {
-  KeyboardTypeOptions,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Checkbox } from "react-native-paper";
 import MaskInput from "react-native-mask-input";
 
 import { GlobalStyles } from "../Utils/GlobalStyles";
 
-type InputTextProps = {
-  supLabel?: string;
-  label?: string;
-  stateValue: string;
-  secure?: boolean;
-  styleContainer?: StyleProp<ViewStyle>;
-  style?: StyleProp<ViewStyle>;
-  format?: any[];
-  canDisabled?: boolean;
-  keyboardType?: KeyboardTypeOptions;
-  state: (value: string) => void;
-};
-
-const InputTextCustom = (props: InputTextProps) => {
-  const [isDisabled, setIsDisabled] = useState(false);
+/**
+ * @param {Object} props
+ * @param {string} props.supLabel
+ * @param {string} props.stateValue
+ * @param {string} [props.label]
+ * @param {boolean} [props.secure]
+ * @param {boolean} [props.canDisabled]
+ * @param {any} [props.format]
+ * @param {any} [props.keyboardType]
+ * @param {any} [props.styleContainer]
+ * @param {any} [props.style]
+ * @param {(value: string) => void} props.state
+ */
+const InputTextCustom = (props) => {
+  const [isDisabled, setIsDisabled] = useState(/** @type {boolean} */ false);
 
   return (
     <View style={[props.styleContainer, styles.inputContainer]}>
