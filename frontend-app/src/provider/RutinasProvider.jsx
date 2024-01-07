@@ -2,7 +2,8 @@ import React, { createContext, useContext } from "react";
 
 import useRutina from "../contexts/useRutina";
 
-const RutinaContext = createContext(useRutina());
+/** @type {useRutina} */
+const RutinaContext = createContext(undefined);
 
 export function rutinaContext() {
   const context = useContext(RutinaContext);

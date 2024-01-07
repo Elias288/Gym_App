@@ -1,7 +1,7 @@
 {
-  "compilerOptions": {
-    "checkJs": true,
-    "strict": true,
-    "jsx": "react"
+    "compilerOptions": {
+      "jsx": "react",
+      "module": "CommonJS",
+      "target": "ES2015"
+    }
   }
-}
