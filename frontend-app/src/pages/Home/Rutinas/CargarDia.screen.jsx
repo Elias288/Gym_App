@@ -10,12 +10,6 @@ import CargarEjercicioModal from "./CargarEjercicio.modal";
 import { ViewEjercicioItem } from "./ViewEjercicioItem";
 import { rutinaContext } from "../../../provider/RutinasProvider";
 
-/**
- *
- * @param {Object} props
- * @param {any} props.navigation
- * @param {any} props.route
- */
 const CargarDiaScreen = ({ route, navigation }) => {
   const { diaInfo, cantDias } = route.params;
   const { dropContenido, createContenido } = rutinaContext();

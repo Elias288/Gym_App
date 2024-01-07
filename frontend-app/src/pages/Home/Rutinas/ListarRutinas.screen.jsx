@@ -6,11 +6,6 @@ import { IconButton } from "react-native-paper";
 import { rutinaContext } from "../../../provider/RutinasProvider";
 import { useEffect } from "react";
 
-/**
- * @param {Object} props
- * @param {any} props.navigation
- * @param {any} props.route
- */
 const ListarRutinaScreen = ({ navigation }) => {
   const { getAllRutinas, rutinas } = rutinaContext();
 

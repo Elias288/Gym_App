@@ -4,12 +4,6 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import CrearUsuarioForm from "./CrearUsuarioForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 
-/**
- *
- * @param {Object} props
- * @param {any} props.navigation
- * @param {any} props.route
- */
 const CrearUsuarioScreen = ({ navigation }) => {
   const onSubmit = () => {
     navigation.navigate("Login");

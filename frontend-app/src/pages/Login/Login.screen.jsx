@@ -6,12 +6,6 @@ import LoginForm from "./LoginForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { authContext } from "../../provider/AuthProvider";
 
-/**
- *
- * @param {Object} props
- * @param {any} props.navigation
- * @param {any} props.route
- */
 const LoginScreen = ({ navigation }) => {
   const { isLoading } = authContext();
   const goToCreateUser = () => navigation.navigate("CrearUsuario");

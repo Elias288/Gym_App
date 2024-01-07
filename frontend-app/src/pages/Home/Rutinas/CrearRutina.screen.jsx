@@ -9,12 +9,6 @@ import BorderContainerComponent from "../../../components/borderContainer.compon
 import { Button } from "react-native-paper";
 import { rutinaContext } from "../../../provider/RutinasProvider";
 
-/**
- *
- * @param {Object} props
- * @param {any} props.navigation
- * @param {any} props.route
- */
 const CrearRutinaScreen = ({ navigation }) => {
   const {
     rutinas,
