@@ -1,5 +1,4 @@
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Checkbox } from "react-native-paper";
 import MaskInput from "react-native-mask-input";

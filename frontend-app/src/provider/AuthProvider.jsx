@@ -2,8 +2,14 @@ import React, { createContext, useContext } from "react";
 
 import useAuth from "../contexts/useAuth";
 
-/** @type {useAuth} */
 const AuthContext = createContext(undefined);
+
+/** @param {{ children: jsx.element}} [props] */
+const AuthProvider = ({ children }) => {
+  return (
+    <AuthContext.Provider value={useAuth()}>{children}</AuthContext.Provider>
+  );
+};
 
 export function authContext() {
   const context = useContext(AuthContext);
@@ -11,15 +17,5 @@ export function authContext() {
 
   return context;
 }
-
-/**
- * @param {Object} props
- * @param {any} props.children
- */
-const AuthProvider = ({ children }) => {
-  return (
-    <AuthContext.Provider value={useAuth()}>{children}</AuthContext.Provider>
-  );
-};
 
 export default AuthProvider;

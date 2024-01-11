@@ -2,21 +2,9 @@ import React, { createContext, useContext } from "react";
 
 import useRutina from "../contexts/useRutina";
 
-/** @type {useRutina} */
 const RutinaContext = createContext(undefined);
 
-export function rutinaContext() {
-  const context = useContext(RutinaContext);
-  if (!context)
-    throw new Error("useRutina debe estar dentro de un RutinaProvider");
-
-  return context;
-}
-
-/**
- * @param {Object} props
- * @param {any} props.children
- */
+/** @param {{ children: jsx.element}} [props] */
 const RutinaProvider = ({ children }) => {
   return (
     <RutinaContext.Provider value={useRutina()}>
@@ -24,5 +12,13 @@ const RutinaProvider = ({ children }) => {
     </RutinaContext.Provider>
   );
 };
+
+export function useRutinaContext() {
+  const context = useContext(RutinaContext);
+  if (!context)
+    throw new Error("useRutina debe estar dentro de un RutinaProvider");
+
+  return context;
+}
 
 export default RutinaProvider;

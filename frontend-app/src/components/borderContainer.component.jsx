@@ -4,8 +4,8 @@ import React from "react";
 import { GlobalStyles } from "../Utils/GlobalStyles";
 
 /**
+ * @param {Object} children
  * @param {Object} props
- * @param {any} props.children
  * @param {string} [props.titulo]
  */
 const BorderContainerComponent = ({ titulo, children }) => {
