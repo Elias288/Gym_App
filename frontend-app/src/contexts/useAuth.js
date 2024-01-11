@@ -9,7 +9,9 @@ import catchError from "../Utils/catchError";
 const storedTokenPath = "@user/token";
 
 function useAuth() {
-  const [userInfo, setUserInfo] = useState(/** @type {(usuarioType | undefined)} */(undefined));
+  const [userInfo, setUserInfo] = useState(
+    /** @type {(usuarioType | undefined)} */ (undefined)
+  );
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isChargeLoading, setIsChargeLoading] = useState(false);
@@ -123,6 +125,7 @@ function useAuth() {
     const token = await AsyncStorage.getItem(storedTokenPath);
     if (token === null) {
       console.log("not Logged");
+      setIsLogin(false);
       return { status: "NotLogged", message: "" };
     }
     setIsLoading(true);
@@ -138,6 +141,7 @@ function useAuth() {
       })
       .catch((e) => {
         setIsLoading(false);
+        setIsLogin(false);
         return catchError(e);
       });
   };

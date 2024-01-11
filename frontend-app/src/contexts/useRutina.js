@@ -1,5 +1,4 @@
 import { useState } from "react";
-import uuid from "react-native-uuid";
 
 import rutinasServices from "../services/rutinasServices";
 import ShowLog from "../Utils/ShowLog";
@@ -7,14 +6,8 @@ import catchError from "../Utils/catchError";
 
 const createRutinaTemplate = {
   local_id: "",
-  titulo: "",
-  contenido: [
-    {
-      local_id: uuid.v4().toString().replace(/-/g, ""),
-      nombre: "Día 1",
-      ejercicios: [],
-    },
-  ],
+  titulo: `Rutina #`,
+  contenido: [],
 };
 
 function useRutina() {
@@ -24,110 +17,7 @@ function useRutina() {
     /** @type {rutinaType | undefined} */ (undefined)
   );
 
-  const [rutinaTemplate, setRutinaTemplate] = useState(
-    /** @type {crearRutinaDto} */ (createRutinaTemplate)
-  );
-
   // ****************************** AUXILIAR FUNCTIONS ******************************
-
-  const initTemplate = () => {
-    setRutinaTemplate({
-      local_id: "",
-      titulo: "",
-      contenido: [
-        {
-          local_id: uuid.v4().toString().replace(/-/g, ""),
-          nombre: "Día 1",
-          ejercicios: [],
-        },
-      ],
-    });
-  };
-
-  /**
-   * Add title to routine
-   * @param {string} titulo
-   */
-  const addTituloToRutina = (titulo) => {
-    setRutinaTemplate({
-      ...rutinaTemplate,
-      titulo,
-    });
-  };
-
-  /**
-   * Add new content
-   */
-  const addNewContenido = () => {
-    if (rutinaTemplate.contenido.length >= 7) return;
-
-    setRutinaTemplate({
-      ...rutinaTemplate,
-      contenido: [
-        ...rutinaTemplate.contenido,
-        {
-          local_id: uuid.v4().toString().replace(/-/g, ""),
-          nombre: `Día ${rutinaTemplate.contenido.length + 1}`,
-          ejercicios: [],
-        },
-      ],
-    });
-  };
-
-  /**
-   * Delete content
-   * @param {string} local_id
-   */
-  const dropContenido = (local_id) => {
-    setRutinaTemplate({
-      ...rutinaTemplate,
-      contenido: rutinaTemplate.contenido.filter(
-        (dia) => dia.local_id !== local_id
-      ),
-    });
-  };
-
-  /**
-   * Create content
-   * @param {string} local_id
-   * @param {string} nombre
-   * @param {Array<ejercicioType>} ejercicios
-   */
-  const createContenido = (local_id, nombre, ejercicios) => {
-    setRutinaTemplate({
-      ...rutinaTemplate,
-      contenido: rutinaTemplate.contenido.map((dia) =>
-        dia.local_id === local_id
-          ? {
-              local_id: dia.local_id,
-              nombre: nombre,
-              ejercicios: ejercicios,
-            }
-          : dia
-      ),
-    });
-  };
-
-  /**
-   * Delete exercise
-   * @param {string} local_id_contenido
-   * @param {string} local_id_ejercicio
-   */
-  const dropEjercicio = (local_id_contenido, local_id_ejercicio) => {
-    setRutinaTemplate({
-      ...rutinaTemplate,
-      contenido: rutinaTemplate.contenido.map((dia) =>
-        dia.local_id === local_id_contenido
-          ? {
-              ...dia,
-              ejercicios: dia.ejercicios.filter(
-                (ejercicio) => ejercicio.local_id !== local_id_ejercicio
-              ),
-            }
-          : dia
-      ),
-    });
-  };
 
   // *********************************** FUNCTIONS ***********************************
 
@@ -157,7 +47,6 @@ function useRutina() {
    */
   const getAllRutinas = () => {
     ShowLog("useRutina/getAllRutinas");
-
     return rutinasServices
       .listarRutinas()
       .then(({ data }) => {
@@ -192,17 +81,13 @@ function useRutina() {
   return {
     isLoading,
     rutinas,
-    rutinaTemplate,
+    createRutinaTemplate,
+    selectedRutina,
     setRutinas,
-    initTemplate,
-    addTituloToRutina,
-    addNewContenido,
-    createContenido,
-    dropContenido,
-    dropEjercicio,
     createRutina,
     getAllRutinas,
     getRutina,
+    setSelectedRutina,
   };
 }
 

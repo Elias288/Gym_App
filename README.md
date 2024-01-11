@@ -1,4 +1,4 @@
-# GYM App v0.7.2
+# GYM App v0.8.0
 
 ## Descripción
 

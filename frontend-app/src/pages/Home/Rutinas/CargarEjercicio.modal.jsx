@@ -1,11 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { Button, Modal } from "react-native-paper";
+import uuid from "react-native-uuid";
 
 import InputTextCustom from "../../../components/InputTextCustom.component";
-import { SelectList } from "react-native-dropdown-select-list";
-import { Button, Modal } from "react-native-paper";
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
+import ShowLog from "../../../Utils/ShowLog";
 
 const MAX_NUMBER_OF_SERIES = 15;
 
@@ -15,8 +16,9 @@ const MAX_NUMBER_OF_SERIES = 15;
  * @property {string} value
  */
 
+/** @type {ejercicioType} */
 const ejercicioTemplate = {
-  local_id: "",
+  local_id: uuid.v4().toString().replace(/-/g, ""),
   nombre_ejercicio: "",
   repeticiones: "",
   series: "",
@@ -26,11 +28,12 @@ const ejercicioTemplate = {
  *
  * @param {Object} props
  * @param {boolean} props.isVisible
+ * @param {diaType} props.dia
  * @param {() => void} props.onDismiss
  * @param {(ejercicio: ejercicioType) => void} props.onSubmit
  *
  */
-const CargarEjercicioModal = ({ isVisible, onDismiss, onSubmit }) => {
+const CargarEjercicioModal = ({ isVisible, dia, onDismiss, onSubmit }) => {
   const [ejercicioInfo, setEjercicioInfo] = useState(
     /** @type {ejercicioType} */ (ejercicioTemplate)
   );
@@ -54,22 +57,35 @@ const CargarEjercicioModal = ({ isVisible, onDismiss, onSubmit }) => {
 
   const clearStates = () =>
     setEjercicioInfo({
-      local_id: "",
+      local_id: uuid.v4().toString().replace(/-/g, ""),
       nombre_ejercicio: "",
       repeticiones: "",
       series: "",
     });
 
+    /**
+     * Carga un ejercicio nuevo a el dia
+     */
   const submit = () => {
     if (ejercicioInfo.nombre_ejercicio === "") {
       alert("nombre no puede estar vacio");
       return;
     }
+
+    const isRepeated = dia.ejercicios.find(
+      (exer) => exer.nombre_ejercicio === ejercicioInfo.nombre_ejercicio
+    );
+    if (isRepeated) {
+      alert("nombre de ejercicio ya usado");
+      return;
+    }
+
     if (ejercicioInfo.repeticiones === "") {
       alert("repeticiones no puede estar vacio");
       return;
     }
 
+    ShowLog("CargarEjercicio/submit", JSON.stringify(ejercicioInfo, null, 4));
     onSubmit(ejercicioInfo);
     clearStates();
     onDismiss();
@@ -104,32 +120,20 @@ const CargarEjercicioModal = ({ isVisible, onDismiss, onSubmit }) => {
               setEjercicioInfo({ ...ejercicioInfo, repeticiones: e })
             }
             stateValue={ejercicioInfo.repeticiones}
-            label="00-00"
+            label="##-##"
             keyboardType="numeric"
             styleContainer={{ marginRight: 5, flex: 1 }}
           />
 
           {/* Series */}
-          <View>
-            <Text>Series</Text>
-            <View style={{ marginTop: 15 }}>
-              <SelectList
-                data={cantNumbersOfSeries}
-                defaultOption={{ key: "1", value: "1" }}
-                search={false}
-                setSelected={(/** @type {string} */ e) => {
-                  setEjercicioInfo({ ...ejercicioInfo, series: e });
-                }}
-                dropdownStyles={{ backgroundColor: "#fff", borderWidth: 0 }}
-                boxStyles={{
-                  backgroundColor: "#fff",
-                  borderWidth: 0,
-                  height: 50,
-                  alignItems: "center",
-                }}
-              />
-            </View>
-          </View>
+          <InputTextCustom
+            supLabel="Series"
+            state={(e) => setEjercicioInfo({ ...ejercicioInfo, series: e })}
+            stateValue={ejercicioInfo.series}
+            label="#"
+            keyboardType={"numeric"}
+            styleContainer={{ flex: 1 }}
+          />
         </View>
 
         <View style={styles.actions}>

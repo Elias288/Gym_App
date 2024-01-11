@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
+import { Divider } from "react-native-paper";
 
 /**
  * @param {Object} props
@@ -8,22 +9,27 @@ import { View, Text, StyleSheet } from "react-native";
  */
 export const ViewEjercicioItem = ({ ejercicio, style }) => {
   return (
-    <View style={[style.container, style]}>
-      <Text style={{ flex: 3 }}>{ejercicio.nombre_ejercicio}</Text>
-      <Text style={{ flex: 2 }}>{ejercicio.repeticiones}</Text>
-      <Text style={{ flex: 1 }}>{ejercicio.series}</Text>
-    </View>
+    <>
+      <Divider />
+      <View style={[ViewEjercicioItemStyle.container, style]}>
+        <Text style={{ flex: 3 }}>{ejercicio.nombre_ejercicio}</Text>
+        <Text style={{ flex: 2, marginLeft: 10 }}>
+          {ejercicio.repeticiones}
+        </Text>
+        <Text style={{ flex: 1 }}>{ejercicio.series}</Text>
+      </View>
+    </>
   );
 };
 
-const style = StyleSheet.create({
+const ViewEjercicioItemStyle = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flexDirection: "row",
     flex: 1,
     justifyContent: "space-between",
-    padding: 10,
-    marginBottom: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
     borderRadius: 10,
   },
 });

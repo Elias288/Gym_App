@@ -7,10 +7,11 @@ import { GlobalStyles } from "../Utils/GlobalStyles";
  * @param {Object} children
  * @param {Object} props
  * @param {string} [props.titulo]
+ * @param {any} [props.style]
  */
-const BorderContainerComponent = ({ titulo, children }) => {
+const BorderContainerComponent = ({ titulo, children, style }) => {
   return (
-    <View style={styles.container}>
+    <View style={[style, styles.container]}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{titulo}</Text>
       </View>

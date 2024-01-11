@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect } from "react";
+import { View, StyleSheet, Text, FlatList } from "react-native";
+import { IconButton } from "react-native-paper";
 
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import { IconButton } from "react-native-paper";
-import { rutinaContext } from "../../../provider/RutinasProvider";
-import { useEffect } from "react";
+import { useRutinaContext } from "../../../provider/RutinasProvider";
+import { RenderRoutine } from "./RenderRoutine";
 
 const ListarRutinaScreen = ({ navigation }) => {
-  const { getAllRutinas, rutinas } = rutinaContext();
+  const { getAllRutinas, rutinas, setRutinas } = useRutinaContext();
 
   useEffect(() => {
     chargeRutinas();
@@ -21,17 +21,34 @@ const ListarRutinaScreen = ({ navigation }) => {
     });
   };
 
+  /**
+   * @param {rutinaType} routine
+   */
+  const dropRoutine = (routine) => {
+    alert("not implemented");
+  };
+
   const goToCrear = () => {
     navigation.navigate("CrearRutina");
   };
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={{ paddingHorizontal: 40 }}>
-          <Text>{JSON.stringify(rutinas, null, 4)}</Text>
+      {rutinas.length === 0 ? (
+        <View style={styles.msgContainer}>
+          <Text style={styles.msgText}>Empty Routines List</Text>
         </View>
-      </ScrollView>
+      ) : (
+        <>
+          <FlatList
+            data={rutinas}
+            renderItem={({ item }) => (
+              <RenderRoutine routine={item} onDelete={dropRoutine} />
+            )}
+          />
+        </>
+      )}
+
       <IconButton
         icon={"plus"}
         mode="contained"
@@ -50,8 +67,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: GlobalStyles.headerHeight,
     backgroundColor: GlobalStyles.colorLightGray,
-    alignItems: "center",
+    padding: GlobalStyles.horizontalPadding,
+  },
+  msgContainer: {
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  msgText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: GlobalStyles.colorGray,
   },
 });
 

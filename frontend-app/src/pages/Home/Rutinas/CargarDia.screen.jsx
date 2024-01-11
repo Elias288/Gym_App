@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Pressable, Text } from "react-native";
 import { Button, IconButton, Portal } from "react-native-paper";
 
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
@@ -8,19 +8,37 @@ import InputTextCustom from "../../../components/InputTextCustom.component";
 import BorderContainerComponent from "../../../components/borderContainer.component";
 import CargarEjercicioModal from "./CargarEjercicio.modal";
 import { ViewEjercicioItem } from "./ViewEjercicioItem";
-import { rutinaContext } from "../../../provider/RutinasProvider";
+import UpdateEjercicioModal from "./UpdateEjercicio.modal";
+import CustomModal, {
+  customModalStyles,
+} from "../../../components/CustomModal.component";
+import ShowLog from "../../../Utils/ShowLog";
 
+/**
+ * @typedef {Object} RouteParams
+ * @property {Object} params
+ * @property {rutinaType} params.routine
+ * @property {diaType} params.diaInfo
+ * @property {number} params.cantDias
+ */
+
+/**
+ * @param {Object} props
+ * @param {any} props.navigation
+ * @param {RouteParams} props.route
+ * @returns
+ */
 const CargarDiaScreen = ({ route, navigation }) => {
-  const { diaInfo, cantDias } = route.params;
-  const { dropContenido, createContenido } = rutinaContext();
+  const { routine, diaInfo, cantDias } = route.params;
   const isOnlyOne = cantDias === 1;
 
-  const [diaName, setDiaName] = useState(
-    /** @type {string} */ (diaInfo.nombre)
-  );
-  const [visibleModal, setVisibleModal] = useState(false);
-  const [ejercicios, setEjercicios] = useState(
-    /** @type {Array<ejercicioType>} */ (diaInfo.ejercicios)
+  const [visibleChargeModal, setVisibleChargeModal] = useState(false);
+  const [visibleUpdateModal, setVisibleUpdatModal] = useState(false);
+  const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
+
+  const [newDia, setNewDia] = useState(diaInfo);
+  const [selectedEjercicio, setSelectedEjercicio] = useState(
+    /** @type {ejercicioType} */ (undefined)
   );
 
   /** * @type {Partial<ejercicioType>} */
@@ -31,42 +49,123 @@ const CargarDiaScreen = ({ route, navigation }) => {
   };
 
   /**
-   * @param {ejercicioType} ejercicio
+   * Guarda el dia en la rutina
    */
-  const chargeEjercicio = (ejercicio) => {
-    setEjercicios([...ejercicios, ejercicio]);
+  const onSaveDia = () => {
+    /**
+     * @type {rutinaType}
+     * */
+    const updateRoutine = {
+      ...routine,
+      contenido: routine.contenido.map((dia) => {
+        if (dia.local_id === newDia.local_id) {
+          return newDia;
+        }
+        return dia;
+      }),
+    };
+    ShowLog("cargarDia/onSaveDia", JSON.stringify(updateRoutine, null, 4));
+    navigation.navigate("CrearRutina", { updateRoutine });
   };
 
+  /**
+   * Elimina el dia actual de la rutina
+   */
   const deleteDia = () => {
-    dropContenido(diaInfo.local_id);
-    navigation.goBack();
+    /** @type {rutinaType} */
+    const updateRoutine = {
+      ...routine,
+      contenido: routine.contenido.filter(
+        (dia) => dia.local_id !== diaInfo.local_id
+      ),
+    };
+
+    navigation.navigate("CrearRutina", { updateRoutine });
   };
 
   const Cancel = () => {
     navigation.goBack();
   };
 
-  const onSaveDia = () => {
-    createContenido(diaInfo.local_id, diaName, ejercicios);
-    navigation.goBack();
+  /**
+   * Recibe el nuevo ejercicio y lo carga en la lista
+   * @param {ejercicioType} ejercicio
+   */
+  const chargeEjercicio = (ejercicio) => {
+    /** @type {diaType} */
+    const updatedDia = {
+      ...newDia,
+      ejercicios: [...newDia.ejercicios, ejercicio],
+    };
+
+    ShowLog("CargarDia/chargeEjercicio", JSON.stringify(updatedDia, null, 4));
+    setNewDia(updatedDia);
+  };
+
+  /**
+   * Recibe un ejercicio lo busca y actualiza en la lista de ejercicios
+   * @param {ejercicioType} exercise
+   */
+  const updateExercise = (exercise) => {
+    /** @type {diaType} */
+    const updatedDia = {
+      ...newDia,
+      ejercicios: newDia.ejercicios.map((exer) => {
+        return exer.local_id === exercise.local_id ? exercise : exer;
+      }),
+    };
+
+    ShowLog("CargarDia/updateExercise", JSON.stringify(updatedDia, null, 4));
+    setNewDia(updatedDia);
+  };
+
+  /**
+   * Elimina un ejercicio del dia segun su local_id
+   * @param {ejercicioType} exercise
+   */
+  const dropExercise = (exercise) => {
+    /** @type {diaType} */
+    const updatedDia = {
+      ...newDia,
+      ejercicios: newDia.ejercicios.filter(
+        (exer) => exer.local_id !== exercise.local_id
+      ),
+    };
+
+    ShowLog("CargarDia/dropExercise", JSON.stringify(updatedDia, null, 4));
+    setNewDia(updatedDia);
+  };
+
+  /**
+   *  Selecciona el ejercicio y hace visible el modal
+   * @param {ejercicioType} ejercicio
+   */
+  const updateEjercicio = (ejercicio) => {
+    setSelectedEjercicio(ejercicio);
+    setVisibleUpdatModal(true);
   };
 
   return (
     <View style={styles.container}>
       <View style={{ marginBottom: 20, flex: 1 }}>
         <InputTextCustom
-          state={setDiaName}
-          stateValue={diaName}
+          state={(e) => setNewDia({ ...newDia, nombre: e })}
+          stateValue={newDia.nombre}
           supLabel="Nombre"
           canDisabled={true}
         />
 
-        <BorderContainerComponent titulo="Ejercicios">
-          <View style={{ marginTop: 20, maxHeight: 400 }}>
+        <BorderContainerComponent titulo="Ejercicios" style={{ flex: 1 }}>
+          <View style={{ marginTop: 20 }}>
             <FlatList
-              data={ejercicios}
+              data={newDia.ejercicios}
               keyExtractor={(item) => item.nombre_ejercicio}
-              renderItem={({ item }) => <ViewEjercicioItem ejercicio={item} />}
+              renderItem={({ item }) => (
+                <PressableEjercicioItem
+                  ejercicio={item}
+                  action={() => updateEjercicio(item)}
+                />
+              )}
               ListHeaderComponent={() => (
                 <ViewEjercicioItem
                   ejercicio={TABLE_HEADER}
@@ -80,7 +179,7 @@ const CargarDiaScreen = ({ route, navigation }) => {
             <IconButton
               icon="plus"
               mode="contained"
-              onPress={() => setVisibleModal(true)}
+              onPress={() => setVisibleChargeModal(true)}
             />
           </View>
         </BorderContainerComponent>
@@ -88,11 +187,15 @@ const CargarDiaScreen = ({ route, navigation }) => {
 
       <View style={styles.actions}>
         {!isOnlyOne && (
-          <Button mode="contained" onPress={deleteDia}>
+          <Button
+            mode="contained"
+            onPress={() => setVisibleDeleteModal(true)}
+            style={{ marginRight: 5 }}
+          >
             Borrar
           </Button>
         )}
-        <Button mode="contained" onPress={onSaveDia}>
+        <Button mode="contained" onPress={onSaveDia} style={{ marginRight: 5 }}>
           Guardar
         </Button>
         <Button mode="contained" onPress={Cancel}>
@@ -101,12 +204,35 @@ const CargarDiaScreen = ({ route, navigation }) => {
       </View>
 
       <Portal>
+        {/* Add exercise */}
         <CargarEjercicioModal
-          isVisible={visibleModal}
-          onDismiss={() => setVisibleModal(false)}
+          dia={newDia}
+          isVisible={visibleChargeModal}
+          onDismiss={() => setVisibleChargeModal(false)}
           onSubmit={chargeEjercicio}
         />
+
+        {/* Update exercise */}
+        <UpdateEjercicioModal
+          isVisible={visibleUpdateModal}
+          onDismiss={() => setVisibleUpdatModal(false)}
+          ejercicio={selectedEjercicio}
+          onSubmit={updateExercise}
+          onDelete={dropExercise}
+        />
       </Portal>
+
+      <CustomModal
+        isVisible={visibleDeleteModal}
+        hideModal={() => setVisibleDeleteModal(false)}
+        isAcceptCancel={true}
+        onAceptar={deleteDia}
+      >
+        <Text style={customModalStyles.modalTitle}>Alerta</Text>
+        <Text style={customModalStyles.modalMessage}>
+          Desea eliminar este día?
+        </Text>
+      </CustomModal>
     </View>
   );
 };
@@ -129,14 +255,46 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   tableHeader: {
-    borderRadius: 0,
-    borderTopEndRadius: 10,
-    borderTopStartRadius: 10,
     backgroundColor: GlobalStyles.colorLightCian,
   },
   actions: {
     justifyContent: "flex-end",
     flexDirection: "row",
+  },
+});
+
+/**
+ * @param {Object} props
+ * @param {Partial<ejercicioType>} props.ejercicio
+ * @param {(ejercicio: ejercicioType) => void} props.action
+ */
+const PressableEjercicioItem = ({ ejercicio, action }) => {
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        {
+          backgroundColor: !pressed
+            ? GlobalStyles.colorWhite
+            : GlobalStyles.colorGray,
+        },
+        pressableEjercicioItemStyle.container,
+      ]}
+      onLongPress={action}
+    >
+      <Text style={{ flex: 3 }}>{ejercicio.nombre_ejercicio}</Text>
+      <Text style={{ flex: 2 }}>{ejercicio.repeticiones}</Text>
+      <Text style={{ flex: 1 }}>{ejercicio.series}</Text>
+    </Pressable>
+  );
+};
+
+const pressableEjercicioItemStyle = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+    marginBottom: 5,
+    borderRadius: 10,
   },
 });
 
