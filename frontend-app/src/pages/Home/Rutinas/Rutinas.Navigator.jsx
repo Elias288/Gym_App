@@ -2,9 +2,9 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { CustomHeader } from "../../../components/CustomHeader/CustomHeader.component";
-import ListarRutinaScreen from "./ListarRutinas.screen";
-import CrearRutinaScreen from "./CrearRutina.screen";
-import CargarDiaScreen from "./CargarDia.screen";
+import ListarRutinaScreen from "./ListarRutinas/ListarRutinas.screen";
+import CrearRutinaScreen from "./CrearRutina/CrearRutina.screen";
+import CargarDiaScreen from "./CargarDia/CargarDia.screen";
 
 const RutinasStack = createNativeStackNavigator();
 

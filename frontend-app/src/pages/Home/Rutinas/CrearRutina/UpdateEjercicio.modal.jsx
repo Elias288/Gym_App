@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Modal, Portal } from "react-native-paper";
-import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import InputTextCustom from "../../../components/InputTextCustom.component";
+import { GlobalStyles } from "../../../../Utils/GlobalStyles";
+import InputTextCustom from "../../../../components/InputTextCustom.component";
 import CustomModal, {
   customModalStyles,
-} from "../../../components/CustomModal.component";
-import ShowLog from "../../../Utils/ShowLog";
+} from "../../../../components/CustomModal.component";
+import ShowLog from "../../../../Utils/ShowLog";
 
 /**
  *

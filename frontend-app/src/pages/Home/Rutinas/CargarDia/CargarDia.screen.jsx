@@ -1,18 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import { View, StyleSheet, FlatList, Pressable, Text } from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import { Button, IconButton, Portal } from "react-native-paper";
 
-import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import InputTextCustom from "../../../components/InputTextCustom.component";
-import BorderContainerComponent from "../../../components/borderContainer.component";
-import CargarEjercicioModal from "./CargarEjercicio.modal";
-import { ViewEjercicioItem } from "./ViewEjercicioItem";
-import UpdateEjercicioModal from "./UpdateEjercicio.modal";
+import { GlobalStyles } from "../../../../Utils/GlobalStyles";
+import InputTextCustom from "../../../../components/InputTextCustom.component";
+import BorderContainerComponent from "../../../../components/borderContainer.component";
+import CargarEjercicioModal from "../CrearRutina/CargarEjercicio.modal";
+import { ViewEjercicioItem } from "../ListarRutinas/ViewEjercicioItem";
+import UpdateEjercicioModal from "../CrearRutina/UpdateEjercicio.modal";
 import CustomModal, {
   customModalStyles,
-} from "../../../components/CustomModal.component";
-import ShowLog from "../../../Utils/ShowLog";
+} from "../../../../components/CustomModal.component";
+import ShowLog from "../../../../Utils/ShowLog";
+import { PressableEjercicioItem } from "./PressableEjercicioItem";
 
 /**
  * @typedef {Object} RouteParams
@@ -260,41 +261,6 @@ const styles = StyleSheet.create({
   actions: {
     justifyContent: "flex-end",
     flexDirection: "row",
-  },
-});
-
-/**
- * @param {Object} props
- * @param {Partial<ejercicioType>} props.ejercicio
- * @param {(ejercicio: ejercicioType) => void} props.action
- */
-const PressableEjercicioItem = ({ ejercicio, action }) => {
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: !pressed
-            ? GlobalStyles.colorWhite
-            : GlobalStyles.colorGray,
-        },
-        pressableEjercicioItemStyle.container,
-      ]}
-      onLongPress={action}
-    >
-      <Text style={{ flex: 3 }}>{ejercicio.nombre_ejercicio}</Text>
-      <Text style={{ flex: 2 }}>{ejercicio.repeticiones}</Text>
-      <Text style={{ flex: 1 }}>{ejercicio.series}</Text>
-    </Pressable>
-  );
-};
-
-const pressableEjercicioItemStyle = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-    marginBottom: 5,
-    borderRadius: 10,
   },
 });
 

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 
-import { ViewEjercicioItem } from "./ViewEjercicioItem";
-import { GlobalStyles } from "../../../Utils/GlobalStyles";
+import { GlobalStyles } from "../../../../Utils/GlobalStyles";
 import CustomModal, {
   customModalStyles,
-} from "../../../components/CustomModal.component";
+} from "../../../../components/CustomModal.component";
+import { ViewDiaItem } from "./ViewDiaItem";
 
 /** * @type {Partial<ejercicioType>} */
-const TABLE_HEADER = {
+export const TABLE_HEADER = {
   nombre_ejercicio: "Ejercicio",
   repeticiones: "Repeticiones",
   series: "Series",
@@ -64,36 +64,6 @@ export const RenderRoutine = ({ routine, onDelete }) => {
   );
 };
 
-/**
- *
- * @param {Object} props
- * @param {diaType} props.dia
- * @returns
- */
-const ViewDiaItem = ({ dia }) => {
-  return (
-    <>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
-          {dia.nombre}
-        </Text>
-
-        <FlatList
-          data={dia.ejercicios}
-          keyExtractor={(item) => item.nombre_ejercicio}
-          renderItem={({ item }) => <ViewEjercicioItem ejercicio={item} />}
-          ListHeaderComponent={() => (
-            <ViewEjercicioItem
-              ejercicio={TABLE_HEADER}
-              style={styles.tableHeader}
-            />
-          )}
-        />
-      </View>
-    </>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
@@ -104,11 +74,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
   },
-  tableHeader: {
-    borderRadius: 0,
-    paddingVertical: 5,
-    backgroundColor: GlobalStyles.colorLightCian,
-  },
+
   actions: {
     flexDirection: "row",
   },

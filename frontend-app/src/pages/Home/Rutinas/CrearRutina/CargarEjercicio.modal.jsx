@@ -4,9 +4,9 @@ import { View, Text, StyleSheet } from "react-native";
 import { Button, Modal } from "react-native-paper";
 import uuid from "react-native-uuid";
 
-import InputTextCustom from "../../../components/InputTextCustom.component";
-import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import ShowLog from "../../../Utils/ShowLog";
+import InputTextCustom from "../../../../components/InputTextCustom.component";
+import { GlobalStyles } from "../../../../Utils/GlobalStyles";
+import ShowLog from "../../../../Utils/ShowLog";
 
 const MAX_NUMBER_OF_SERIES = 15;
 
@@ -63,9 +63,9 @@ const CargarEjercicioModal = ({ isVisible, dia, onDismiss, onSubmit }) => {
       series: "",
     });
 
-    /**
-     * Carga un ejercicio nuevo a el dia
-     */
+  /**
+   * Carga un ejercicio nuevo a el dia
+   */
   const submit = () => {
     if (ejercicioInfo.nombre_ejercicio === "") {
       alert("nombre no puede estar vacio");

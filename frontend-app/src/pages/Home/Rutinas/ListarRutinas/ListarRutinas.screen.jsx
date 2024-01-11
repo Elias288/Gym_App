@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import { IconButton } from "react-native-paper";
 
-import { GlobalStyles } from "../../../Utils/GlobalStyles";
-import { useRutinaContext } from "../../../provider/RutinasProvider";
+import { GlobalStyles } from "../../../../Utils/GlobalStyles";
+import { useRutinaContext } from "../../../../provider/RutinasProvider";
 import { RenderRoutine } from "./RenderRoutine";
 
 const ListarRutinaScreen = ({ navigation }) => {
