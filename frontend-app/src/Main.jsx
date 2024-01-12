@@ -1,8 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { ActivityIndicator } from "react-native-paper";
-import { View } from "react-native";
 
 import LoginScreen from "./pages/Login/Login.screen";
 import CrearUsuarioScreen from "./pages/CreateUser/CrearUsuario.screen";
@@ -13,14 +11,7 @@ import { authContext } from "./provider/AuthProvider";
 const RootStack = createNativeStackNavigator();
 
 function Main() {
-  const { isLogin, isChargeLoading } = authContext();
-
-  if (isChargeLoading)
-    return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator animating={true} size={100} />
-      </View>
-    );
+  const { isLogin } = authContext();
 
   return (
     <NavigationContainer>

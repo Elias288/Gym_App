@@ -7,13 +7,6 @@ import CustomModal, {
 } from "../../../../components/CustomModal.component";
 import { ViewDiaItem } from "./ViewDiaItem";
 
-/** * @type {Partial<ejercicioType>} */
-export const TABLE_HEADER = {
-  nombre_ejercicio: "Ejercicio",
-  repeticiones: "Repeticiones",
-  series: "Series",
-};
-
 /**
  * @param {Object} props
  * @param {rutinaType} props.routine

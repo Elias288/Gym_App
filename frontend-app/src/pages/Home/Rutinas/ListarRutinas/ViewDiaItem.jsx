@@ -2,7 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { ViewEjercicioItem } from "./ViewEjercicioItem";
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
-import { TABLE_HEADER } from "./RenderRoutine";
+
+/** * @type {Partial<ejercicioType>} */
+export const TABLE_HEADER = {
+  nombre_ejercicio: "Ejercicio",
+  repeticiones: "Repeticiones",
+  series: "Series",
+};
 
 /**
  *

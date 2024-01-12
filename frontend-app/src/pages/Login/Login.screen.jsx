@@ -1,14 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 
 import LoginForm from "./LoginForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { authContext } from "../../provider/AuthProvider";
+import ShowLog from "../../Utils/ShowLog";
+import { CustomMessage } from "../CreateUser/CustomMessage";
 
 const LoginScreen = ({ navigation }) => {
-  const { isLoading } = authContext();
+  const { isLoading, isChargeLoading, getUserInfo } = authContext();
   const goToCreateUser = () => navigation.navigate("CrearUsuario");
+
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(false);
+
+  useEffect(() => {
+    chargeUserInfo();
+  }, []);
+
+  const chargeUserInfo = async () => {
+    setMessageType(true);
+    const result = await getUserInfo();
+
+    if (result.status === "Error") {
+      ShowLog("loginScreen/chargeUserInfo/error", JSON.stringify(result));
+      setMessageType(false);
+      if (Array.isArray(result.message)) {
+        setMessage(result.message.map((err) => "- " + err).join("\n"));
+        return;
+      }
+
+      setMessage("- " + result.message);
+    }
+  };
+
+  if (isChargeLoading)
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator animating={true} size={100} />
+      </View>
+    );
 
   return (
     <View style={styles.container}>
@@ -16,6 +48,7 @@ const LoginScreen = ({ navigation }) => {
         {/* Login form */}
         <View style={{ flex: 1, justifyContent: "center" }}>
           <LoginForm />
+          <CustomMessage message={message} type={messageType} />
         </View>
 
         <View style={{ padding: 20, alignItems: "center" }}>

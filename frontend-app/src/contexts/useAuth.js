@@ -14,7 +14,7 @@ function useAuth() {
   );
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isChargeLoading, setIsChargeLoading] = useState(false);
+  const [isChargeLoading, setIsChargeLoading] = useState(true);
 
   // ****************************** AUXILIAR FUNCTIONS ******************************
 
@@ -25,7 +25,6 @@ function useAuth() {
   const saveToken = async (token) => {
     ShowLog("useAuth/saveToken");
     await AsyncStorage.setItem(storedTokenPath, token);
-    setIsLogin(true);
   };
 
   /**
@@ -93,14 +92,20 @@ function useAuth() {
 
         ShowLog("useAuth/loginToken:", data.access_token);
 
-        UserServices.getUsuarioInfo().then(({ data }) => {
-          ShowLog("useAuth/loginUser: ", JSON.stringify(data, null, 4));
-          setUserInfo(data);
-          setIsLoading(false);
-          return { status: "Ok", message: "Logged" };
-        });
+        return UserServices.getUsuarioInfo()
+          .then(({ data }) => {
+            ShowLog("useAuth/loginUser: ", JSON.stringify(data, null, 4));
+            setUserInfo(data);
+            setIsLogin(true);
+            setIsLoading(false);
 
-        return { status: "Error", message: "Error obteniendo usuario" };
+            return { status: "Ok", message: "Logged" };
+          })
+          .catch((e) => {
+            setIsLoading(false);
+            setIsLogin(false);
+            return catchError(e);
+          });
       })
       .catch((e) => {
         setIsLoading(false);
@@ -111,6 +116,7 @@ function useAuth() {
   /** Logout */
   const logout = () => {
     ShowLog("logout");
+    setIsLoading(false);
     setIsChargeLoading(false);
     clearUserInfo();
   };
@@ -120,12 +126,11 @@ function useAuth() {
    * @returns {Promise<ResultType>}
    */
   const getUserInfo = async () => {
-    ShowLog("useAuth/getUserInfo");
-
     const token = await AsyncStorage.getItem(storedTokenPath);
     if (token === null) {
       console.log("not Logged");
       setIsLogin(false);
+      setIsChargeLoading(false);
       return { status: "NotLogged", message: "" };
     }
     setIsLoading(true);
@@ -133,13 +138,13 @@ function useAuth() {
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
         ShowLog("useAuth/getUserInfo", JSON.stringify(data, null, 4));
-
-        setIsLoading(false);
         setUserInfo(data);
         setIsLogin(true);
+        setIsChargeLoading(false);
         return { status: "Ok", message: data };
       })
       .catch((e) => {
+        setIsChargeLoading(false);
         setIsLoading(false);
         setIsLogin(false);
         return catchError(e);

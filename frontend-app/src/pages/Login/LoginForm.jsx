@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
@@ -9,31 +9,12 @@ import { CustomMessage } from "../CreateUser/CustomMessage";
 import { authContext } from "../../provider/AuthProvider";
 
 const LoginForm = () => {
-  const { login, getUserInfo, isLoading } = authContext();
+  const { login, isLoading } = authContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(false);
-
-  useEffect(() => {
-    chargeUserInfo();
-  }, []);
-
-  const chargeUserInfo = async () => {
-    setMessageType(true);
-    const result = await getUserInfo();
-
-    if (result.status === "Error") {
-      setMessageType(false);
-      if (Array.isArray(result.message)) {
-        setMessage(result.message.map((err) => "- " + err).join("\n"));
-        return;
-      }
-
-      setMessage("- " + result.message);
-    }
-  };
 
   const handleLogin = async () => {
     setMessage("");
