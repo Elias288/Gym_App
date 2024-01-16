@@ -9,7 +9,7 @@ import { GlobalStyles } from "../../../../Utils/GlobalStyles";
  * @param {diaType} props.diaInfo
  * @param {() => void} props.goToCargarDia
  */
-export const ViewDiaItem = ({ diaInfo, goToCargarDia }) => {
+export const RenderDia = ({ diaInfo, goToCargarDia }) => {
   return (
     <Pressable
       style={({ pressed }) => [

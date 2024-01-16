@@ -21,15 +21,16 @@ const ListarRutinaScreen = ({ navigation }) => {
     });
   };
 
-  /**
-   * @param {rutinaType} routine
-   */
-  const dropRoutine = (routine) => {
-    alert("not implemented");
-  };
-
   const goToCrear = () => {
     navigation.navigate("CrearRutina");
+  };
+
+  /**
+   * Navega hacia la pagina ViewRutinaScreen
+   * @param {rutinaType} rutina
+   */
+  const goToViewRutinaScreen = (rutina) => {
+    navigation.navigate("ViewRutina", { routine: rutina });
   };
 
   return (
@@ -43,7 +44,13 @@ const ListarRutinaScreen = ({ navigation }) => {
           <FlatList
             data={rutinas}
             renderItem={({ item }) => (
-              <RenderRoutine routine={item} onDelete={dropRoutine} />
+              <RenderRoutine
+                routine={item}
+                goToView={() => goToViewRutinaScreen(item)}
+              />
+            )}
+            ListFooterComponent={() => (
+              <View style={{ paddingVertical: 40 }}></View>
             )}
           />
         </>
@@ -67,7 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: GlobalStyles.headerHeight,
     backgroundColor: GlobalStyles.colorLightGray,
-    padding: GlobalStyles.horizontalPadding,
   },
   msgContainer: {
     flex: 1,

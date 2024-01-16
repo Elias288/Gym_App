@@ -13,8 +13,11 @@ import { authContext } from "../../provider/AuthProvider";
  * @param {string} props.title
  * @param {string} [props.sideBarSelected]
  * @param {boolean} [props.hasSideBar]
+ * @param {boolean} [props.hasGoBackButton]
  */
-export const CustomHeader = ({ title, hasSideBar, sideBarSelected }) => {
+export const CustomHeader = (props) => {
+  const { title, hasSideBar, sideBarSelected, hasGoBackButton } = props;
+
   const { logout, userInfo } = authContext();
   const navigator = useNavigation();
 
@@ -55,6 +58,15 @@ export const CustomHeader = ({ title, hasSideBar, sideBarSelected }) => {
               />
             </Portal>
           </>
+        )}
+
+        {hasGoBackButton && (
+          <View style={{ justifyContent: "center" }}>
+            <IconButton
+              icon={"arrow-left-bottom"}
+              onPress={() => navigator.goBack()}
+            />
+          </View>
         )}
       </View>
     </View>

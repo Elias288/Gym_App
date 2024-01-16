@@ -8,7 +8,7 @@ import InputTextCustom from "../../../../components/InputTextCustom.component";
 import BorderContainerComponent from "../../../../components/borderContainer.component";
 import { useRutinaContext } from "../../../../provider/RutinasProvider";
 import ShowLog from "../../../../Utils/ShowLog";
-import { ViewDiaItem } from "./ViewDiaItem";
+import { ViewDiaItem } from "./RenderDia";
 
 const CrearRutinaScreen = ({ navigation, route }) => {
   const { rutinas, createRutinaTemplate, createRutina, setRutinas } =

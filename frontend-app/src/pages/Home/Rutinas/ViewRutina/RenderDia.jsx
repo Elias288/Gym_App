@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { ViewEjercicioItem } from "./ViewEjercicioItem";
+import { RenderEjercicio } from "./RenderEjercicio";
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
+import { Divider } from "react-native-paper";
 
 /** * @type {Partial<ejercicioType>} */
 export const TABLE_HEADER = {
@@ -16,30 +17,42 @@ export const TABLE_HEADER = {
  * @param {diaType} props.dia
  * @returns
  */
-export const ViewDiaItem = ({ dia }) => {
+export const RenderDia = ({ dia }) => {
   return (
-    <View>
-      <Text style={ViewDiaItemStyle.title}>{dia.nombre}</Text>
+    <>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{dia.nombre}</Text>
+      </View>
 
       <FlatList
         data={dia.ejercicios}
         keyExtractor={(item) => item.nombre_ejercicio}
-        renderItem={({ item }) => <ViewEjercicioItem ejercicio={item} />}
+        renderItem={({ item }) => <RenderEjercicio ejercicio={item} />}
         ListHeaderComponent={() => (
-          <ViewEjercicioItem
+          <RenderEjercicio
             ejercicio={TABLE_HEADER}
-            style={ViewDiaItemStyle.tableHeader}
+            style={styles.tableHeader}
           />
         )}
       />
-    </View>
+      <Divider />
+    </>
   );
 };
-const ViewDiaItemStyle = StyleSheet.create({
-  title: { fontSize: 20, fontWeight: "bold", textAlign: "center" },
+const styles = StyleSheet.create({
+  constainer: {},
+  titleContainer: {
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: "bold",
+  },
   tableHeader: {
     borderRadius: 0,
     paddingVertical: 5,
-    backgroundColor: GlobalStyles.colorLightCian,
+    marginBottom: 0,
+    backgroundColor: GlobalStyles.colorLightGray,
   },
 });

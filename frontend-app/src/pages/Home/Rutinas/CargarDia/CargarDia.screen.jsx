@@ -7,7 +7,7 @@ import { GlobalStyles } from "../../../../Utils/GlobalStyles";
 import InputTextCustom from "../../../../components/InputTextCustom.component";
 import BorderContainerComponent from "../../../../components/borderContainer.component";
 import CargarEjercicioModal from "../CrearRutina/CargarEjercicio.modal";
-import { ViewEjercicioItem } from "../ListarRutinas/ViewEjercicioItem";
+import { RenderEjercicio } from "../ViewRutina/RenderEjercicio";
 import UpdateEjercicioModal from "../CrearRutina/UpdateEjercicio.modal";
 import CustomModal, {
   customModalStyles,
@@ -168,7 +168,7 @@ const CargarDiaScreen = ({ route, navigation }) => {
                 />
               )}
               ListHeaderComponent={() => (
-                <ViewEjercicioItem
+                <RenderEjercicio
                   ejercicio={TABLE_HEADER}
                   style={styles.tableHeader}
                 />

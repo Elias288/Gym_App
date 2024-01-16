@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import LoginScreen from "./pages/Login/Login.screen";
 import CrearUsuarioScreen from "./pages/CreateUser/CrearUsuario.screen";
-import HomeScreen from "./pages/Home/Home.screen";
+import HomeNavigator from "./pages/Home/Home.navigatior";
 import { CustomHeader } from "./components/CustomHeader/CustomHeader.component";
 import { authContext } from "./provider/AuthProvider";
 
@@ -39,7 +39,7 @@ function Main() {
           <>
             <RootStack.Screen
               name="Home"
-              component={HomeScreen}
+              component={HomeNavigator}
               options={{
                 headerShown: false,
               }}

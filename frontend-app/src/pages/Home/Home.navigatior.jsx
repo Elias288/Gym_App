@@ -9,7 +9,7 @@ import { CustomHeader } from "../../components/CustomHeader/CustomHeader.compone
 
 const HomeStack = createNativeStackNavigator();
 
-const HomeScreen = () => {
+const HomeNavigator = () => {
   return (
     <HomeStack.Navigator initialRouteName="Inicio">
       <HomeStack.Screen
@@ -69,4 +69,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default HomeNavigator;

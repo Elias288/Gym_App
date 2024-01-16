@@ -5,6 +5,7 @@ import { CustomHeader } from "../../../components/CustomHeader/CustomHeader.comp
 import ListarRutinaScreen from "./ListarRutinas/ListarRutinas.screen";
 import CrearRutinaScreen from "./CrearRutina/CrearRutina.screen";
 import CargarDiaScreen from "./CargarDia/CargarDia.screen";
+import ViewRutinaScreen from "./ViewRutina/ViewRutina.screen";
 
 const RutinasStack = createNativeStackNavigator();
 
@@ -46,6 +47,17 @@ const RutinasNavigator = () => {
         component={CargarDiaScreen}
         options={{
           header: () => <CustomHeader title="Cargar Día" />,
+          headerTransparent: true,
+        }}
+      />
+
+      <RutinasStack.Screen
+        name="ViewRutina"
+        component={ViewRutinaScreen}
+        options={{
+          header: () => (
+            <CustomHeader title="Rutina Info" hasGoBackButton={true} />
+          ),
           headerTransparent: true,
         }}
       />

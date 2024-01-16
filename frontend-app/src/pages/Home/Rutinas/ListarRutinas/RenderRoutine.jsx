@@ -1,74 +1,38 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
-import CustomModal, {
-  customModalStyles,
-} from "../../../../components/CustomModal.component";
-import { ViewDiaItem } from "./ViewDiaItem";
+import { IconButton } from "react-native-paper";
 
 /**
  * @param {Object} props
  * @param {rutinaType} props.routine
- * @param {(routine: rutinaType) => void} props.onDelete
+ * @param {() => {}} props.goToView
  */
-export const RenderRoutine = ({ routine, onDelete }) => {
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+export const RenderRoutine = ({ routine, goToView }) => {
   return (
-    <>
-      <Pressable
-        style={({ pressed }) => [
-          {
-            backgroundColor: !pressed
-              ? GlobalStyles.colorWhite
-              : GlobalStyles.colorGray,
-          },
-          styles.container,
-        ]}
-        onLongPress={() => setShowDeleteModal(true)}
-      >
-        <View style={styles.title}>
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {routine.titulo}
-          </Text>
-        </View>
-
-        <View>
-          <FlatList
-            data={routine.contenido}
-            renderItem={({ item }) => <ViewDiaItem dia={item} />}
-          />
-        </View>
-      </Pressable>
-
-      <CustomModal
-        isVisible={showDeleteModal}
-        hideModal={() => setShowDeleteModal(false)}
-        isAcceptCancel={true}
-        onAceptar={() => onDelete(routine)}
-      >
-        <Text style={customModalStyles.modalTitle}>Alerta</Text>
-        <Text style={customModalStyles.modalMessage}>
-          Desea eliminar esta rutina?
-        </Text>
-      </CustomModal>
-    </>
+    <View style={styles.container}>
+      <Text style={styles.title}>{routine.titulo}</Text>
+      <View style={styles.actions}>
+        <IconButton icon={"arrow-right"} onPress={goToView} />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 10,
     marginBottom: 20,
+    marginHorizontal: 30,
+    backgroundColor: GlobalStyles.colorWhite,
+    flexDirection: "row",
+    alignItems: "center",
   },
   title: {
+    fontSize: 20,
     flex: 1,
-  },
-
-  actions: {
-    flexDirection: "row",
   },
 });
