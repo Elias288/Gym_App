@@ -1,4 +1,15 @@
-# GYM App v0.8.3
+# GYM App v0.9.0
+
+## Caracteristicas
+
+- [x] Crear usuario
+- [x] Loguear usuario
+- [x] Crear rutina (dias, ejercicios)
+- [x] Visualizar lista de rutinas
+- [x] Visualizar información de rutina
+- [ ] Editar rutina
+- [ ] Eliminar rutina
+- [x] Seleccionar rutina
 
 ## Descripción
 

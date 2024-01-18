@@ -35,6 +35,7 @@ export class UsuarioService {
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 8),
       rutinas: [],
+      selectedRoutineId: '',
     });
 
     return mongoUser.save();

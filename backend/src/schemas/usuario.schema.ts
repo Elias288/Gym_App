@@ -46,6 +46,9 @@ export class Usuario {
 
   @Prop()
   genero?: string;
+
+  @Prop()
+  selectedRoutineId: string;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

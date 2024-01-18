@@ -37,4 +37,8 @@ export class UsuarioDto {
   @IsOptional()
   @IsString()
   genero?: string;
+
+  @IsOptional()
+  @IsString()
+  selectedRoutineId?: string;
 }
