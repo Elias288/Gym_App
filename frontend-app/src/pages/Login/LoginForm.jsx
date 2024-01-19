@@ -6,10 +6,10 @@ import { useState } from "react";
 import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { CustomMessage } from "../CreateUser/CustomMessage";
-import { authContext } from "../../provider/AuthProvider";
+import { useAuthContext } from "../../provider/AuthProvider";
 
 const LoginForm = () => {
-  const { login, isLoading } = authContext();
+  const { login, isLoading } = useAuthContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

@@ -9,7 +9,7 @@ import InputTextCustom from "../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
 import { GenerosList } from "../../Utils/Generos";
 import { CustomMessage } from "./CustomMessage";
-import { authContext } from "../../provider/AuthProvider";
+import { useAuthContext } from "../../provider/AuthProvider";
 import BorderContainerComponent from "../../components/borderContainer.component";
 
 /**
@@ -29,7 +29,7 @@ const newUserTemplate = {
  * @param {() => void} props.onSubmit
  */
 const CrearUsuarioForm = ({ onSubmit }) => {
-  const { createUser, isLoading } = authContext();
+  const { createUser, isLoading } = useAuthContext();
 
   const [generos, setGeneros] = useState(/** @type {Array<selectType>} */ ([]));
   const [newUsuario, setNewUsuario] = useState(

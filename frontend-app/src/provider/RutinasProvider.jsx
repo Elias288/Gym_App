@@ -2,6 +2,7 @@ import React, { createContext, useContext } from "react";
 
 import useRutina from "../contexts/useRutina";
 
+/** @type {import('react').Context<import("../contexts/useRutina").useRutinaProps>} */
 const RutinaContext = createContext(undefined);
 
 /** @param {{ children: jsx.element}} [props] */

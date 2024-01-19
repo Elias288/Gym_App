@@ -59,13 +59,13 @@ const CargarDiaScreen = ({ route, navigation }) => {
     const updateRoutine = {
       ...routine,
       contenido: routine.contenido.map((dia) => {
-        if (dia.local_id === newDia.local_id) {
+        if (dia.nombre === newDia.nombre) {
           return newDia;
         }
         return dia;
       }),
     };
-    ShowLog("cargarDia/onSaveDia", JSON.stringify(updateRoutine, null, 4));
+    ShowLog("cargarDia/onSaveDia", updateRoutine);
     navigation.navigate("CrearRutina", { updateRoutine });
   };
 
@@ -77,7 +77,7 @@ const CargarDiaScreen = ({ route, navigation }) => {
     const updateRoutine = {
       ...routine,
       contenido: routine.contenido.filter(
-        (dia) => dia.local_id !== diaInfo.local_id
+        (dia) => dia.nombre !== diaInfo.nombre
       ),
     };
 
@@ -99,7 +99,7 @@ const CargarDiaScreen = ({ route, navigation }) => {
       ejercicios: [...newDia.ejercicios, ejercicio],
     };
 
-    ShowLog("CargarDia/chargeEjercicio", JSON.stringify(updatedDia, null, 4));
+    ShowLog("CargarDia/chargeEjercicio", updatedDia);
     setNewDia(updatedDia);
   };
 
@@ -112,11 +112,13 @@ const CargarDiaScreen = ({ route, navigation }) => {
     const updatedDia = {
       ...newDia,
       ejercicios: newDia.ejercicios.map((exer) => {
-        return exer.local_id === exercise.local_id ? exercise : exer;
+        return exer.nombre_ejercicio === exercise.nombre_ejercicio
+          ? exercise
+          : exer;
       }),
     };
 
-    ShowLog("CargarDia/updateExercise", JSON.stringify(updatedDia, null, 4));
+    ShowLog("CargarDia/updateExercise", updatedDia);
     setNewDia(updatedDia);
   };
 
@@ -129,11 +131,11 @@ const CargarDiaScreen = ({ route, navigation }) => {
     const updatedDia = {
       ...newDia,
       ejercicios: newDia.ejercicios.filter(
-        (exer) => exer.local_id !== exercise.local_id
+        (exer) => exer.nombre_ejercicio !== exercise.nombre_ejercicio
       ),
     };
 
-    ShowLog("CargarDia/dropExercise", JSON.stringify(updatedDia, null, 4));
+    ShowLog("CargarDia/dropExercise", updatedDia);
     setNewDia(updatedDia);
   };
 
@@ -238,6 +240,7 @@ const CargarDiaScreen = ({ route, navigation }) => {
   );
 };
 
+// TODO: mejorar estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,

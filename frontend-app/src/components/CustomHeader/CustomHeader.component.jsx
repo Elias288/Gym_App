@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import SideBarComponent from "./SideBar.component";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
-import { authContext } from "../../provider/AuthProvider";
+import { useAuthContext } from "../../provider/AuthProvider";
 
 /**
  * @param {Object} props
@@ -18,7 +18,7 @@ import { authContext } from "../../provider/AuthProvider";
 export const CustomHeader = (props) => {
   const { title, hasSideBar, sideBarSelected, hasGoBackButton } = props;
 
-  const { logout, userInfo } = authContext();
+  const { logout, userInfo } = useAuthContext();
   const navigator = useNavigation();
 
   const [visibleSideBar, setVisibleSideBar] = useState(

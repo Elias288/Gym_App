@@ -32,7 +32,7 @@ const UpdateEjercicioModal = ({
   useEffect(() => {
     if (ejercicio) {
       setEjercicioInfo(ejercicio);
-      ShowLog("UpdateEjercicio", JSON.stringify(ejercicio, null, 4));
+      ShowLog("UpdateEjercicio", ejercicio);
     }
   }, [ejercicio]);
 

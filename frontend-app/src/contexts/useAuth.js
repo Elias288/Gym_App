@@ -8,6 +8,24 @@ import catchError from "../Utils/catchError";
 
 const storedTokenPath = "@user/token";
 
+/**
+ * @typedef {Object} useAuthProps
+ * @property {boolean} isLogin
+ * @property {usuarioType} userInfo
+ * @property {boolean} isLoading
+ * @property {boolean} isChargeLoading
+ *
+ * @property {(newUsuario: crearUsuarioDto, pass2: string) => Promise<ResultType> | ResultType} createUser
+ * @property {(user_name: string, password: string) => Promise<ResultType>} login
+ * @property {() => void} logout
+ * @property {() => Promise<ResultType>} getUserInfo
+ * @property {(userInfo: Partial<crearUsuarioDto>) => Promise<ResultType>} updateUserInfo
+ */
+
+/**
+ *
+ * @returns {useAuthProps}
+ */
 function useAuth() {
   const [userInfo, setUserInfo] = useState(
     /** @type {(usuarioType | undefined)} */ (undefined)
@@ -59,7 +77,7 @@ function useAuth() {
       .then(() => {
         setIsLoading(false);
 
-        ShowLog("useAuth/createUser", "usuario creado");
+        ShowLog("useAuth/createUser", { msg: "usuario creado" });
 
         return {
           status: "Ok",
@@ -83,18 +101,15 @@ function useAuth() {
 
     return AuthServices.loginService(user_name, password)
       .then(({ data, status }) => {
-        ShowLog(
-          "useAuth/loginService:",
-          JSON.stringify({ data, status }, null, 4)
-        );
+        ShowLog("useAuth/loginService:", { data, status });
 
         saveToken(data.access_token);
 
-        ShowLog("useAuth/loginToken:", data.access_token);
+        ShowLog("useAuth/loginToken:", { token: data.access_token });
 
         return UserServices.getUsuarioInfo()
           .then(({ data }) => {
-            ShowLog("useAuth/loginUser: ", JSON.stringify(data, null, 4));
+            ShowLog("useAuth/loginUser: ", { data });
             setUserInfo(data);
             setIsLogin(true);
             setIsLoading(false);
@@ -115,7 +130,7 @@ function useAuth() {
 
   /** Logout */
   const logout = () => {
-    ShowLog("logout");
+    ShowLog("useAuth/logout");
     setIsLoading(false);
     setIsChargeLoading(false);
     clearUserInfo();
@@ -137,7 +152,7 @@ function useAuth() {
 
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
-        ShowLog("useAuth/getUserInfo", JSON.stringify(data, null, 4));
+        ShowLog("useAuth/getUserInfo", data);
         setUserInfo(data);
         setIsLogin(true);
         setIsChargeLoading(false);
@@ -151,6 +166,24 @@ function useAuth() {
       });
   };
 
+  /**
+   *
+   * @param {Partial<crearUsuarioDto>} userInfo
+   * @returns {Promise<ResultType>}
+   */
+  const updateUserInfo = (userInfo) => {
+    return UserServices.updateUsuario(userInfo)
+      .then(({ data }) => {
+        ShowLog("useAuth/updateUserInfo/res", data);
+
+        setUserInfo(data);
+        return { status: "Ok", message: data };
+      })
+      .catch((e) => {
+        return catchError(e);
+      });
+  };
+
   return {
     isLogin,
     userInfo,
@@ -160,6 +193,7 @@ function useAuth() {
     login,
     logout,
     getUserInfo,
+    updateUserInfo,
   };
 }
 

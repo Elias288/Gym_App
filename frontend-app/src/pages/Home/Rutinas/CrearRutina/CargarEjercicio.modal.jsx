@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button, Modal } from "react-native-paper";
-import uuid from "react-native-uuid";
 
 import InputTextCustom from "../../../../components/InputTextCustom.component";
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
@@ -18,7 +17,6 @@ const MAX_NUMBER_OF_SERIES = 15;
 
 /** @type {ejercicioType} */
 const ejercicioTemplate = {
-  local_id: uuid.v4().toString().replace(/-/g, ""),
   nombre_ejercicio: "",
   repeticiones: "",
   series: "",
@@ -57,7 +55,6 @@ const CargarEjercicioModal = ({ isVisible, dia, onDismiss, onSubmit }) => {
 
   const clearStates = () =>
     setEjercicioInfo({
-      local_id: uuid.v4().toString().replace(/-/g, ""),
       nombre_ejercicio: "",
       repeticiones: "",
       series: "",
@@ -85,7 +82,7 @@ const CargarEjercicioModal = ({ isVisible, dia, onDismiss, onSubmit }) => {
       return;
     }
 
-    ShowLog("CargarEjercicio/submit", JSON.stringify(ejercicioInfo, null, 4));
+    ShowLog("CargarEjercicio/submit", ejercicioInfo);
     onSubmit(ejercicioInfo);
     clearStates();
     onDismiss();

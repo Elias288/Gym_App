@@ -34,15 +34,14 @@ const getUsuarioInfo = async () => {
 
 /**
  * Update user by id service
- * @param {string} user_Id user id
  * @param {Partial<crearUsuarioDto>} updatedUser
  * @returns
  */
-const updateUsuario = async (user_Id, updatedUser) => {
+const updateUsuario = async (updatedUser) => {
   return axios.request({
     timeout: 2000,
     method: "PATCH",
-    url: url + `/${user_Id}`,
+    url,
     data: updatedUser,
     headers: await authHeader(),
   });

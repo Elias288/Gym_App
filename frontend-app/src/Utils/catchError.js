@@ -5,7 +5,7 @@ import ShowLog from "./ShowLog";
  * @returns {ResultType}
  */
 const catchError = (error) => {
-  ShowLog("catchError", JSON.stringify(error, null, 4));
+  ShowLog("catchError", error);
 
   if (error.response) {
     /** @type {string | Array<string>} */

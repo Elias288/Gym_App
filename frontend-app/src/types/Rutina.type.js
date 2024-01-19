@@ -1,7 +1,6 @@
 /**
  * ejercicio type definition
  * @typedef {Object} ejercicioType
- * @property {string} local_id
  * @property {string} nombre_ejercicio
  * @property {string} repeticiones
  * @property {string} series
@@ -9,7 +8,6 @@
 
 /**
  * @typedef {Object} diaType
- * @property {string} local_id
  * @property {string} nombre
  * @property {Array<ejercicioType>} ejercicios
  */
@@ -26,7 +24,7 @@
  * rutina type definition
  * @typedef {Object} rutinaType
  * @property {string} _id
- * @property {string} local_id
+ * @property {string} _id
  * @property {string} titulo
  * @property {Array<diaType>} contenido
  * @property {string} usuario_id

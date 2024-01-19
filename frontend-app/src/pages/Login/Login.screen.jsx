@@ -4,12 +4,12 @@ import { ActivityIndicator, Button } from "react-native-paper";
 
 import LoginForm from "./LoginForm";
 import { GlobalStyles } from "../../Utils/GlobalStyles";
-import { authContext } from "../../provider/AuthProvider";
+import { useAuthContext } from "../../provider/AuthProvider";
 import ShowLog from "../../Utils/ShowLog";
 import { CustomMessage } from "../CreateUser/CustomMessage";
 
 const LoginScreen = ({ navigation }) => {
-  const { isLoading, isChargeLoading, getUserInfo } = authContext();
+  const { isLoading, isChargeLoading, getUserInfo } = useAuthContext();
   const goToCreateUser = () => navigation.navigate("CrearUsuario");
 
   const [message, setMessage] = useState("");
@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
     const result = await getUserInfo();
 
     if (result.status === "Error") {
-      ShowLog("loginScreen/chargeUserInfo/error", JSON.stringify(result));
+      ShowLog("loginScreen/chargeUserInfo/error", result);
       setMessageType(false);
       if (Array.isArray(result.message)) {
         setMessage(result.message.map((err) => "- " + err).join("\n"));

@@ -1,4 +1,4 @@
-# GYM App v0.9.0
+# GYM App v0.9.1
 
 ## Caracteristicas
 
@@ -13,7 +13,7 @@
 
 ## Descripción
 
-Aplicación movil en React Native que permita llevar un registro y control de rutinas de ejercicios, pesos que se estén levantando, estado del usuario (peso, altura, etc.).
+Aplicación movil en React Native que permita llevar un registro y control de rutinas de ejercicios, pesos que se estén levantando, estado del usuario (peso, altura, etc.). La rutina seleccionada y la información de usuario debe almacenarse localmente, al iniciar la aplicación se debe consultar al backend y actualizar la información.
 Esto se llevará a cabo utilizando "Rutinas", estas rutinas contendrán:
 
 - Nombre que lo identifique

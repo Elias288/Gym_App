@@ -3,6 +3,6 @@
     "jsx": "react",
     "module": "CommonJS",
     "target": "ES2015"
-    // "checkJs": true
+    // ,"checkJs": true
   }
 }

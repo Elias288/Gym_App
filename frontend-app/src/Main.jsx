@@ -6,12 +6,12 @@ import LoginScreen from "./pages/Login/Login.screen";
 import CrearUsuarioScreen from "./pages/CreateUser/CrearUsuario.screen";
 import HomeNavigator from "./pages/Home/Home.navigatior";
 import { CustomHeader } from "./components/CustomHeader/CustomHeader.component";
-import { authContext } from "./provider/AuthProvider";
+import { useAuthContext } from "./provider/AuthProvider";
 
 const RootStack = createNativeStackNavigator();
 
 function Main() {
-  const { isLogin } = authContext();
+  const { isLogin } = useAuthContext();
 
   return (
     <NavigationContainer>

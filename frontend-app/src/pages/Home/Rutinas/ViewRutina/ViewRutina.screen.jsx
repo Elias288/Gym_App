@@ -1,3 +1,4 @@
+import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
 import { Button, Divider } from "react-native-paper";

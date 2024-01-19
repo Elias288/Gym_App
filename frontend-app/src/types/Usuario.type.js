@@ -7,6 +7,7 @@
  * @property {string} [altura]
  * @property {string} [peso]
  * @property {string} [genero]
+ * @property {string} [selectedRoutineId]
  */
 
 /**
@@ -20,4 +21,5 @@
  * @property {string} [altura]
  * @property {string} [peso]
  * @property {string} [genero]
+ * @property {string} [selectedRoutineId]
  */
