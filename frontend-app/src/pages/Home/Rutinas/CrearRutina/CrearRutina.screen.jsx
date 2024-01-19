@@ -8,7 +8,7 @@ import InputTextCustom from "../../../../components/InputTextCustom.component";
 import BorderContainerComponent from "../../../../components/borderContainer.component";
 import { useRutinaContext } from "../../../../provider/RutinasProvider";
 import ShowLog from "../../../../Utils/ShowLog";
-import { ViewDiaItem } from "./RenderDia";
+import { RenderDia } from "./RenderDia";
 
 const CrearRutinaScreen = ({ navigation, route }) => {
   const { rutinas, createRutinaTemplate, createRutina, setRutinas } =
@@ -26,7 +26,6 @@ const CrearRutinaScreen = ({ navigation, route }) => {
       local_id: uuid.v4().toString().replace(/-/g, ""),
       contenido: [
         {
-          local_id: uuid.v4().toString().replace(/-/g, ""),
           nombre: "Día 1",
           ejercicios: [],
         },
@@ -36,10 +35,9 @@ const CrearRutinaScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     if (route.params?.updateRoutine) {
-      ShowLog(
-        "crearRutina/params/updateRutine",
-        JSON.stringify(route.params.updateRoutine, null, 4)
-      );
+      ShowLog("crearRutina/params/updateRutine", {
+        updateRoutine: route.params.updateRoutine,
+      });
       setNewRoutine(route.params.updateRoutine);
     }
   }, [route.params?.updateRoutine]);
@@ -74,12 +72,10 @@ const CrearRutinaScreen = ({ navigation, route }) => {
   };
 
   /**
-   * @param {string} local_id
+   * @param {string} nombre
    */
-  const goToCargarDia = (local_id) => {
-    const diaInfo = newRoutine.contenido.find(
-      (dia) => dia.local_id === local_id
-    );
+  const goToCargarDia = (nombre) => {
+    const diaInfo = newRoutine.contenido.find((dia) => dia.nombre === nombre);
     if (!diaInfo) return;
 
     navigation.navigate("CargarDia", {
@@ -95,7 +91,6 @@ const CrearRutinaScreen = ({ navigation, route }) => {
       contenido: [
         ...newRoutine.contenido,
         {
-          local_id: uuid.v4().toString().replace(/-/g, ""),
           nombre: `Día ${newRoutine.contenido.length + 1}`,
           ejercicios: [],
         },
@@ -123,9 +118,9 @@ const CrearRutinaScreen = ({ navigation, route }) => {
             <FlatList
               data={newRoutine.contenido}
               renderItem={({ item }) => (
-                <ViewDiaItem
+                <RenderDia
                   diaInfo={item}
-                  goToCargarDia={() => goToCargarDia(item.local_id)}
+                  goToCargarDia={() => goToCargarDia(item.nombre)}
                 />
               )}
             />

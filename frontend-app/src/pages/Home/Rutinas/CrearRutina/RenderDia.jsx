@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
-import { Divider } from "react-native-paper";
+import { Divider, IconButton } from "react-native-paper";
 
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
 
@@ -24,9 +24,9 @@ export const RenderDia = ({ diaInfo, goToCargarDia }) => {
     >
       <View style={ViewDiaItemStyle.dia}>
         <View style={ViewDiaItemStyle.name}>
-          <Text style={{ fontWeight: "bold", textAlign: "center" }}>
-            {diaInfo.nombre}
-          </Text>
+          <Text style={ViewDiaItemStyle.nameText}>{diaInfo.nombre}</Text>
+
+          <IconButton icon={"pencil"} style={ViewDiaItemStyle.nameIcon} />
         </View>
 
         {diaInfo.ejercicios.length > 0 && (
@@ -71,10 +71,28 @@ const ViewDiaItemStyle = StyleSheet.create({
     paddingBottom: 15,
   },
   name: {
+    flexDirection: "row",
+    gap: 5,
+    // justifyContent: "center",
+    alignItems: "center",
     backgroundColor: GlobalStyles.colorLightCian,
     padding: 10,
     borderTopStartRadius: 15,
     borderTopEndRadius: 15,
+  },
+  nameText: {
+    fontWeight: "bold",
+    textAlign: "right",
+    flex: 10,
+  },
+  nameIcon: {
+    padding: 0,
+    margin: 0,
+    width: 30,
+    height: 30,
+    borderRadius: 0,
+    flex: 9,
+    alignItems: "flex-start",
   },
   content: {
     flexDirection: "row",

@@ -1,24 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import { IconButton } from "react-native-paper";
 
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
 import { useRutinaContext } from "../../../../provider/RutinasProvider";
 import { RenderRoutine } from "./RenderRoutine";
+import CustomSnackBarComponent from "../../../../components/CustomSnackBar.component";
 
 const ListarRutinaScreen = ({ navigation }) => {
-  const { getAllRutinas, rutinas, setRutinas } = useRutinaContext();
+  const { rutinas, selectRutina } = useRutinaContext();
 
-  useEffect(() => {
-    chargeRutinas();
-  }, []);
+  const [snakbarMessage, setSnakbarMessage] = useState("");
+  const [visibleSnakbar, setVisibleSnakbar] = useState(false);
 
-  const chargeRutinas = () => {
-    getAllRutinas().then((result) => {
-      if (result.status === "Error") {
-        console.log(result.message);
+  /**
+   *
+   * @param {string} rutina_id
+   */
+  const setSelectedRutina = (rutina_id) => {
+    const resp = selectRutina(rutina_id);
+    setSnakbarMessage(resp.message);
+    setVisibleSnakbar(true);
+
+    setTimeout(() => {
+      if (resp.status === "Ok") {
+        navigation.navigate("Inicio");
       }
-    });
+    }, 2000);
   };
 
   const goToCrear = () => {
@@ -47,6 +55,7 @@ const ListarRutinaScreen = ({ navigation }) => {
               <RenderRoutine
                 routine={item}
                 goToView={() => goToViewRutinaScreen(item)}
+                setSelectedRutina={setSelectedRutina}
               />
             )}
             ListFooterComponent={() => (
@@ -55,6 +64,14 @@ const ListarRutinaScreen = ({ navigation }) => {
           />
         </>
       )}
+
+      <View style={{ marginBottom: 80 }}>
+        <CustomSnackBarComponent
+          isVisible={visibleSnakbar}
+          message={snakbarMessage}
+          onDismiss={() => setVisibleSnakbar(false)}
+        />
+      </View>
 
       <IconButton
         icon={"plus"}

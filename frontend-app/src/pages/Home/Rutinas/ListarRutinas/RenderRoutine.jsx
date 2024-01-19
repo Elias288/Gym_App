@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import { GlobalStyles } from "../../../../Utils/GlobalStyles";
 import { IconButton } from "react-native-paper";
@@ -7,16 +7,27 @@ import { IconButton } from "react-native-paper";
 /**
  * @param {Object} props
  * @param {rutinaType} props.routine
- * @param {() => {}} props.goToView
+ * @param {() => void} props.goToView
+ * @param {(rutinaId: string) => void} props.setSelectedRutina
  */
-export const RenderRoutine = ({ routine, goToView }) => {
+export const RenderRoutine = ({ routine, goToView, setSelectedRutina }) => {
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={({ pressed }) => [
+        {
+          backgroundColor: !pressed
+            ? GlobalStyles.colorWhite
+            : GlobalStyles.colorGray,
+        },
+        styles.container,
+      ]}
+      onLongPress={() => setSelectedRutina(routine._id)}
+    >
       <Text style={styles.title}>{routine.titulo}</Text>
       <View style={styles.actions}>
         <IconButton icon={"arrow-right"} onPress={goToView} />
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -27,7 +38,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     marginHorizontal: 30,
-    backgroundColor: GlobalStyles.colorWhite,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -35,4 +45,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 1,
   },
+  actions: {},
 });
