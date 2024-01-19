@@ -5,8 +5,6 @@ import ShowLog from "./ShowLog";
  * @returns {ResultType}
  */
 const catchError = (error) => {
-  ShowLog("catchError", error);
-
   if (error.response) {
     /** @type {string | Array<string>} */
     let err = error.response.data.message;

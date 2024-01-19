@@ -1,4 +1,4 @@
-# GYM App v0.9.2
+# GYM App v0.9.3
 
 ## Caracteristicas
 

@@ -29,7 +29,7 @@ const newUserTemplate = {
  * @param {() => void} props.onSubmit
  */
 const CrearUsuarioForm = ({ onSubmit }) => {
-  const { createUser, isLoading } = useAuthContext();
+  const { createUser, isLoading, stopIsLoading } = useAuthContext();
 
   const [generos, setGeneros] = useState(/** @type {Array<selectType>} */ ([]));
   const [newUsuario, setNewUsuario] = useState(
@@ -55,6 +55,7 @@ const CrearUsuarioForm = ({ onSubmit }) => {
     setMessage("");
 
     const result = await createUser(newUsuario, password2);
+    stopIsLoading();
 
     if (result.status === "Error") {
       setMessageType(false);

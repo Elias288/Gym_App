@@ -20,6 +20,10 @@ const storedTokenPath = "@user/token";
  * @property {() => void} logout
  * @property {() => Promise<ResultType>} getUserInfo
  * @property {(userInfo: Partial<crearUsuarioDto>) => Promise<ResultType>} updateUserInfo
+ * @property {() => void} startIsLoading
+ * @property {() => void} stopIsLoading
+ * @property {() => void} startIsChargeLoading
+ * @property {() => void} stopIsChargeLoading
  */
 
 /**
@@ -55,6 +59,13 @@ function useAuth() {
     setIsLogin(false);
   };
 
+
+  const startIsLoading = () => setIsLoading(true);
+  const startIsChargeLoading = () => setIsChargeLoading(true);
+
+  const stopIsLoading = () => setIsLoading(false);
+  const stopIsChargeLoading = () => setIsChargeLoading(false);
+
   // *********************************** FUNCTIONS ***********************************
 
   /**
@@ -66,7 +77,6 @@ function useAuth() {
   const createUser = (newUsuario, pass2) => {
     setIsLoading(true);
     if (newUsuario.password !== pass2) {
-      setIsLoading(false);
       return {
         status: "Error",
         message: "Las contraseñas no coinciden",
@@ -75,8 +85,6 @@ function useAuth() {
 
     return UserServices.crearUsuario(newUsuario)
       .then(() => {
-        setIsLoading(false);
-
         ShowLog("useAuth/createUser", { msg: "usuario creado" });
 
         return {
@@ -85,13 +93,12 @@ function useAuth() {
         };
       })
       .catch((e) => {
-        setIsLoading(false);
         return catchError(e);
       });
   };
 
   /**
-   * Login
+   * Login, obtiene el token lo almacena y guarda la información del usuario
    * @param {string} user_name
    * @param {string} password
    * @returns {Promise<ResultType>}
@@ -103,24 +110,26 @@ function useAuth() {
       .then(({ data, status }) => {
         ShowLog("useAuth/loginService:", { data, status });
 
+        // Guarda el token generado
         saveToken(data.access_token);
 
         ShowLog("useAuth/loginToken:", { token: data.access_token });
 
+        // Obtiene la información del usuario
         return UserServices.getUsuarioInfo()
           .then(({ data }) => {
-            ShowLog("useAuth/loginUser: ", { data });
             setUserInfo(data);
-            setIsLogin(true);
-            setIsLoading(false);
 
+            setIsLogin(true);
+
+            ShowLog("useAuth/loginUser: ", { data });
             return { status: "Ok", message: "Logged" };
           })
           .catch((e) => {
-            setIsLoading(false);
             setIsLogin(false);
             return catchError(e);
           });
+        return getUserInfo();
       })
       .catch((e) => {
         setIsLoading(false);
@@ -137,30 +146,29 @@ function useAuth() {
   };
 
   /**
-   * Get user info
+   * Get user info by token
    * @returns {Promise<ResultType>}
    */
   const getUserInfo = async () => {
     const token = await AsyncStorage.getItem(storedTokenPath);
     if (token === null) {
-      console.log("not Logged");
       setIsLogin(false);
-      setIsChargeLoading(false);
+
+      ShowLog("useAuth/getUserInfo", { msg: "not Logged" });
       return { status: "NotLogged", message: "" };
     }
     setIsLoading(true);
 
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
-        ShowLog("useAuth/getUserInfo", data);
         setUserInfo(data);
+
         setIsLogin(true);
-        setIsChargeLoading(false);
+
+        ShowLog("useAuth/getUserInfo", data);
         return { status: "Ok", message: data };
       })
       .catch((e) => {
-        setIsChargeLoading(false);
-        setIsLoading(false);
         setIsLogin(false);
         return catchError(e);
       });
@@ -194,6 +202,10 @@ function useAuth() {
     logout,
     getUserInfo,
     updateUserInfo,
+    startIsLoading: startIsLoading,
+    stopIsLoading: stopIsLoading,
+    startIsChargeLoading,
+    stopIsChargeLoading,
   };
 }
 

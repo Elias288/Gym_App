@@ -9,7 +9,13 @@ import ShowLog from "../../Utils/ShowLog";
 import { CustomMessage } from "../CreateUser/CustomMessage";
 
 const LoginScreen = ({ navigation }) => {
-  const { isLoading, isChargeLoading, getUserInfo } = useAuthContext();
+  const {
+    isLoading,
+    isChargeLoading,
+    getUserInfo,
+    stopIsChargeLoading,
+    stopIsLoading,
+  } = useAuthContext();
   const goToCreateUser = () => navigation.navigate("CrearUsuario");
 
   const [message, setMessage] = useState("");
@@ -23,6 +29,8 @@ const LoginScreen = ({ navigation }) => {
     setMessageType(true);
     const result = await getUserInfo();
 
+    stopIsLoading();
+    stopIsChargeLoading();
     if (result.status === "Error") {
       ShowLog("loginScreen/chargeUserInfo/error", result);
       setMessageType(false);
