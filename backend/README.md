@@ -34,6 +34,8 @@ $ npm install
 
 ## Running the app
 
+Before initialising the backend, build and run the [mongodb container](../database/README.md).
+
 ```bash
 # development
 $ npm run start
