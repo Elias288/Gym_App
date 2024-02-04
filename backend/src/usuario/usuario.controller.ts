@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -38,5 +39,13 @@ export class UsuarioController {
   async updateUsuario(@Res() res: any, @Body() body: UpdateUsuarioDto) {
     const { localId } = res.req.user;
     return res.send(await this.usuarioService.updateUsuario(localId, body));
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete()
+  @HttpCode(HttpStatus.OK)
+  async deleteUser(@Res() res: any) {
+    const { _id } = res.req.user;
+    return res.send(await this.usuarioService.deleteUsuario(_id));
   }
 }

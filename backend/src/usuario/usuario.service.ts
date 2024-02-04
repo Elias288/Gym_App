@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateUsuarioDto } from 'src/usuario/dto/update-usuario.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -42,13 +46,29 @@ export class UsuarioService {
   }
 
   getUsuarioById(user_id: string) {
-    return this.usuarioModel.findById(user_id).populate('rutinas');
+    return this.usuarioModel.findById(user_id);
   }
 
   updateUsuario(user_local_id: string, updatedUsuarioDto: UpdateUsuarioDto) {
     return this.usuarioModel
-      .findOneAndUpdate({ local_id: user_local_id }, updatedUsuarioDto)
+      .findOneAndUpdate({ local_id: user_local_id }, updatedUsuarioDto, {
+        new: true,
+      })
       .exec();
+  }
+
+  async deleteUsuario(user_id: string) {
+    // Antes de eliminar el usuario, eliminamos las rutinas asignadas
+    const user = await this.usuarioModel.findById(user_id).exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.usuarioModel.updateMany(
+      { routines: { $in: user.rutinas } },
+      { $pull: { routines: { $in: user.rutinas } } },
+    );
+    return this.usuarioModel.findOneAndDelete({ _id: user._id });
   }
 
   pushRutina(usuario: UsuarioDocument, rutina: RutinaDocument) {

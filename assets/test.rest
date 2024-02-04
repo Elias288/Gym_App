@@ -1,0 +1,104 @@
+@baseUrl = http://localhost:3000/api
+
+### Create user
+
+@user_name = test
+@password = contra123
+
+POST {{baseUrl}}/usuario HTTP/1.1
+Content-Type: application/json
+
+{
+  "user_name": "{{user_name}}",
+  "password": "{{password}}",
+  "local_id": "f28e7d579eba41729c9978374b22c860",
+  "nombre": "test",
+  "altura": "1.67",
+  "peso": "71.55",
+  "genero": "hombre"
+}
+
+### Login
+
+# @name tokenRequest
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{ "user_name": "{{user_name}}", "password": "{{password}}" }
+
+
+### Acces token
+
+@token = Bearer {{tokenRequest.response.body.access_token}}
+
+### Get user info
+
+GET {{baseUrl}}/usuario HTTP/1.1
+Authorization: {{token}}
+
+### Add routine to logged user
+
+@rutinaLocalId = 7897591774246985
+
+POST {{baseUrl}}/rutina HTTP/1.1
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "local_id": "{{rutinaLocalId}}",
+  "titulo": "Rutina test 1",
+  "contenido": [
+    {
+      "nombre": "dia 1",
+      "ejercicios": [
+        {
+          "nombre_ejercicio": "press plano c/mancuerna",
+          "repeticiones": "6-8",
+          "series": "4"
+        },
+        {
+          "nombre_ejercicio": "press inclinado c/mancuerna",
+          "repeticiones": "6-8",
+          "series": "4"
+        }
+      ]
+    }
+  ]
+}
+
+### List ruotine of user
+
+GET {{baseUrl}}/rutina HTTP/1.1
+Authorization: {{token}}
+
+### Update user
+
+PATCH {{baseUrl}}/usuario HTTP/1.1
+Authorization: {{token}}
+Content-Type: application/json
+
+{ "user_name": "test1" }
+
+### Get routine
+
+GET {{baseUrl}}/rutina/{{rutinaLocalId}} HTTP/1.1
+Authorization: {{token}}
+
+### Update routine
+
+PATCH {{baseUrl}}/rutina/{{rutinaLocalId}} HTTP/1.1
+Authorization: {{token}}
+Content-Type: application/json
+
+{ "titulo": "Rutina #1" }
+
+### Delete routine
+
+DELETE {{baseUrl}}/rutina/{{rutinaLocalId}} HTTP/1.1
+Authorization: {{token}}
+
+
+### Delete user
+
+DELETE {{baseUrl}}/usuario HTTP/1.1
+Authorization: {{token}}

@@ -18,7 +18,6 @@ export class Rutina {
 
   @Prop({
     required: true,
-    unique: true,
     trim: true,
   })
   titulo: string;
