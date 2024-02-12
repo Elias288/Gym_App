@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
 
@@ -16,14 +16,11 @@ const LoginScreen = ({ navigation }) => {
     stopIsChargeLoading,
     stopIsLoading,
   } = useAuthContext();
-  const goToCreateUser = () => navigation.navigate("CrearUsuario");
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(false);
 
-  useEffect(() => {
-    chargeUserInfo();
-  }, []);
+  const goToCreateUser = () => navigation.navigate("CrearUsuario");
 
   const chargeUserInfo = async () => {
     setMessageType(true);

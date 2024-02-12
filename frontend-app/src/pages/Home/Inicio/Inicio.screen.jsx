@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
 import { GlobalStyles } from "../../../Utils/GlobalStyles";
 import { useRutinaContext } from "../../../provider/RutinasProvider";
-import { useAuthContext } from "../../../provider/AuthProvider";
 import ShowLog from "../../../Utils/ShowLog";
 
 const InicioScreen = ({ navigation }) => {
-  const { userInfo } = useAuthContext();
-  const { selectedRutina, rutinas, selectRutina } = useRutinaContext();
-
-  useEffect(() => {
-    selectRutina(userInfo.selectedRoutineId);
-  }, []);
+  const { selectedRutina, selectRutina } = useRutinaContext();
 
   const goToRoutines = () => {
     navigation.navigate("Rutinas");

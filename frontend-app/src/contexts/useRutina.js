@@ -46,10 +46,8 @@ function useRutina() {
         });
         return;
       }
-
       const rutinas = result.message;
       ShowLog("useRutina/useEffect/rutinas", rutinas);
-
       setRutinas(rutinas);
     });
   }, []);
@@ -62,6 +60,7 @@ function useRutina() {
    * @returns {{message: string, status: string}} resp
    */
   const selectRutina = (rutinaId) => {
+    // TODO: cambiar a funcionamiento local
     const rutina = rutinas.find((rut) => rut._id === rutinaId);
     if (!rutina) return { message: "Rutina no encontrada", status: "Error" };
 

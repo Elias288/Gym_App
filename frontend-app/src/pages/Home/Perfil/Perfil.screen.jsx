@@ -16,7 +16,6 @@ const PerfilScreen = () => {
           {JSON.stringify(
             {
               ...userInfo,
-              rutinas: [],
               password: "",
             },
             null,

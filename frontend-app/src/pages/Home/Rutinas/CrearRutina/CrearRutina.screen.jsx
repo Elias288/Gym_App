@@ -63,7 +63,7 @@ const CrearRutinaScreen = ({ navigation, route }) => {
     if (typeof resutl.message === "string")
       setRutinas([...rutinas, JSON.parse(resutl.message)]);
 
-    ShowLog("CrearRutina/onSave/newRoutine", resutl.message);
+    ShowLog("CrearRutina/onSave/newRoutine", JSON.parse(resutl.message));
     navigation.goBack();
   };
 

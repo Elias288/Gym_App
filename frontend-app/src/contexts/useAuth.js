@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AuthServices from "../services/authServices";
 import UserServices from "../services/usuariosServices";
@@ -7,11 +7,12 @@ import ShowLog from "../Utils/ShowLog";
 import catchError from "../Utils/catchError";
 
 const storedTokenPath = "@user/token";
+const storedUserInfoPath = "@user/info";
 
 /**
  * @typedef {Object} useAuthProps
  * @property {boolean} isLogin
- * @property {usuarioType} userInfo
+ * @property {usuarioType | undefined} userInfo
  * @property {boolean} isLoading
  * @property {boolean} isChargeLoading
  *
@@ -38,7 +39,42 @@ function useAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const [isChargeLoading, setIsChargeLoading] = useState(true);
 
+  useEffect(() => {
+    verifyLoggedUser();
+  }, []);
+
   // ****************************** AUXILIAR FUNCTIONS ******************************
+
+  /**
+   * Verifica si el usuario está logueado o no. Si la conexion con la api no es posible pero el usuario está logueado pasa igual
+   */
+  const verifyLoggedUser = async () => {
+    const token = await AsyncStorage.getItem(storedTokenPath);
+    const localUserInfo = await AsyncStorage.getItem(storedUserInfoPath);
+
+    // No logueado
+    if (!token) {
+      ShowLog("useAuth/verifyLoggedUser/notLogged", isLogin);
+      setIsLogin(false);
+      setIsChargeLoading(false);
+      return;
+    }
+
+    setIsLogin(true);
+    ShowLog("useAuth/verifyLoggedUser", res);
+
+    // Logueado
+    const res = await getUserInfo();
+
+    if (res.status === "Error") {
+      setUserInfo(JSON.parse(localUserInfo));
+      return;
+    }
+
+    // Almacena en local la información del usuario
+    setUserInfo(res.message);
+    await AsyncStorage.setItem(storedUserInfoPath, JSON.stringify(res.message));
+  };
 
   /**
    * Almacena el token y actualiza el estado
@@ -58,7 +94,6 @@ function useAuth() {
     setUserInfo(undefined);
     setIsLogin(false);
   };
-
 
   const startIsLoading = () => setIsLoading(true);
   const startIsChargeLoading = () => setIsChargeLoading(true);
@@ -108,19 +143,20 @@ function useAuth() {
 
     return AuthServices.loginService(user_name, password)
       .then(({ data, status }) => {
-        ShowLog("useAuth/loginService:", { data, status });
-
         // Guarda el token generado
         saveToken(data.access_token);
-
         ShowLog("useAuth/loginToken:", { token: data.access_token });
 
         // Obtiene la información del usuario
         return UserServices.getUsuarioInfo()
-          .then(({ data }) => {
+          .then(async ({ data }) => {
             setUserInfo(data);
 
             setIsLogin(true);
+            await AsyncStorage.setItem(
+              storedUserInfoPath,
+              JSON.stringify(data)
+            );
 
             ShowLog("useAuth/loginUser: ", { data });
             return { status: "Ok", message: "Logged" };
@@ -152,7 +188,7 @@ function useAuth() {
   const getUserInfo = async () => {
     const token = await AsyncStorage.getItem(storedTokenPath);
     if (token === null) {
-      setIsLogin(false);
+      // setIsLogin(false);
 
       ShowLog("useAuth/getUserInfo", { msg: "not Logged" });
       return { status: "NotLogged", message: "" };
@@ -161,15 +197,15 @@ function useAuth() {
 
     return UserServices.getUsuarioInfo()
       .then(({ data }) => {
-        setUserInfo(data);
+        // setUserInfo(data);
 
-        setIsLogin(true);
+        // setIsLogin(true);
 
         ShowLog("useAuth/getUserInfo", data);
         return { status: "Ok", message: data };
       })
       .catch((e) => {
-        setIsLogin(false);
+        // setIsLogin(false);
         return catchError(e);
       });
   };
