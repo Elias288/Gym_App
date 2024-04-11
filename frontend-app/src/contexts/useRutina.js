@@ -31,7 +31,7 @@ const createRutinaTemplate = {
  * @returns {useRutinaProps}
  */
 function useRutina() {
-  const { updateUserInfo } = useAuthContext();
+  const { updateUserInfo, userInfo } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const [rutinas, setRutinas] = useState(/** @type {Array<rutinaType>} */ ([]));
   const [selectedRutina, setSelectedRutina] = useState(
@@ -46,9 +46,17 @@ function useRutina() {
         });
         return;
       }
+
       const rutinas = result.message;
       ShowLog("useRutina/useEffect/rutinas", rutinas);
       setRutinas(rutinas);
+
+      // Set selected rutina
+      const selectedRutine = rutinas.find(
+        (rut) => rut._id === userInfo.selectedRoutineId
+      );
+      ShowLog("useRutina/useEffect/selectedRutina", userInfo.selectedRoutineId);
+      setSelectedRutina(selectedRutine);
     });
   }, []);
 
