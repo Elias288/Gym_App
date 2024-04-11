@@ -5,7 +5,7 @@
 # username
 @user_name = test
 # pasword
-@password = contra123
+@password = 
 
 POST {{baseUrl}}/usuario HTTP/1.1
 Content-Type: application/json
